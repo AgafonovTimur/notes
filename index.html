@@ -339,6 +339,7 @@
   .panel-card.open{ display:flex; }
 
   #settingsPanel{
+    user-select: none;
     width: var(--settings-width);
     /* Панель всегда в потоке (display:flex), видимость — через opacity/visibility,
        чтобы работали плавные выезды слева/справа и появление по центру. */
@@ -404,6 +405,7 @@
   .settings-position-title{ white-space: nowrap; font-size: 12.5px; color: var(--text-dim); }
   .settings-position-options{ display: flex; flex-wrap: wrap; gap: 8px 14px; }
   .settings-position-option{ display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+  #settingsPanel input, #settingsPanel select, #settingsPanel textarea{ user-select: text; }
 
   #errorsPanel{
     width: var(--err-width);
@@ -1265,6 +1267,16 @@
         <button data-value="zh">简体中文</button>
       </div>
     </div>
+    <div class="theme-row" style="margin-bottom:8px">
+      <span data-i18n="lbl_theme">Тема:</span>
+      <select class="theme-select-shared" id="themeSelectNotes">
+        <option value="1" data-i18n="theme_dark">Тёмная</option>
+        <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
+        <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
+        <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
+        <option value="5" data-i18n="theme_light">Светлая</option>
+      </select>
+    </div>
     <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-bottom:8px;">
       <input type="checkbox" id="revealShowNoteIconToggle">
       <span data-i18n="chk_show_hint_note">Показывать ноту на стане в подсказке</span>
@@ -1368,7 +1380,7 @@
       </div>
       <div class="theme-row">
         <span data-i18n="lbl_theme">Тема:</span>
-        <select id="themeSelect">
+        <select class="theme-select-shared" id="themeSelect">
           <option value="1" data-i18n="theme_dark">Тёмная</option>
           <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
           <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
@@ -1472,6 +1484,16 @@
           <button data-value="zh">简体中文</button>
         </div>
       </div>
+      <div class="theme-row">
+        <span data-i18n="lbl_theme">Тема:</span>
+        <select class="theme-select-shared" id="themeSelectDur">
+          <option value="1" data-i18n="theme_dark">Тёмная</option>
+          <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
+          <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
+          <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
+          <option value="5" data-i18n="theme_light">Светлая</option>
+        </select>
+      </div>
     </div>
 
     <div class="settings-position-row">
@@ -1565,6 +1587,16 @@
           <button data-value="en">English</button>
           <button data-value="zh">简体中文</button>
         </div>
+      </div>
+      <div class="theme-row">
+        <span data-i18n="lbl_theme">Тема:</span>
+        <select class="theme-select-shared" id="themeSelectFlow">
+          <option value="1" data-i18n="theme_dark">Тёмная</option>
+          <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
+          <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
+          <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
+          <option value="5" data-i18n="theme_light">Светлая</option>
+        </select>
       </div>
     </div>
 
@@ -6827,18 +6859,19 @@
     if(typeof window.ntApplyThemeVars === "function") window.ntApplyThemeVars();
   }
   function init(){
-    var sel = document.getElementById("themeSelect");
+    var sels = document.querySelectorAll(".theme-select-shared");
     var saved = null;
     try { saved = localStorage.getItem(KEY); } catch(e){}
     if(LIST.indexOf(saved) === -1) saved = "1";
     applyTheme(saved);
-    if(sel){
+    sels.forEach(function(sel){
       sel.value = saved;
       sel.addEventListener("change", function(){
         applyTheme(sel.value);
         try { localStorage.setItem(KEY, sel.value); } catch(e){}
+        sels.forEach(function(other){ if(other !== sel) other.value = sel.value; });
       });
-    }
+    });
   }
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
