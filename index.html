@@ -1077,6 +1077,41 @@
   .rh-check input{ width:16px; height:16px; accent-color: var(--accent); cursor:pointer; }
   .rh-calib-val{ font-family: var(--font-ui); font-size:14px; font-weight:600; color: var(--accent); }
 
+  /* ================= МОБИЛЬНАЯ ВЕРСИЯ =================
+     Класс mobile-mode вешается на <body> из JS только на устройствах с сенсорным
+     вводом и небольшим экраном. Все правила ниже действуют ТОЛЬКО при этом классе,
+     поэтому на ПК ничего не меняется. */
+  body.mobile-mode{ padding-left: 6px; padding-right: 6px; }
+
+  /* Панели настроек и ошибок на ПК стоят далеко от центра (offset-x 700 / -600 px) —
+     на телефоне это увело бы их за экран. Здесь они всегда по центру и по ширине экрана. */
+  body.mobile-mode #settingsPanel{
+    width: min(94vw, 415px);
+    max-height: 84vh;
+    padding: 14px 12px;
+    transform: translate(-50%, -50%) scale(.96) !important;
+  }
+  body.mobile-mode #settingsPanel.open{ transform: translate(-50%, -50%) scale(1) !important; }
+  body.mobile-mode #errorsPanel{
+    width: min(94vw, 320px);
+    max-height: 80vh;
+    transform: translate(-50%, -50%) !important;
+  }
+  /* блок "Отображать настройки: слева / по центру / справа" на телефоне не нужен */
+  body.mobile-mode .settings-position-row{ display: none; }
+
+  /* Кнопки ответов: на узком экране переносятся на несколько рядов, а не сжимаются в полоски */
+  body.mobile-mode .answers{ flex-wrap: wrap; }
+  body.mobile-mode .answers .note-btn{ flex: 1 1 62px; }
+  body.mobile-mode .answers.dur-answers .note-btn{ flex: 1 1 74px; }
+  body.mobile-mode .piano-naturals{ flex-wrap: wrap; }
+  body.mobile-mode .piano-naturals .note-btn{ flex: 1 1 62px; }
+  body.mobile-mode .octave-selector{ width: 44px; flex: 0 0 44px; }
+  body.mobile-mode .level-tabs button{ padding: 12px 4px; font-size: 12px; }
+
+  /* Панель Play/Stop в "Ритм → Бесконечно" на ПК прячется и показывается по наведению
+     мыши; на телефоне наведения нет, поэтому она остаётся видимой всегда. */
+  body.mobile-mode #nrFlowCtrl.nr-flow-auto-hide{ opacity: 1; }
 </style>
 </head>
 <body>
@@ -2795,11 +2830,23 @@
     el.errorsPanel.classList.toggle("open");
   }
 
+  // ---- Мобильный режим ----
+  // Включается только на сенсорных устройствах с небольшим экраном. На ПК класс
+  // не ставится, поэтому вся логика/оформление десктопа остаются как были.
+  const IS_MOBILE = (() => {
+    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    const small = Math.min(screen.width || 9999, screen.height || 9999) <= 1024;
+    return !!(coarse && small && (navigator.maxTouchPoints || 0) > 1);
+  })();
+  if(IS_MOBILE) document.body.classList.add("mobile-mode");
+
   // ---- Положение панели настроек: слева / по центру / справа ----
   const settingsBackdrop = document.getElementById("settingsBackdrop");
   const settingsPositionCheckboxes = [...document.querySelectorAll(".settings-position-checkbox")];
 
   function getSettingsPosition(){
+    // на телефоне панель всегда по центру (слева/справа там нет смысла)
+    if(IS_MOBILE) return "center";
     const checked = settingsPositionCheckboxes.find((cb) => cb.checked);
     return checked ? checked.dataset.position : "center";
   }
@@ -2870,6 +2917,42 @@
   document.addEventListener("auxclick", (e) => {
     if(e.button === 1) e.preventDefault();
   });
+
+  // ---- Сенсорные жесты: тап двумя пальцами = настройки, тремя = окно ошибок ----
+  // preventDefault нигде не вызывается, поэтому pinch-to-zoom, прокрутка и обычные
+  // нажатия работают как раньше. Жест засчитывается, только если пальцы почти не
+  // сдвинулись (иначе это масштабирование/прокрутка) и касание было коротким.
+  let multiTap = null;
+  const MULTI_TAP_MOVE = 25;   // px — больше этого считаем движением, а не тапом
+  const MULTI_TAP_TIME = 400;  // мс — дольше этого уже не тап
+  function multiTapTrack(touches){
+    for(const t of touches){
+      if(!(t.identifier in multiTap.start)) multiTap.start[t.identifier] = { x: t.clientX, y: t.clientY };
+    }
+  }
+  document.addEventListener("touchstart", (e) => {
+    if(e.touches.length < 2) return;
+    if(!multiTap) multiTap = { t0: Date.now(), max: 0, moved: false, start: {} };
+    multiTap.max = Math.max(multiTap.max, e.touches.length);
+    multiTapTrack(e.touches);
+  }, { passive: true });
+  document.addEventListener("touchmove", (e) => {
+    if(!multiTap) return;
+    for(const t of e.touches){
+      const s = multiTap.start[t.identifier];
+      if(!s) continue;
+      if(Math.hypot(t.clientX - s.x, t.clientY - s.y) > MULTI_TAP_MOVE){ multiTap.moved = true; return; }
+    }
+  }, { passive: true });
+  document.addEventListener("touchend", (e) => {
+    if(!multiTap || e.touches.length > 0) return;
+    const st = multiTap;
+    multiTap = null;
+    if(st.moved || Date.now() - st.t0 > MULTI_TAP_TIME) return;
+    if(st.max === 2) toggleSettings();
+    else if(st.max === 3) toggleErrors();
+  }, { passive: true });
+  document.addEventListener("touchcancel", () => { multiTap = null; }, { passive: true });
 
   // ================= НОТНАЯ ЛОГИКА =================
   function noteFromStep(step, clef){
