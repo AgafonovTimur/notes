@@ -528,6 +528,26 @@
   .midi-status.ok{ color: var(--correct-color); }
   .midi-status.err{ color: var(--wrong-color); }
 
+  .midi-select-line{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .midi-select-line span{ font-size:13px; color: var(--text-dim); white-space:nowrap; }
+  .midi-select{
+    width: 50%;
+    background: var(--ui-bg);
+    color: var(--text-main);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm);
+    padding: 6px 8px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+  }
+  .midi-select:focus, .midi-select:focus-visible{ outline:none; box-shadow:none; }
+  .midi-connect-btn{ width:100%; align-self:stretch; text-align:center; }
+
+  /* Одинаковый отступ сверху перед блоком MIDI, если перед ним идёт строка "Отображать настройки" */
+  .settings-position-row + .settings-block{ margin-top: var(--settings-block-gap); }
+
   .small-btn{
     background: var(--btn-bg);
     color: var(--btn-text);
@@ -1057,41 +1077,6 @@
   .rh-check input{ width:16px; height:16px; accent-color: var(--accent); cursor:pointer; }
   .rh-calib-val{ font-family: var(--font-ui); font-size:14px; font-weight:600; color: var(--accent); }
 
-  /* ================= МОБИЛЬНАЯ ВЕРСИЯ =================
-     Класс mobile-mode вешается на <body> из JS только на устройствах с сенсорным
-     вводом и небольшим экраном. Все правила ниже действуют ТОЛЬКО при этом классе,
-     поэтому на ПК ничего не меняется. */
-  body.mobile-mode{ padding-left: 6px; padding-right: 6px; }
-
-  /* Панели настроек и ошибок на ПК стоят далеко от центра (offset-x 700 / -600 px) —
-     на телефоне это увело бы их за экран. Здесь они всегда по центру и по ширине экрана. */
-  body.mobile-mode #settingsPanel{
-    width: min(94vw, 415px);
-    max-height: 84vh;
-    padding: 14px 12px;
-    transform: translate(-50%, -50%) scale(.96) !important;
-  }
-  body.mobile-mode #settingsPanel.open{ transform: translate(-50%, -50%) scale(1) !important; }
-  body.mobile-mode #errorsPanel{
-    width: min(94vw, 320px);
-    max-height: 80vh;
-    transform: translate(-50%, -50%) !important;
-  }
-  /* блок "Отображать настройки: слева / по центру / справа" на телефоне не нужен */
-  body.mobile-mode .settings-position-row{ display: none; }
-
-  /* Кнопки ответов: на узком экране переносятся на несколько рядов, а не сжимаются в полоски */
-  body.mobile-mode .answers{ flex-wrap: wrap; }
-  body.mobile-mode .answers .note-btn{ flex: 1 1 62px; }
-  body.mobile-mode .answers.dur-answers .note-btn{ flex: 1 1 74px; }
-  body.mobile-mode .piano-naturals{ flex-wrap: wrap; }
-  body.mobile-mode .piano-naturals .note-btn{ flex: 1 1 62px; }
-  body.mobile-mode .octave-selector{ width: 44px; flex: 0 0 44px; }
-  body.mobile-mode .level-tabs button{ padding: 12px 4px; font-size: 12px; }
-
-  /* Панель Play/Stop в "Ритм → Бесконечно" на ПК прячется и показывается по наведению
-     мыши; на телефоне наведения нет, поэтому она остаётся видимой всегда. */
-  body.mobile-mode #nrFlowCtrl.nr-flow-auto-hide{ opacity: 1; }
 </style>
 </head>
 <body>
@@ -1198,8 +1183,16 @@
 
   <div class="settings-block midi-row">
     <h3 data-i18n="h_midi">MIDI-клавиатура</h3>
-    <button class="small-btn" id="midiConnectBtn" data-i18n="btn_connect_midi">Подключить MIDI</button>
-    <span class="midi-status" id="midiStatus" data-i18n="midi_not_connected">не подключено</span>
+    <div class="midi-select-line">
+      <span data-i18n="lbl_midi_in">MIDI вход:</span>
+      <select class="midi-select" id="midiInSelect" data-midi-scope="notes"><option value="" data-i18n="midi_opt_none">—</option></select>
+    </div>
+    <div class="midi-select-line">
+      <span data-i18n="lbl_midi_out">MIDI выход:</span>
+      <select class="midi-select" id="midiOutSelect" data-midi-scope="notes"><option value="" data-i18n="midi_opt_none">—</option></select>
+    </div>
+    <span class="midi-status" id="midiStatus" data-i18n="midi_not_connected">MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.</span>
+    <button class="small-btn midi-connect-btn" id="midiConnectBtn" data-i18n="btn_connect_midi">Подключить MIDI клавиатуру</button>
   </div>
 
   <div class="settings-block">
@@ -1390,6 +1383,20 @@
         </label>
       </div>
     </div>
+
+    <div class="settings-block midi-row">
+      <h3 data-i18n="h_midi">MIDI-клавиатура</h3>
+      <div class="midi-select-line">
+        <span data-i18n="lbl_midi_in">MIDI вход:</span>
+        <select class="midi-select" id="midiInSelectScale" data-midi-scope="scale"><option value="" data-i18n="midi_opt_none">—</option></select>
+      </div>
+      <div class="midi-select-line">
+        <span data-i18n="lbl_midi_out">MIDI выход:</span>
+        <select class="midi-select" id="midiOutSelectScale" data-midi-scope="scale"><option value="" data-i18n="midi_opt_none">—</option></select>
+      </div>
+      <span class="midi-status" id="midiStatusScale" data-i18n="midi_not_connected">MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.</span>
+      <button class="small-btn midi-connect-btn" id="midiConnectBtnScale" data-i18n="btn_connect_midi">Подключить MIDI клавиатуру</button>
+    </div>
   </div>
 
   <!-- ===== Общее меню "Длительности": два подуровня в одной вкладке ===== -->
@@ -1448,6 +1455,20 @@
           <span data-i18n="pos_right">справа</span>
         </label>
       </div>
+    </div>
+
+    <div class="settings-block midi-row">
+      <h3 data-i18n="h_midi">MIDI-клавиатура</h3>
+      <div class="midi-select-line">
+        <span data-i18n="lbl_midi_in">MIDI вход:</span>
+        <select class="midi-select" id="midiInSelectDur" data-midi-scope="dur"><option value="" data-i18n="midi_opt_none">—</option></select>
+      </div>
+      <div class="midi-select-line">
+        <span data-i18n="lbl_midi_out">MIDI выход:</span>
+        <select class="midi-select" id="midiOutSelectDur" data-midi-scope="dur"><option value="" data-i18n="midi_opt_none">—</option></select>
+      </div>
+      <span class="midi-status" id="midiStatusDur" data-i18n="midi_not_connected">MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.</span>
+      <button class="small-btn midi-connect-btn" id="midiConnectBtnDur" data-i18n="btn_connect_midi">Подключить MIDI клавиатуру</button>
     </div>
   </div>
 
@@ -1528,6 +1549,20 @@
           <span data-i18n="pos_right">справа</span>
         </label>
       </div>
+    </div>
+
+    <div class="settings-block midi-row">
+      <h3 data-i18n="h_midi">MIDI-клавиатура</h3>
+      <div class="midi-select-line">
+        <span data-i18n="lbl_midi_in">MIDI вход:</span>
+        <select class="midi-select" id="midiInSelectNr" data-midi-scope="nr"><option value="" data-i18n="midi_opt_none">—</option></select>
+      </div>
+      <div class="midi-select-line">
+        <span data-i18n="lbl_midi_out">MIDI выход:</span>
+        <select class="midi-select" id="midiOutSelectNr" data-midi-scope="nr"><option value="" data-i18n="midi_opt_none">—</option></select>
+      </div>
+      <span class="midi-status" id="midiStatusNr" data-i18n="midi_not_connected">MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.</span>
+      <button class="small-btn midi-connect-btn" id="midiConnectBtnNr" data-i18n="btn_connect_midi">Подключить MIDI клавиатуру</button>
     </div>
   </div>
 
@@ -2383,8 +2418,11 @@
     btn_show: { ru: "Показывать", en: "Show", zh: "显示" },
     btn_hide: { ru: "Скрыть", en: "Hide", zh: "隐藏" },
     h_midi: { ru: "MIDI-клавиатура", en: "MIDI keyboard", zh: "MIDI键盘" },
-    btn_connect_midi: { ru: "Подключить MIDI", en: "Connect MIDI", zh: "连接MIDI" },
-    midi_not_connected: { ru: "не подключено", en: "not connected", zh: "未连接" },
+    btn_connect_midi: { ru: "Подключить MIDI клавиатуру", en: "Connect MIDI keyboard", zh: "连接MIDI键盘" },
+    lbl_midi_in: { ru: "MIDI вход:", en: "MIDI input:", zh: "MIDI输入：" },
+    lbl_midi_out: { ru: "MIDI выход:", en: "MIDI output:", zh: "MIDI输出：" },
+    midi_opt_none: { ru: "—", en: "—", zh: "—" },
+    midi_not_connected: { ru: "MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.", en: "MIDI keyboard is not connected. Press the button below to connect.", zh: "MIDI键盘未连接。请点击下方按钮进行连接。" },
     midi_not_supported: { ru: "Web MIDI не поддерживается браузером", en: "Web MIDI is not supported by this browser", zh: "浏览器不支持Web MIDI" },
     midi_no_devices: { ru: "устройства не найдены", en: "no devices found", zh: "未找到设备" },
     midi_connected_prefix: { ru: "подключено: ", en: "connected: ", zh: "已连接：" },
@@ -2679,23 +2717,11 @@
     el.errorsPanel.classList.toggle("open");
   }
 
-  // ---- Мобильный режим ----
-  // Включается только на сенсорных устройствах с небольшим экраном. На ПК класс
-  // не ставится, поэтому вся логика/оформление десктопа остаются как были.
-  const IS_MOBILE = (() => {
-    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
-    const small = Math.min(screen.width || 9999, screen.height || 9999) <= 1024;
-    return !!(coarse && small && (navigator.maxTouchPoints || 0) > 1);
-  })();
-  if(IS_MOBILE) document.body.classList.add("mobile-mode");
-
   // ---- Положение панели настроек: слева / по центру / справа ----
   const settingsBackdrop = document.getElementById("settingsBackdrop");
   const settingsPositionCheckboxes = [...document.querySelectorAll(".settings-position-checkbox")];
 
   function getSettingsPosition(){
-    // на телефоне панель всегда по центру (слева/справа там нет смысла)
-    if(IS_MOBILE) return "center";
     const checked = settingsPositionCheckboxes.find((cb) => cb.checked);
     return checked ? checked.dataset.position : "center";
   }
@@ -2766,42 +2792,6 @@
   document.addEventListener("auxclick", (e) => {
     if(e.button === 1) e.preventDefault();
   });
-
-  // ---- Сенсорные жесты: тап двумя пальцами = настройки, тремя = окно ошибок ----
-  // preventDefault нигде не вызывается, поэтому pinch-to-zoom, прокрутка и обычные
-  // нажатия работают как раньше. Жест засчитывается, только если пальцы почти не
-  // сдвинулись (иначе это масштабирование/прокрутка) и касание было коротким.
-  let multiTap = null;
-  const MULTI_TAP_MOVE = 25;   // px — больше этого считаем движением, а не тапом
-  const MULTI_TAP_TIME = 400;  // мс — дольше этого уже не тап
-  function multiTapTrack(touches){
-    for(const t of touches){
-      if(!(t.identifier in multiTap.start)) multiTap.start[t.identifier] = { x: t.clientX, y: t.clientY };
-    }
-  }
-  document.addEventListener("touchstart", (e) => {
-    if(e.touches.length < 2) return;
-    if(!multiTap) multiTap = { t0: Date.now(), max: 0, moved: false, start: {} };
-    multiTap.max = Math.max(multiTap.max, e.touches.length);
-    multiTapTrack(e.touches);
-  }, { passive: true });
-  document.addEventListener("touchmove", (e) => {
-    if(!multiTap) return;
-    for(const t of e.touches){
-      const s = multiTap.start[t.identifier];
-      if(!s) continue;
-      if(Math.hypot(t.clientX - s.x, t.clientY - s.y) > MULTI_TAP_MOVE){ multiTap.moved = true; return; }
-    }
-  }, { passive: true });
-  document.addEventListener("touchend", (e) => {
-    if(!multiTap || e.touches.length > 0) return;
-    const st = multiTap;
-    multiTap = null;
-    if(st.moved || Date.now() - st.t0 > MULTI_TAP_TIME) return;
-    if(st.max === 2) toggleSettings();
-    else if(st.max === 3) toggleErrors();
-  }, { passive: true });
-  document.addEventListener("touchcancel", () => { multiTap = null; }, { passive: true });
 
   // ================= НОТНАЯ ЛОГИКА =================
   function noteFromStep(step, clef){
@@ -4204,9 +4194,21 @@
     const [status, note, velocity] = msg.data;
     if((status & 0xf0) !== 0x90 || velocity <= 0) return;
     if(isDuplicateMidiNoteOn(note, msg.timeStamp)) return;
-    if(rhCalibrating){ if(typeof rhTap === "function") rhTap(); return; }
+    if(window.__rhCalibrating){ if(window.__rhTap) window.__rhTap(); return; }
     if(settings.activeLevel === "flow"){ // "Поток": клавиша — тап
       if(window.__nrTap) window.__nrTap();
+      return;
+    }
+    if(settings.activeLevel === "durations"){
+      // "Ритм → Одна нота": на MIDI-клавиатуре нота C (в любой октаве) выбирает
+      // 1-ю по порядку кнопку-длительность, D — 2-ю, ... B — 7-ю (как клавиши 1-7).
+      const { name: pitch } = midiNoteToPitch(note);
+      if(pitch.length > 1) return; // диезные клавиши не используются
+      const idx = ["C","D","E","F","G","A","B"].indexOf(pitch[0]);
+      if(idx === -1) return;
+      const btn = el.answersGrid.children[idx];
+      if(!btn) return;
+      btn.click();
       return;
     }
     if(window.__durLevelActive) return; // остальные уровни длительностей не используют ввод нотами
@@ -4235,25 +4237,86 @@
       answerLetter(letter, null, octave);
     }
   }
-  el.midiConnectBtn.addEventListener("click", () => {
+  // ===== MIDI: единое подключение, отображается в 4 копиях (Ноты / Лады / Ритм-Одна нота / Ритм-Бесконечно) =====
+  const midiUIGroups = [
+    { btn: document.getElementById("midiConnectBtn"),      status: document.getElementById("midiStatus"),      inSel: document.getElementById("midiInSelect"),      outSel: document.getElementById("midiOutSelect") },
+    { btn: document.getElementById("midiConnectBtnScale"), status: document.getElementById("midiStatusScale"), inSel: document.getElementById("midiInSelectScale"), outSel: document.getElementById("midiOutSelectScale") },
+    { btn: document.getElementById("midiConnectBtnDur"),   status: document.getElementById("midiStatusDur"),   inSel: document.getElementById("midiInSelectDur"),   outSel: document.getElementById("midiOutSelectDur") },
+    { btn: document.getElementById("midiConnectBtnNr"),    status: document.getElementById("midiStatusNr"),    inSel: document.getElementById("midiInSelectNr"),    outSel: document.getElementById("midiOutSelectNr") },
+  ];
+
+  let midiAccessObj = null;
+  let midiSelectedInId = localStorage.getItem("ntMidiInId") || "";
+  let midiSelectedOutId = localStorage.getItem("ntMidiOutId") || "";
+
+  function midiNoneLabel(){ return window.__t ? window.__t("midi_opt_none") : "—"; }
+
+  function setMidiStatusAll(text, cls){
+    midiUIGroups.forEach(g => { if(g.status){ g.status.textContent = text; g.status.className = "midi-status" + (cls ? " " + cls : ""); } });
+  }
+
+  function attachMidiInputListener(){
+    if(!midiAccessObj) return;
+    const inputs = Array.from(midiAccessObj.inputs.values());
+    inputs.forEach(input => { input.onmidimessage = null; });
+    const active = midiSelectedInId ? inputs.filter(i => i.id === midiSelectedInId) : inputs;
+    active.forEach(input => { input.onmidimessage = handleMIDIMessage; });
+    return active;
+  }
+
+  function fillMidiSelects(){
+    if(!midiAccessObj) return;
+    const inputs = Array.from(midiAccessObj.inputs.values());
+    const outputs = Array.from(midiAccessObj.outputs.values());
+    const noneLabel = midiNoneLabel();
+    midiUIGroups.forEach(g => {
+      if(g.inSel){
+        g.inSel.innerHTML = `<option value="">${noneLabel}</option>` + inputs.map(i => `<option value="${i.id}">${i.name}</option>`).join("");
+        g.inSel.value = midiSelectedInId || "";
+      }
+      if(g.outSel){
+        g.outSel.innerHTML = `<option value="">${noneLabel}</option>` + outputs.map(o => `<option value="${o.id}">${o.name}</option>`).join("");
+        g.outSel.value = midiSelectedOutId || "";
+      }
+    });
+  }
+
+  function connectMidi(){
     if(!navigator.requestMIDIAccess){
-      el.midiStatus.textContent = window.__t ? window.__t("midi_not_supported") : "Web MIDI не поддерживается браузером";
-      el.midiStatus.className = "midi-status err";
+      setMidiStatusAll(window.__t ? window.__t("midi_not_supported") : "Web MIDI не поддерживается браузером", "err");
       return;
     }
     navigator.requestMIDIAccess({ sysex: false }).then(access => {
+      midiAccessObj = access;
+      access.onstatechange = () => { fillMidiSelects(); attachMidiInputListener(); };
       const inputs = Array.from(access.inputs.values());
+      fillMidiSelects();
       if(inputs.length === 0){
-        el.midiStatus.textContent = window.__t ? window.__t("midi_no_devices") : "устройства не найдены";
-        el.midiStatus.className = "midi-status err";
+        setMidiStatusAll(window.__t ? window.__t("midi_no_devices") : "устройства не найдены", "err");
         return;
       }
-      inputs.forEach(input => { input.onmidimessage = handleMIDIMessage; });
-      el.midiStatus.textContent = (window.__t ? window.__t("midi_connected_prefix") : "подключено: ") + inputs.map(i => i.name).join(", ");
-      el.midiStatus.className = "midi-status ok";
+      const active = attachMidiInputListener();
+      setMidiStatusAll((window.__t ? window.__t("midi_connected_prefix") : "подключено: ") + active.map(i => i.name).join(", "), "ok");
     }).catch(() => {
-      el.midiStatus.textContent = window.__t ? window.__t("midi_connect_failed") : "не удалось подключиться";
-      el.midiStatus.className = "midi-status err";
+      setMidiStatusAll(window.__t ? window.__t("midi_connect_failed") : "не удалось подключиться", "err");
+    });
+  }
+
+  midiUIGroups.forEach(g => {
+    if(g.btn) g.btn.addEventListener("click", connectMidi);
+    if(g.inSel) g.inSel.addEventListener("change", () => {
+      midiSelectedInId = g.inSel.value;
+      localStorage.setItem("ntMidiInId", midiSelectedInId);
+      midiUIGroups.forEach(o => { if(o.inSel) o.inSel.value = midiSelectedInId; });
+      const active = attachMidiInputListener();
+      if(midiAccessObj && active){
+        setMidiStatusAll((window.__t ? window.__t("midi_connected_prefix") : "подключено: ") + active.map(i => i.name).join(", "), "ok");
+      }
+    });
+    if(g.outSel) g.outSel.addEventListener("change", () => {
+      midiSelectedOutId = g.outSel.value;
+      localStorage.setItem("ntMidiOutId", midiSelectedOutId);
+      midiUIGroups.forEach(o => { if(o.outSel) o.outSel.value = midiSelectedOutId; });
     });
   });
 
@@ -5323,6 +5386,11 @@
     // разницу (тап минус время клика по часам AudioContext) и сохраняем как
     // durSettings.rhLatencyMs — это и есть искомая задержка вывода звука.
     let rhCalibrating = false;
+    Object.defineProperty(window, "__rhCalibrating", {
+      get(){ return rhCalibrating; },
+      set(v){ rhCalibrating = v; },
+      configurable: true
+    });
     let rhCalibClicks = [];
     let rhCalibTaps = [];
     const RH_CALIB_LEAD = 4;   // клики разгона, не участвуют в замере
@@ -5386,6 +5454,7 @@
     function rhTap(){
       if(rhCalibrating && rhAudioCtx){ rhCalibTaps.push(rhAudioCtx.currentTime); }
     }
+    window.__rhTap = rhTap;
 
     // пробел — тап (в "Потоке") или отметка калибровки
     document.addEventListener("keydown", (e) => {
