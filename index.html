@@ -6,10 +6,12 @@
 <title>Тренажёр нот</title>
 <style>
   :root{
-    --bg: #27272b;
+    --bg: #161618;
     --panel-bg: #232326;
-    --staff-bg: #1a1a1c;
+    --staff-bg: #1c1c1e;
     --panel-border: #2f2f33;
+    /* Фон элементов интерфейса (кнопки настроек, поля) — НЕ зависит от цвета фона страницы */
+    --ui-bg: #27272b;
 
     --btn-bg: #55555c;
     --btn-bg-bottom: #232326;
@@ -18,18 +20,25 @@
 
     --accent: #c9a04a;
 
+    /* Выделенная (выбранная) кнопка — фон, текст, рамка. Значения ниже = как было до тем. */
+    --sel-bg: #55555c;
+    --sel-text: #e4e4e7;
+    --sel-border: #c9a04a;
+    /* обводка для кнопок, у которых в исходной (Тёмной) теме рамки не было */
+    --sel-border-soft: transparent;
+
     --correct-color: #7be07b;
     --correct-opacity: 0.5;
     --wrong-color: #ff6b6b;
     --wrong-opacity: 0.5;
 
-    --clef-color: #e9e5d8;
-    --line-color: #e9e5d8;
+    --clef-color: #d1bfae;
+    --line-color: #d1bfae;
 
     /* Клавиатура пианино (C2–C6), показывается при включённой галке "Отображать клавиатуру пианино" */
     --piano-white-key: #68665e;
     --piano-black-key: #1a1a1c;
-    --note-fill: var(--accent);
+    --note-fill: #c9a04a;
     --note-stroke: #8a6f2c;
 
     --text-main: #e4e4e7;
@@ -55,9 +64,9 @@
     --chord-reveal-left: 50%;
     --chord-reveal-size: 22px;
 
-    --scale-label-top: 108%;
+    --scale-label-top: 90%;
     --scale-label-left: 50%;
-    --scale-label-size: 14px;
+    --scale-label-size: 30px;
 
     --scale-hint-top: 7%;
     --scale-hint-left: 170%;
@@ -94,6 +103,155 @@
     --staff-box-pad-bottom: 4px;
     --staff-box-pad-left: 10px;
     --staff-box-pad-right: 10px;
+  }
+
+
+  /* ===== ТЕМЫ (перенесены из Ear Trainer, темы №2–№5) =====
+     Тема меняет только интерфейс: панели, поля, кнопки, выделение, текст, акцент.
+     Цвета со своими пикерами (фон страницы, фон стана, линейки, ключ, клавиши
+     пианино) и цвета нот/ответов темой не трогаются. */
+
+  /* №1 — оформление, которое было в тренажёре до переноса тем */
+  [data-theme="1"]{
+    --panel-bg: #232326;
+    --panel-border: #2f2f33;
+    --ui-bg: #27272b;
+    --btn-bg: #55555c;
+    --btn-bg-bottom: #232326;
+    --btn-text: #d8d8dc;
+    --btn-hover: #626269;
+    --accent: #c9a04a;
+    --text-main: #e4e4e7;
+    --text-dim: #9a9aa0;
+    --sel-bg: #55555c;
+    --sel-text: #e4e4e7;
+    --sel-border: #c9a04a;
+    --sel-border-soft: transparent;
+  }
+  [data-theme="2"]{
+    --panel-bg: #232326;
+    --panel-border: #2f2f33;
+    --ui-bg: #2b2b30;
+    --btn-bg: #3a3a40;
+    --btn-bg-bottom: #232326;
+    --btn-text: #e4e4e7;
+    --btn-hover: #4a4a52;
+    --accent: #d8ad51;
+    --text-main: #e4e4e7;
+    --text-dim: #a9a9b0;
+    --sel-bg: #c9a04a;
+    --sel-text: #221c0c;
+    --sel-border: #8d6f2f;
+    --sel-border-soft: #8d6f2f;
+    --radius-sm: 8px;
+  }
+  [data-theme="3"]{
+    --panel-bg: #131722;
+    --panel-border: #1f2738;
+    --ui-bg: #181f2c;
+    --btn-bg: #1c2230;
+    --btn-bg-bottom: #10141d;
+    --btn-text: #a0aec0;
+    --btn-hover: #252d40;
+    --accent: #f59e0b;
+    --text-main: #cbd5e0;
+    --text-dim: #718096;
+    --sel-bg: #1b212f;
+    --sel-text: #f59e0b;
+    --sel-border: #e58e38;
+    --sel-border-soft: #e58e38;
+  }
+  [data-theme="4"]{
+    --panel-bg: #1e1e1e;
+    --panel-border: #2a2a2a;
+    --ui-bg: #2b2b2b;
+    --btn-bg: #2d2d2d;
+    --btn-bg-bottom: #191919;
+    --btn-text: #a0a0a0;
+    --btn-hover: #383838;
+    --accent: #f59e0b;
+    --text-main: #cfcfcf;
+    --text-dim: #888888;
+    --sel-bg: #25221e;
+    --sel-text: #f59e0b;
+    --sel-border: #e58e38;
+    --sel-border-soft: #e58e38;
+  }
+  [data-theme="5"]{
+    --panel-bg: #ffffff;
+    --panel-border: #d3d2cc;
+    --ui-bg: #eceae5;
+    --btn-bg: #c7c7c7;
+    --btn-bg-bottom: #a9a9a4;
+    --btn-text: #1b1b1b;
+    --btn-hover: #dcdbd4;
+    --accent: #2f2f2f;
+    --text-main: #1b1b1b;
+    --text-dim: #4a4a4a;
+    --sel-bg: #2f2f2f;
+    --sel-text: #ffffff;
+    --sel-border: #2f2f2f;
+    --sel-border-soft: #2f2f2f;
+  }
+
+  /* Светлая тема №5: кнопки-ответы (выбор ноты/длительности) и подписи на них
+     инвертированы относительно темы — тёмные кнопки со светлым текстом.
+     Настроек это не касается. */
+  [data-theme="5"] .answers .note-btn,
+  [data-theme="5"] .piano-answers .note-btn,
+  [data-theme="5"] .piano-sharp{
+    background: #383838;
+    color: #e4e4e4;
+    box-shadow: 0 var(--btn-shadow-depth) 0 #56565b;
+  }
+  [data-theme="5"] .answers .note-btn:hover,
+  [data-theme="5"] .piano-answers .note-btn:hover,
+  [data-theme="5"] .piano-sharp:hover{ background: #23242b; }
+  [data-theme="5"] .answers .note-btn:active,
+  [data-theme="5"] .piano-answers .note-btn:active,
+  [data-theme="5"] .piano-sharp:active{ box-shadow: 0 1px 0 #56565b; }
+  [data-theme="5"] .answers .note-btn.selected,
+  [data-theme="5"] .piano-answers .note-btn.selected,
+  [data-theme="5"] .piano-sharp.selected{
+    background: #d0d0d0;
+    color: #000000;
+    box-shadow: 0 0 0 2px #d0d0d0 inset, 0 var(--btn-shadow-depth) 0 #56565b;
+  }
+  [data-theme="5"] .answers .note-btn.correct-flash,
+  [data-theme="5"] .piano-answers .note-btn.correct-flash,
+  [data-theme="5"] .piano-sharp.correct-flash{
+    background: color-mix(in srgb, var(--correct-color) calc(var(--correct-opacity) * 100%), #383838);
+    color: #14351f;
+  }
+  [data-theme="5"] .answers .note-btn.incorrect-flash,
+  [data-theme="5"] .piano-answers .note-btn.incorrect-flash,
+  [data-theme="5"] .piano-sharp.incorrect-flash{
+    background: color-mix(in srgb, var(--wrong-color) calc(var(--wrong-opacity) * 100%), #383838);
+    color: #3a1414;
+  }
+
+  /* Выпадашка выбора темы — под кнопками языков */
+  .theme-row{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    margin-top: 8px;
+  }
+  .theme-row span{ font-size:13px; color: var(--text-dim); }
+  .theme-row select{
+    width: 50%;
+    background: var(--ui-bg);
+    color: var(--text-main);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm);
+    padding: 6px 8px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+  }
+  .theme-row select:focus,
+  .theme-row select:focus-visible{
+    outline: none;
+    box-shadow: none;
   }
 
   *{ box-sizing: border-box; }
@@ -182,8 +340,70 @@
 
   #settingsPanel{
     width: var(--settings-width);
+    /* Панель всегда в потоке (display:flex), видимость — через opacity/visibility,
+       чтобы работали плавные выезды слева/справа и появление по центру. */
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(calc(-50% + var(--settings-offset-x)), calc(-50% + var(--settings-offset-y)));
+    transition: opacity .3s ease, transform .3s ease, visibility .3s ease;
+  }
+  #settingsPanel.open{
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* ===== Положение панели настроек: слева / по центру / справа ===== */
+  /* Справа: выезжает справа налево */
+  #settingsPanel.pos-right{
+    transform: translate(calc(-50% + var(--settings-offset-x) + 30px), calc(-50% + var(--settings-offset-y)));
+  }
+  #settingsPanel.pos-right.open{
     transform: translate(calc(-50% + var(--settings-offset-x)), calc(-50% + var(--settings-offset-y)));
   }
+  /* Слева: зеркальное положение, выезжает слева направо */
+  #settingsPanel.pos-left{
+    transform: translate(calc(-50% - var(--settings-offset-x) - 30px), calc(-50% + var(--settings-offset-y)));
+  }
+  #settingsPanel.pos-left.open{
+    transform: translate(calc(-50% - var(--settings-offset-x)), calc(-50% + var(--settings-offset-y)));
+  }
+  /* По центру: модальное окно, фон затемняется */
+  #settingsPanel.pos-center{
+    transform: translate(-50%, -50%) scale(.96);
+  }
+  #settingsPanel.pos-center.open{
+    transform: translate(-50%, -50%) scale(1);
+  }
+  /* Отключает анимацию при переключении галочек положения */
+  #settingsPanel.no-position-transition{ transition: none !important; }
+
+  #settingsBackdrop{
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 49;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease, visibility .3s ease;
+  }
+  #settingsBackdrop.visible{
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .settings-position-row{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    margin-top: var(--settings-block-gap);
+  }
+  .settings-position-title{ white-space: nowrap; font-size: 12.5px; color: var(--text-dim); }
+  .settings-position-options{ display: flex; flex-wrap: wrap; gap: 8px 14px; }
+  .settings-position-option{ display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
 
   #errorsPanel{
     width: var(--err-width);
@@ -254,7 +474,7 @@
   .segmented{
     display:flex;
     flex-direction: column;
-    background: var(--bg);
+    background: var(--ui-bg);
     border-radius: var(--radius-sm);
     padding: 3px;
     gap: 3px;
@@ -278,9 +498,9 @@
     line-height: 1.25;
   }
   .segmented button.active{
-    background: var(--btn-bg);
-    color: var(--text-main);
-    box-shadow: 0 2px 0 var(--btn-bg-bottom);
+    background: var(--sel-bg);
+    color: var(--sel-text);
+    box-shadow: 0 0 0 1px var(--sel-border-soft) inset, 0 2px 0 var(--btn-bg-bottom);
   }
 
   .note-grid{
@@ -290,7 +510,7 @@
   }
   .note-grid button{
     border:none;
-    background: var(--bg);
+    background: var(--ui-bg);
     color: var(--text-dim);
     padding: 7px 4px;
     border-radius: 6px;
@@ -298,8 +518,9 @@
     cursor:pointer;
   }
   .note-grid button.active{
-    background: var(--btn-bg);
-    color: var(--text-main);
+    background: var(--sel-bg);
+    color: var(--sel-text);
+    box-shadow: 0 0 0 1px var(--sel-border-soft) inset;
   }
 
   .midi-row{ display:flex; flex-direction:column; gap:8px; }
@@ -328,7 +549,7 @@
     height: 18px;
     border-radius: 4px;
     border: 1px solid var(--panel-border);
-    background: var(--bg);
+    background: var(--ui-bg);
     cursor: pointer;
     position: relative;
     flex-shrink: 0;
@@ -357,7 +578,7 @@
   .range-field input[type="color"]{ width:30px; height:26px; border:1px solid var(--panel-border); border-radius:6px; background:none; padding:0; flex-shrink:0; }
   .range-field input[type="number"].range-number{
     width: 52px; flex-shrink:0;
-    background: var(--bg); color: var(--text-main);
+    background: var(--ui-bg); color: var(--text-main);
     border: 1px solid var(--panel-border); border-radius:6px;
     padding: 3px 4px; font-size:12px; text-align:right;
     font-family: var(--font-ui);
@@ -423,7 +644,7 @@
     margin-left: auto;
     margin-right: auto;
     background: var(--staff-bg);
-    border: 1px solid var(--panel-border);
+    border: none;
     border-radius: var(--radius);
     padding: var(--staff-box-pad-top, 6px) var(--staff-box-pad-right, 10px) var(--staff-box-pad-bottom, 4px) var(--staff-box-pad-left, 10px);
     position: relative;
@@ -509,7 +730,7 @@
   }
   .octave-btn:hover{ background: var(--btn-hover); }
   .octave-btn:active{ transform: translateY(3px); box-shadow: 0 1px 0 var(--btn-bg-bottom); }
-  .octave-btn.active{ background: var(--btn-hover); box-shadow: 0 var(--btn-shadow-depth) 0 var(--btn-bg-bottom); }
+  .octave-btn.active{ background: var(--sel-bg); color: var(--sel-text); box-shadow: 0 0 0 2px var(--sel-border-soft) inset, 0 var(--btn-shadow-depth) 0 var(--btn-bg-bottom); }
   /* когда клавиатура-пианино выключена, ряд октав переносится ПОД кнопки нот (а не сбоку) */
   .octave-selector.octave-row{
     flex: 1 1 100%;
@@ -592,7 +813,7 @@
   }
   .note-btn:hover{ background: var(--btn-hover); }
   .note-btn:active{ transform: translateY(3px); box-shadow: 0 1px 0 var(--btn-bg-bottom); }
-  .note-btn.selected{ box-shadow: 0 0 0 2px var(--accent) inset, 0 var(--btn-shadow-depth) 0 var(--btn-bg-bottom); }
+  .note-btn.selected{ background: var(--sel-bg); color: var(--sel-text); box-shadow: 0 0 0 2px var(--sel-border) inset, 0 var(--btn-shadow-depth) 0 var(--btn-bg-bottom); }
   .note-btn.correct-flash{
     background: color-mix(in srgb, var(--correct-color) calc(var(--correct-opacity) * 100%), var(--btn-bg));
     color: #14351f;
@@ -626,7 +847,7 @@
   }
   .piano-sharp:hover{ background: var(--btn-hover); }
   .piano-sharp:active{ transform: translateY(3px); box-shadow: 0 1px 0 var(--btn-bg-bottom); }
-  .piano-sharp.selected{ box-shadow: 0 0 0 2px var(--accent) inset, 0 var(--btn-shadow-depth) 0 var(--btn-bg-bottom); }
+  .piano-sharp.selected{ background: var(--sel-bg); color: var(--sel-text); box-shadow: 0 0 0 2px var(--sel-border) inset, 0 var(--btn-shadow-depth) 0 var(--btn-bg-bottom); }
   .piano-sharp.correct-flash{ background: color-mix(in srgb, var(--correct-color) calc(var(--correct-opacity) * 100%), var(--btn-bg)); color:#14351f; }
   .piano-sharp.incorrect-flash{ background: color-mix(in srgb, var(--wrong-color) calc(var(--wrong-opacity) * 100%), var(--btn-bg)); color:#3a1414; }
 
@@ -638,20 +859,22 @@
     flex: 1 1 0;
     min-width: 0;
     border:none;
-    background: var(--bg); color: var(--text-dim);
+    background: var(--ui-bg); color: var(--text-dim);
     border-radius: 8px; padding:12px 8px; font-size:13px; font-weight:600; cursor:pointer;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .level-tabs button.active{
-    background: var(--btn-bg);
-    color: var(--text-main);
+    background: var(--sel-bg);
+    color: var(--sel-text);
+    box-shadow: 0 0 0 1px var(--sel-border-soft) inset;
   }
 
   .note-grid button.selected{
-    background: var(--btn-bg);
-    color: var(--text-main);
+    background: var(--sel-bg);
+    color: var(--sel-text);
+    box-shadow: 0 0 0 1px var(--sel-border-soft) inset;
   }
   .scale-types{ display:grid; grid-template-columns: repeat(2, 1fr); gap:6px; }
   /* Ячейка = сама кнопка + отдельный квадратик со значком (i) СПРАВА от неё.
@@ -660,13 +883,14 @@
   .scale-type-cell{ display:flex; align-items:stretch; gap:5px; min-width:0; }
   .scale-type-cell > button{
     flex: 1 1 auto; min-width:0;
-    border:none; background: var(--bg); color: var(--text-dim);
+    border:none; background: var(--ui-bg); color: var(--text-dim);
     padding: 9px 8px; border-radius: 6px; font-size: 12.5px; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
     text-align:center; line-height:1.2;
   }
   .scale-type-cell > button.selected{
-    background: var(--btn-bg); color: var(--text-main);
+    background: var(--sel-bg); color: var(--sel-text);
+    box-shadow: 0 0 0 1px var(--sel-border-soft) inset;
   }
   /* значок инфы — отдельный круглый значок справа (как в "Сложность") */
   .scale-type-cell > .info-icon{
@@ -700,6 +924,109 @@
   .nr-option.wrong{ border-color: var(--wrong-color); }
   .nr-flow{ width:100%; overflow:hidden; border-radius: var(--radius-sm); background: rgba(0,0,0,.15); }
   .nr-warn{ color: var(--wrong-color); font-size:13px; text-align:center; }
+
+  /* ===== "Ритм → Поток" — оформление кнопок, TAP и статистики по образцу референса ===== */
+  .nr-flow-wrap .nr-row{
+    background: linear-gradient(145deg, #252528, #1d1d1f);
+    padding: 16px 40px;
+    border-radius: 32px;
+    gap: 24px;
+    box-shadow: 8px 8px 24px rgba(0,0,0,.4), -5px -5px 16px rgba(255,255,255,.05);
+    border: 2px solid #333;
+  }
+  .nr-flow-wrap .nrflow-ctrl-btn{
+    width: 72px; height: 72px;
+    box-shadow: inset 3px 3px 8px rgba(255,255,255,.05), inset -5px -5px 8px rgba(0,0,0,.5);
+  }
+  .nr-flow-wrap .nrflow-ctrl-btn svg{ width: 29px; height: 29px; }
+  .nrflow-ctrl-btn{
+    width: 45px; height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: #2a2a2d;
+    color: #ccc;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: inset 2px 2px 5px rgba(255,255,255,.05), inset -3px -3px 5px rgba(0,0,0,.5);
+    transition: all .1s ease;
+    padding: 0;
+  }
+  .nrflow-ctrl-btn svg{ width: 18px; height: 18px; display: block; }
+  .nrflow-ctrl-btn:active{
+    box-shadow: inset 3px 3px 8px rgba(0,0,0,.6), inset -2px -2px 5px rgba(255,255,255,.02);
+    transform: scale(.95);
+  }
+  .nrflow-ctrl-btn:disabled{ opacity:.35; cursor:default; }
+  .nrflow-play{ border:1px solid rgba(255,204,102,.6); box-shadow: 0 0 15px rgba(255,204,102,.6), inset 2px 2px 5px rgba(255,255,255,.1); }
+  .nrflow-play svg{ fill:#ffcc66; }
+  .nrflow-stop svg{ fill:#d1bfae; }
+
+  .nr-flow-wrap .nr-metrics{
+    gap:20px; font-size:13px; text-transform:uppercase; letter-spacing:.5px; color:#8a8a8e;
+  }
+  .nr-flow-wrap .nr-metrics b{ color:#fff; font-weight:600; }
+
+  .nr-flow-wrap .rh-tap-pad{
+    width: 200px; height: 200px; max-width: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle at top, #3a3a3e 0%, #161618 70%);
+    border: 2px solid rgba(255,204,102,.3);
+    box-shadow: 0 0 40px rgba(255,204,102,.15), inset 0 0 20px rgba(0,0,0,.8), inset 0 2px 5px rgba(255,255,255,.1);
+    position: relative;
+    font-size: 30px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(255,255,255,.5);
+  }
+  .nr-flow-wrap .rh-tap-pad::before{
+    content:''; position:absolute; top:-10px; left:-10px; right:-10px; bottom:-10px;
+    border-radius:50%; border:2px solid rgba(255,204,102,.6);
+    box-shadow: 0 0 20px rgba(255,204,102,.6), inset 0 0 10px rgba(255,204,102,.6);
+    opacity:.5; pointer-events:none; transition: opacity .1s ease;
+  }
+  .nr-flow-wrap .rh-tap-pad span{ font-size:11px; text-transform:uppercase; }
+  /* --- Положение элементов "Потока" на нотном стане (правится здесь) --- */
+  :root{
+    /* Надпись "Поздно / Рано ... мс" — над станом. 50% = центр стана по горизонтали */
+    --flow-feed-x: 50%;
+    --flow-feed-y: 170px;
+    /* Ряд кнопок Старт/Стоп — под станом */
+    --flow-ctrl-x: 50%;
+    --flow-ctrl-y: calc(100% + 55px);
+    /* Предупреждение (красный текст) */
+    --flow-warn-x: 50%;
+    --flow-warn-y: -70px;
+  }
+  /* элементы лежат ВНУТРИ .staff-wrap (position:relative) — значит двигаются,
+     масштабируются (--app-scale) и остаются на месте при полноэкранном режиме (F11)
+     вместе со станом, как обычная часть страницы */
+  #nrFlowFloat{ display: contents; }
+  #nrFlowFeed, #nrFlowWarn, #nrFlowCtrl{
+    position: absolute; left: var(--flow-feed-x); top: 0; z-index: 5; margin: 0;
+  }
+  #nrFlowFeed{ left: var(--flow-feed-x); top: var(--flow-feed-y); transform: translate(-50%, -50%); white-space: nowrap; }
+  #nrFlowWarn{ left: var(--flow-warn-x); top: var(--flow-warn-y); transform: translate(-50%, -50%); }
+  #nrFlowCtrl{ left: var(--flow-ctrl-x); top: var(--flow-ctrl-y); transform: translate(-50%, -50%); }
+  /* пока идёт "Поток" — панель Старт/Стоп скрыта и появляется только при наведении на её место */
+  #nrFlowCtrl.nr-flow-auto-hide{ opacity: 0; transition: opacity .15s ease; }
+  #nrFlowCtrl.nr-flow-auto-hide:hover{ opacity: 1; }
+  /* статистика "Потока" — столбиком в настройках */
+  #nrFlowStats{ display:flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+
+  .nr-flow-wrap .rh-tap-pad:hover{
+    background: radial-gradient(circle at top, #3a3a3e 0%, #161618 70%);
+  }
+  /* весь нотный стан — зона тапа в "Потоке" */
+  #staff.nr-flow-taparea{ cursor: pointer; touch-action: manipulation; }
+  .nr-flow-wrap .rh-tap-pad:active,
+  .nr-flow-wrap .rh-tap-pad.hit{
+    background: radial-gradient(circle at top, #3a3a3e 0%, #161618 70%);
+    transform: scale(.96);
+    box-shadow: inset 0 0 30px rgba(0,0,0,.9);
+  }
+  .nr-flow-wrap .rh-tap-pad:active::before,
+  .nr-flow-wrap .rh-tap-pad.hit::before{
+    opacity:1; box-shadow: 0 0 40px rgba(255,204,102,.6), inset 0 0 20px rgba(255,204,102,.6);
+  }
 
   /* ===== подуровень "Ритм": тап-пад и управление ===== */
   .answers.rh-controls{ display:block; }
@@ -736,18 +1063,21 @@
 
 <div class="workspace">
 
+<!-- Затемнение фона — только в режиме "по центру" -->
+<div id="settingsBackdrop"></div>
+
 <div class="panel-card" id="settingsPanel">
 
   <div class="level-tabs" id="levelTabs">
-    <button data-level="notes" class="active">Ноты</button>
-    <button data-level="scales">Лады</button>
-    <button data-level="durations">Ритм</button>
+    <button data-level="notes" class="active" data-i18n="lvl_notes">Ноты</button>
+    <button data-level="scales" data-i18n="lvl_scales">Лады</button>
+    <button data-level="durations" data-i18n="lvl_rhythm">Ритм</button>
   </div>
 
   <div id="noteSettingsBlocks">
 
   <div class="settings-block">
-    <h3 class="h3-with-info">Сложность
+    <h3 class="h3-with-info"><span data-i18n="h_complexity">Сложность</span>
       <span class="info-icon" tabindex="0">i
         <span class="info-tooltip">
           <b>Простые:</b> мажорное трезвучие (maj), минорное трезвучие (min)<br><br>
@@ -758,37 +1088,37 @@
     </h3>
     <div class="segmented" data-group="mode">
       <div class="seg-row">
-        <button data-value="single" class="active">1 нота</button>
-        <button data-value="double">2 ноты</button>
-        <button data-value="simple">Простые аккорды</button>
+        <button data-value="single" class="active" data-i18n="mode_1note">1 нота</button>
+        <button data-value="double" data-i18n="mode_2notes">2 ноты</button>
+        <button data-value="simple" data-i18n="mode_simple">Простые аккорды</button>
       </div>
       <div class="seg-row">
-        <button data-value="medium">Средние аккорды</button>
-        <button data-value="complex">Сложные аккорды</button>
+        <button data-value="medium" data-i18n="mode_medium">Средние аккорды</button>
+        <button data-value="complex" data-i18n="mode_complex">Сложные аккорды</button>
       </div>
     </div>
   </div>
 
   <div class="settings-block">
-    <h3>Ключ</h3>
+    <h3 data-i18n="h_clef">Ключ</h3>
     <div class="segmented" data-group="clef">
       <div class="seg-row">
-        <button data-value="treble">Скрипичный</button>
-        <button data-value="bass">Басовый</button>
+        <button data-value="treble" data-i18n="clef_treble">Скрипичный</button>
+        <button data-value="bass" data-i18n="clef_bass">Басовый</button>
       </div>
       <div class="seg-row">
-        <button data-value="both" class="active">Оба ключа одновременно</button>
+        <button data-value="both" class="active" data-i18n="clef_both">Оба ключа одновременно</button>
       </div>
     </div>
   </div>
 
   <div class="settings-block">
-    <h3>Разрешённые ноты (вероятность каждой = 1 / кол-во выбранных)</h3>
+    <h3 data-i18n="h_allowed_notes">Разрешённые ноты (вероятность каждой = 1 / кол-во выбранных)</h3>
     <div class="note-grid" id="noteGrid"></div>
   </div>
 
   <div class="settings-block">
-    <h3>Добавочные линейки</h3>
+    <h3 data-i18n="h_ledger_lines">Добавочные линейки</h3>
     <div class="segmented" data-group="range">
       <div class="seg-row">
         <button data-value="0" class="active">0</button>
@@ -800,7 +1130,7 @@
   </div>
 
   <div class="settings-block">
-    <h3>Названия нот</h3>
+    <h3 data-i18n="h_note_names">Названия нот</h3>
     <div class="segmented" data-group="naming">
       <div class="seg-row">
         <button data-value="letters" class="active">A B C</button>
@@ -810,64 +1140,71 @@
   </div>
 
   <div class="settings-block">
-    <h3>Обращения аккордов (можно несколько)</h3>
+    <h3 data-i18n="h_inversions">Обращения аккордов (можно несколько)</h3>
     <div class="segmented" data-multigroup="inversions">
       <div class="seg-row">
-        <button data-value="1">1-я</button>
-        <button data-value="2">2-я</button>
-        <button data-value="3">3-я</button>
-        <button data-value="4">4-я</button>
+        <button data-value="1" data-i18n="inv_1">1-я</button>
+        <button data-value="2" data-i18n="inv_2">2-я</button>
+        <button data-value="3" data-i18n="inv_3">3-я</button>
+        <button data-value="4" data-i18n="inv_4">4-я</button>
       </div>
     </div>
   </div>
 
   <div class="settings-block">
-    <h3>Кнопки ответов</h3>
+    <h3 data-i18n="h_answer_buttons">Кнопки ответов</h3>
     <div class="segmented" data-group="hideButtons">
       <div class="seg-row">
-        <button data-value="show" class="active">Показывать</button>
-        <button data-value="hide">Скрыть</button>
+        <button data-value="show" class="active" data-i18n="btn_show">Показывать</button>
+        <button data-value="hide" data-i18n="btn_hide">Скрыть</button>
       </div>
     </div>
   </div>
 
   <div class="settings-block midi-row">
-    <h3>MIDI-клавиатура</h3>
-    <button class="small-btn" id="midiConnectBtn">Подключить MIDI</button>
-    <span class="midi-status" id="midiStatus">не подключено</span>
+    <h3 data-i18n="h_midi">MIDI-клавиатура</h3>
+    <button class="small-btn" id="midiConnectBtn" data-i18n="btn_connect_midi">Подключить MIDI</button>
+    <span class="midi-status" id="midiStatus" data-i18n="midi_not_connected">не подключено</span>
   </div>
 
   <div class="settings-block">
-    <h3>Точность ответа</h3>
+    <h3 data-i18n="h_accuracy">Точность ответа</h3>
     <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
       <input type="checkbox" id="showOctaveToggle">
-      Указывать октаву в ответе (C2–C6)
+      <span data-i18n="chk_show_octave">Указывать октаву в ответе (C2–C6)</span>
     </label>
     <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:8px;">
       <input type="checkbox" id="showPianoToggle">
-      Отображать клавиатуру пианино (C2–C6)
+      <span data-i18n="chk_show_piano">Отображать клавиатуру пианино (C2–C6)</span>
     </label>
   </div>
 
   <div class="settings-block">
-    <h3>Длительности (внешний вид ноты)</h3>
+    <h3 data-i18n="h_durations_appearance">Длительности (внешний вид ноты)</h3>
     <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
       <input type="checkbox" id="showDurationsToggle">
-      Рисовать ноты разными длительностями
+      <span data-i18n="chk_draw_durations">Рисовать ноты разными длительностями</span>
     </label>
   </div>
 
   <div class="settings-block">
-    <h3>Цвета для клавиатуры пианино (C2–C6)</h3>
-    <div class="range-field"><label style="width:110px">Белые клавиши</label><input type="color" id="pianoWhiteColorInput"></div>
-    <div class="range-field"><label style="width:110px">Чёрные клавиши</label><input type="color" id="pianoBlackColorInput"></div>
+    <h3 data-i18n="h_piano_colors">Цвета для клавиатуры пианино (C2–C6)</h3>
+    <div class="range-field"><label style="width:110px" data-i18n="lbl_white_keys">Белые клавиши</label><input type="color" id="pianoWhiteColorInput"></div>
+    <div class="range-field"><label style="width:110px" data-i18n="lbl_black_keys">Чёрные клавиши</label><input type="color" id="pianoBlackColorInput"></div>
   </div>
 
   <div class="settings-block">
-    <h3>Цвета и размер подсказки (R / К, закрепить — T / е)</h3>
+    <h3 data-i18n="h_hint_colors">Цвета и размер подсказки (R / К, закрепить — T / е)</h3>
+    <div class="segmented lang-switch-group" id="langGroupNotes" style="margin-bottom:8px">
+      <div class="seg-row">
+        <button data-value="ru">Русский</button>
+        <button data-value="en">English</button>
+        <button data-value="zh">简体中文</button>
+      </div>
+    </div>
     <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-bottom:8px;">
       <input type="checkbox" id="revealShowNoteIconToggle">
-      Показывать ноту на стане в подсказке
+      <span data-i18n="chk_show_hint_note">Показывать ноту на стане в подсказке</span>
     </label>
     <div class="range-field"><label style="width:50px">Верх</label><input type="range" id="revealTop" min="0" max="100"><input type="number" class="range-number" id="revealTopVal" min="0" max="100"></div>
     <div class="range-field"><label style="width:50px" title="Позиция считается автоматически (между нотой и ключом). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="revealLeft" min="0" max="100"><input type="number" class="range-number" id="revealLeftVal" min="0" max="100"></div>
@@ -875,15 +1212,15 @@
   </div>
 
   <div class="settings-block">
-    <h3>Прозрачность цвета на клавишах</h3>
+    <h3 data-i18n="h_key_opacity">Прозрачность цвета на клавишах</h3>
     <div class="range-field">
-      <label style="width:50px">Верно</label>
+      <label style="width:50px" data-i18n="lbl_correct">Верно</label>
       <input type="color" id="correctColor">
       <input type="range" id="correctOpacity" min="0" max="100">
       <input type="number" class="range-number" id="correctOpacityVal" min="0" max="100">
     </div>
     <div class="range-field">
-      <label style="width:50px">Неверно</label>
+      <label style="width:50px" data-i18n="lbl_wrong">Неверно</label>
       <input type="color" id="wrongColor">
       <input type="range" id="wrongOpacity" min="0" max="100">
       <input type="number" class="range-number" id="wrongOpacityVal" min="0" max="100">
@@ -891,22 +1228,40 @@
   </div>
 
   <div class="settings-block">
-    <h3>Цвета оформления</h3>
-    <div class="range-field"><label style="width:70px">Фон</label><input type="color" id="bgColorInput"></div>
-    <div class="range-field"><label style="width:70px">Ключ</label><input type="color" id="clefColorInput"></div>
-    <div class="range-field"><label style="width:70px">Нотный стан</label><input type="color" id="lineColorInput"></div>
-    <div class="range-field"><label style="width:70px">Фон стана</label><input type="color" id="staffBgColorInput"></div>
+    <h3 data-i18n="h_colors">Цвета оформления</h3>
+    <div class="range-field"><label style="width:70px" data-i18n="lbl_bg">Фон</label><input type="color" id="bgColorInput"></div>
+    <div class="range-field"><label style="width:70px" data-i18n="lbl_clef_color">Ключ</label><input type="color" id="clefColorInput"></div>
+    <div class="range-field"><label style="width:70px" data-i18n="lbl_staff_lines">Нотный стан</label><input type="color" id="lineColorInput"></div>
+    <div class="range-field"><label style="width:70px" data-i18n="lbl_staff_bg">Фон стана</label><input type="color" id="staffBgColorInput"></div>
   </div>
 
   <div class="settings-block">
-    <h3>Положение окна ошибок (Q / Й) — уровень "Ноты"</h3>
+    <h3 data-i18n="h_errpos_notes">Положение окна ошибок (Q / Й) — уровень "Ноты"</h3>
     <div class="range-field">
-      <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее">Влево-вправо</label>
+      <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее" data-i18n="lbl_leftright" data-i18n-title="tt_leftright">Влево-вправо</label>
       <input type="range" id="errorsPosX"><input type="number" class="range-number" id="errorsPosXVal">
     </div>
     <div class="range-field">
-      <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже">Вверх-вниз</label>
+      <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже" data-i18n="lbl_updown" data-i18n-title="tt_updown">Вверх-вниз</label>
       <input type="range" id="errorsPosY"><input type="number" class="range-number" id="errorsPosYVal">
+    </div>
+  </div>
+
+  <div class="settings-position-row">
+    <span class="settings-position-title" data-i18n="lbl_display_settings">Отображать настройки:</span>
+    <div class="settings-position-options">
+      <label class="settings-position-option">
+        <input type="checkbox" class="settings-position-checkbox" data-position="left">
+        <span data-i18n="pos_left">слева</span>
+      </label>
+      <label class="settings-position-option">
+        <input type="checkbox" class="settings-position-checkbox" data-position="center">
+        <span data-i18n="pos_center">по центру</span>
+      </label>
+      <label class="settings-position-option">
+        <input type="checkbox" class="settings-position-checkbox" data-position="right">
+        <span data-i18n="pos_right">справа</span>
+      </label>
     </div>
   </div>
 
@@ -914,53 +1269,90 @@
 
   <div id="scaleSettingsBlocks" style="display:none">
     <div class="settings-block">
-      <h3>Ключ</h3>
+      <h3 data-i18n="h_clef">Ключ</h3>
       <div class="segmented" data-sgroup="clef">
         <div class="seg-row">
-          <button data-value="treble" class="active">Скрипичный</button>
-          <button data-value="bass">Басовый</button>
+          <button data-value="treble" class="active" data-i18n="clef_treble">Скрипичный</button>
+          <button data-value="bass" data-i18n="clef_bass">Басовый</button>
         </div>
         <div class="seg-row">
-          <button data-value="both">Оба ключа одновременно</button>
+          <button data-value="both" data-i18n="clef_both">Оба ключа одновременно</button>
         </div>
       </div>
     </div>
     <div class="settings-block">
-      <h3>Тоники (можно несколько)</h3>
+      <h3 data-i18n="h_tonics">Тоники (можно несколько)</h3>
       <div class="note-grid" id="scaleTonicGrid"></div>
     </div>
     <div class="settings-block">
-      <h3>Тональности / лады (можно несколько)</h3>
+      <h3 data-i18n="h_scales_modes">Тональности / лады (можно несколько)</h3>
       <div class="scale-types" id="scaleTypeGrid"></div>
     </div>
     <div class="settings-block">
-      <h3>Ступень начала</h3>
+      <h3 data-i18n="h_start_degree">Ступень начала</h3>
       <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
         <input type="checkbox" id="scaleRandomStartToggle">
-        Начинать со случайной ступени (не только с тоники)
+        <span data-i18n="chk_random_start">Начинать со случайной ступени (не только с тоники)</span>
       </label>
     </div>
     <div class="settings-block">
-      <h3>Надпись названия лада (D dorian и т.д.) — позиция и размер</h3>
-      <div class="range-field"><label style="width:50px">Верх</label><input type="range" id="scaleLabelTop" min="0" max="200"><input type="number" class="range-number" id="scaleLabelTopVal" min="0" max="200"></div>
-      <div class="range-field"><label style="width:50px">Бок</label><input type="range" id="scaleLabelLeft" min="0" max="100"><input type="number" class="range-number" id="scaleLabelLeftVal" min="0" max="100"></div>
-      <div class="range-field"><label style="width:50px">Размер</label><input type="range" id="scaleLabelSize" min="8" max="40"><input type="number" class="range-number" id="scaleLabelSizeVal" min="8" max="40"></div>
+      <div class="segmented lang-switch-group" id="scaleLangGroup">
+        <div class="seg-row">
+          <button data-value="ru" class="active">Русский</button>
+          <button data-value="en">English</button>
+          <button data-value="zh">简体中文</button>
+        </div>
+      </div>
+      <div class="theme-row">
+        <span data-i18n="lbl_theme">Тема:</span>
+        <select id="themeSelect">
+          <option value="1" data-i18n="theme_dark">Тёмная</option>
+          <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
+          <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
+          <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
+          <option value="5" data-i18n="theme_light">Светлая</option>
+        </select>
+      </div>
     </div>
     <div class="settings-block">
-      <h3>Цвета и размер подсказки в ладах (R / К, закрепить — T / е)</h3>
+      <h3 data-i18n="h_scale_label_pos">Надпись названия лада (D dorian и т.д.) — позиция и размер</h3>
+      <div class="range-field"><label style="width:50px">Верх</label><input type="range" id="scaleLabelTop" min="0" max="200"><input type="number" class="range-number" id="scaleLabelTopVal" min="0" max="200"></div>
+      <div class="range-field"><label style="width:50px" data-i18n="lbl_side">Бок</label><input type="range" id="scaleLabelLeft" min="0" max="100"><input type="number" class="range-number" id="scaleLabelLeftVal" min="0" max="100"></div>
+      <div class="range-field"><label style="width:50px">Размер</label><input type="range" id="scaleLabelSize" min="30" max="50"><input type="number" class="range-number" id="scaleLabelSizeVal" min="30" max="50"></div>
+    </div>
+    <div class="settings-block">
+      <h3 data-i18n="h_hint_colors_scales">Цвета и размер подсказки в ладах (R / К, закрепить — T / е)</h3>
       <div class="range-field"><label style="width:50px">Верх</label><input type="range" id="scaleHintTop" min="0" max="100"><input type="number" class="range-number" id="scaleHintTopVal" min="0" max="100"></div>
       <div class="range-field"><label style="width:50px" title="Позиция считается автоматически (от тоники). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="scaleHintLeft" min="0" max="100"><input type="number" class="range-number" id="scaleHintLeftVal" min="0" max="100"></div>
       <div class="range-field"><label style="width:50px">Размер</label><input type="range" id="scaleHintSize" min="10" max="100"><input type="number" class="range-number" id="scaleHintSizeVal" min="10" max="100"></div>
     </div>
     <div class="settings-block">
-      <h3>Положение окна ошибок (Q / Й) — уровень "Тональности / Лады"</h3>
+      <h3 data-i18n="h_errpos_scales">Положение окна ошибок (Q / Й) — уровень "Тональности / Лады"</h3>
       <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее">Влево-вправо</label>
+        <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее" data-i18n="lbl_leftright" data-i18n-title="tt_leftright">Влево-вправо</label>
         <input type="range" id="errorsScalePosX"><input type="number" class="range-number" id="errorsScalePosXVal">
       </div>
       <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже">Вверх-вниз</label>
+        <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже" data-i18n="lbl_updown" data-i18n-title="tt_updown">Вверх-вниз</label>
         <input type="range" id="errorsScalePosY"><input type="number" class="range-number" id="errorsScalePosYVal">
+      </div>
+    </div>
+
+    <div class="settings-position-row">
+      <span class="settings-position-title" data-i18n="lbl_display_settings">Отображать настройки:</span>
+      <div class="settings-position-options">
+        <label class="settings-position-option">
+          <input type="checkbox" class="settings-position-checkbox" data-position="left">
+          <span data-i18n="pos_left">слева</span>
+        </label>
+        <label class="settings-position-option">
+          <input type="checkbox" class="settings-position-checkbox" data-position="center">
+          <span data-i18n="pos_center">по центру</span>
+        </label>
+        <label class="settings-position-option">
+          <input type="checkbox" class="settings-position-checkbox" data-position="right">
+          <span data-i18n="pos_right">справа</span>
+        </label>
       </div>
     </div>
   </div>
@@ -971,163 +1363,136 @@
   <div class="settings-block">
     <div class="segmented" data-dgroup="subLevel" id="durSubTabs">
       <div class="seg-row">
-        <button data-value="durations">Длительность ноты</button>
-        <button data-value="measure">123</button>
-      </div>
-      <div class="seg-row">
-        <button data-value="ear">На слух</button>
-        <button data-value="echo">Эхо</button>
-        <button data-value="flow">Поток</button>
+        <button data-value="durations" data-i18n="sub_one_note">Одна нота</button>
+        <button data-value="flow" data-i18n="sub_infinite">Бесконечно</button>
       </div>
     </div>
   </div>
 
   <!-- ===== Подуровень "Длительность ноты" (шаг 1): узнать длительность по виду ноты ===== -->
   <div id="durSettingsBlocks" style="display:none">
-    <div class="settings-block tight-gap-block">
-      <h3>Размер такта (можно несколько)</h3>
-      <div class="note-grid" id="durTsGrid"></div>
-    </div>
     <div class="settings-block">
-      <h3>Разрешённые длительности (вероятность каждой = 1 / кол-во выбранных)</h3>
+      <h3 data-i18n="h_allowed_durations">Разрешённые длительности (вероятность каждой = 1 / кол-во выбранных)</h3>
       <div class="note-grid" id="durGrid"></div>
     </div>
     <div class="settings-block">
-      <h3>Положение окна ошибок (Q / Й) — уровень "Ритм"</h3>
+      <h3 data-i18n="h_errpos_rhythm">Положение окна ошибок (Q / Й) — уровень "Ритм"</h3>
       <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее">Влево-вправо</label>
+        <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее" data-i18n="lbl_leftright" data-i18n-title="tt_leftright">Влево-вправо</label>
         <input type="range" id="errorsDurPosX"><input type="number" class="range-number" id="errorsDurPosXVal">
       </div>
       <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже">Вверх-вниз</label>
+        <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже" data-i18n="lbl_updown" data-i18n-title="tt_updown">Вверх-вниз</label>
         <input type="range" id="errorsDurPosY"><input type="number" class="range-number" id="errorsDurPosYVal">
       </div>
     </div>
-  </div>
 
-  <!-- ===== Подуровень "Ритм": простучать показанный ритм ===== -->
-  <div id="measureSettingsBlocks" style="display:none">
-    <div class="settings-block tight-gap-block">
-      <h3>Размер такта (можно несколько)</h3>
-      <div class="note-grid" id="measureTsGrid"></div>
-      <div class="rh-hint">Каждый новый такт размер выбирается случайно из отмеченных.</div>
-    </div>
     <div class="settings-block">
-      <h3>Разрешённые длительности (можно несколько)</h3>
-      <div class="note-grid" id="measureDurGrid"></div>
-    </div>
-    <div class="settings-block">
-      <h3>Сколько нот в такте</h3>
-      <div class="segmented" data-mgroup="noteCount" id="measureCountRow">
+      <div class="segmented lang-switch-group" id="langGroupDur">
         <div class="seg-row">
-          <button data-value="2">2</button>
-          <button data-value="3">3</button>
-          <button data-value="4">4</button>
-          <button data-value="5">5</button>
-        </div>
-        <div class="seg-row">
-          <button data-value="6">6</button>
-          <button data-value="7">7</button>
-          <button data-value="8">8</button>
+          <button data-value="ru">Русский</button>
+          <button data-value="en">English</button>
+          <button data-value="zh">简体中文</button>
         </div>
       </div>
-      <div class="range-field" id="measureNoComboHint" style="display:none; color: var(--wrong-color)"></div>
     </div>
-    <div class="settings-block">
-      <h3>Метроном</h3>
-      <div class="range-field">
-        <label style="width:96px" title="Скорость метронома в ударах в минуту">Темп (BPM)</label>
-        <input type="range" id="rhBpm"><input type="number" class="range-number" id="rhBpmVal">
-      </div>
-      <div class="range-field">
-        <label style="width:96px" title="Громкость кликов метронома">Громкость</label>
-        <input type="range" id="rhVolume"><input type="number" class="range-number" id="rhVolumeVal">
-      </div>
-      <label class="rh-check"><input type="checkbox" id="rhMetroPlay"> Метроном во время простукивания</label>
-      <label class="rh-check"><input type="checkbox" id="rhHidePlayhead"> Убрать полоску-бегунок</label>
-    </div>
-    <div class="settings-block">
-      <h3>Калибровка звуковой задержки</h3>
-      <div class="rh-hint">
-        Звук из динамиков/наушников доходит с небольшой задержкой, и на разных
-        устройствах она разная. Калибровка учитывает её при оценке тапов.
-      </div>
-      <div class="range-field">
-        <label style="width:96px">Смещение</label>
-        <span class="rh-calib-val" id="rhCalibrateVal">0 мс</span>
-      </div>
-      <button class="small-btn" id="rhCalibrateBtn">Откалибровать</button>
-      <div class="rh-hint" id="rhCalibrateStatus"></div>
-    </div>
-    <div class="settings-block">
-      <h3>Положение окна ошибок (Q / Й) — уровень "Ритм"</h3>
-      <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее">Влево-вправо</label>
-        <input type="range" id="errorsMeasurePosX"><input type="number" class="range-number" id="errorsMeasurePosXVal">
-      </div>
-      <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже">Вверх-вниз</label>
-        <input type="range" id="errorsMeasurePosY"><input type="number" class="range-number" id="errorsMeasurePosYVal">
+
+    <div class="settings-position-row">
+      <span class="settings-position-title" data-i18n="lbl_display_settings">Отображать настройки:</span>
+      <div class="settings-position-options">
+        <label class="settings-position-option">
+          <input type="checkbox" class="settings-position-checkbox" data-position="left">
+          <span data-i18n="pos_left">слева</span>
+        </label>
+        <label class="settings-position-option">
+          <input type="checkbox" class="settings-position-checkbox" data-position="center">
+          <span data-i18n="pos_center">по центру</span>
+        </label>
+        <label class="settings-position-option">
+          <input type="checkbox" class="settings-position-checkbox" data-position="right">
+          <span data-i18n="pos_right">справа</span>
+        </label>
       </div>
     </div>
   </div>
 
-  <!-- ===== Новые подуровни ритма: На слух / Эхо / Поток ===== -->
+  <!-- ===== Подуровень "Поток" ===== -->
   <div id="nrSettingsBlocks" style="display:none">
     <div class="settings-block tight-gap-block">
-      <h3>Размер такта (можно несколько)</h3>
+      <h3 data-i18n="h_time_signature">Размер такта (можно несколько)</h3>
       <div class="note-grid" id="nrTsGrid"></div>
-      <div class="rh-hint">В упражнении «На слух» размер показан заранее — по одному такту его на слух не определить.</div>
     </div>
     <div class="settings-block">
-      <h3>Что может встретиться</h3>
+      <h3 data-i18n="h_can_occur">Что может встретиться</h3>
       <div class="note-grid" id="nrTagGrid"></div>
     </div>
-    <div class="settings-block" id="nrBarsBlock">
-      <h3>Тактов в задании</h3>
-      <div class="segmented" id="nrBarsRow">
-        <div class="seg-row">
-          <button data-value="1">1</button>
-          <button data-value="2">2</button>
-          <button data-value="4">4</button>
-        </div>
-      </div>
-    </div>
-    <div class="settings-block" id="nrOptBlock">
-      <h3>Вариантов ответа</h3>
-      <div class="segmented" id="nrOptRow">
-        <div class="seg-row">
-          <button data-value="2">2</button>
-          <button data-value="3">3</button>
-          <button data-value="4">4</button>
-        </div>
-      </div>
-    </div>
-    <div class="settings-block" id="nrFlowBlock" style="display:none">
-      <h3>Скорость прокрутки</h3>
+    <div class="settings-block" id="nrFlowBlock">
+      <h3 class="h3-with-info"><span data-i18n="h_scroll_speed">Скорость прокрутки</span>
+        <span class="info-icon" tabindex="0">i
+          <span class="info-tooltip" data-i18n="tt_scroll_speed">
+            Меняет только картинку на экране, а не сам ритм. Чем больше значение — тем быстрее ноты едут по экрану и тем плотнее они расположены друг к другу. Чем меньше — тем медленнее и просторнее. Момент, когда нужно сыграть ноту, при этом не меняется.
+          </span>
+        </span>
+      </h3>
       <div class="range-field">
-        <label style="width:96px" title="Сколько пикселей занимает одна доля — растягивает картинку, не меняя темп">Пикс./долю</label>
+        <label style="width:96px" data-i18n="lbl_px_per_beat">Пикс./долю</label>
         <input type="range" id="nrFlowSpeed"><input type="number" class="range-number" id="nrFlowSpeedVal">
       </div>
     </div>
     <div class="settings-block">
-      <h3>Звук</h3>
+      <h3 data-i18n="h_sound">Звук</h3>
       <div class="range-field">
-        <label style="width:96px" title="Скорость метронома в ударах в минуту">Темп (BPM)</label>
+        <label style="width:96px" title="Скорость метронома в ударах в минуту" data-i18n="lbl_tempo" data-i18n-title="tt_tempo">Темп (BPM)</label>
         <input type="range" id="nrBpm"><input type="number" class="range-number" id="nrBpmVal">
       </div>
       <div class="range-field">
-        <label style="width:96px" title="Громкость метронома и нот">Громкость</label>
-        <input type="range" id="nrVolume"><input type="number" class="range-number" id="nrVolumeVal">
-      </div>
-      <label class="rh-check"><input type="checkbox" id="nrSustained"> Тянущийся звук (слышна длина ноты)</label>
-      <label class="rh-check"><input type="checkbox" id="nrSinewave"> Sinewave (синтезированный звук вместо сэмпла)</label>
-      <label class="rh-check"><input type="checkbox" id="nrMetroPlay"> Метроном во время ритма</label>
-      <div class="range-field">
-        <label style="width:96px" title="Громкость звука метронома">Громкость метронома</label>
+        <label style="width:96px" title="Громкость звука метронома" data-i18n="lbl_metro_volume" data-i18n-title="tt_metro_volume">Громкость метронома</label>
         <input type="range" id="nrMetroVolume"><input type="number" class="range-number" id="nrMetroVolumeVal">
       </div>
-      <div class="rh-hint">Без тянущегося звука длина ноты не слышна: целая и четверть звучат одинаково.</div>
+      <label class="rh-check"><input type="checkbox" id="nrMetroPlay"> <span data-i18n="chk_metro_during">Метроном во время ритма</span></label>
+      <div class="rh-hint" style="margin-top:10px" data-i18n="lbl_metro_division">Дробление метронома</div>
+      <div class="note-grid" id="nrMetroDivGrid"></div>
+    </div>
+    <div class="settings-block">
+      <h3 data-i18n="h_calibration">Калибровка звуковой задержки</h3>
+      <div class="rh-hint" data-i18n="tt_calibration_hint">
+        Звук из динамиков/наушников доходит с небольшой задержкой, и на разных
+        устройствах она разная. Калибровка учитывает её при оценке тапов.
+      </div>
+      <div class="range-field">
+        <label style="width:96px" data-i18n="lbl_offset">Смещение</label>
+        <span class="rh-calib-val" id="rhCalibrateVal">0 мс</span>
+      </div>
+      <button class="small-btn" id="rhCalibrateBtn" data-i18n="btn_calibrate">Откалибровать</button>
+      <div class="rh-hint" id="rhCalibrateStatus"></div>
+    </div>
+
+    <div class="settings-block">
+      <div class="segmented lang-switch-group" id="langGroupFlow">
+        <div class="seg-row">
+          <button data-value="ru">Русский</button>
+          <button data-value="en">English</button>
+          <button data-value="zh">简体中文</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-position-row">
+      <span class="settings-position-title" data-i18n="lbl_display_settings">Отображать настройки:</span>
+      <div class="settings-position-options">
+        <label class="settings-position-option">
+          <input type="checkbox" class="settings-position-checkbox" data-position="left">
+          <span data-i18n="pos_left">слева</span>
+        </label>
+        <label class="settings-position-option">
+          <input type="checkbox" class="settings-position-checkbox" data-position="center">
+          <span data-i18n="pos_center">по центру</span>
+        </label>
+        <label class="settings-position-option">
+          <input type="checkbox" class="settings-position-checkbox" data-position="right">
+          <span data-i18n="pos_right">справа</span>
+        </label>
+      </div>
     </div>
   </div>
 
@@ -1143,52 +1508,45 @@
       <div class="stats-line" id="statsLine"></div>
       <div class="error-history">
         <div class="error-table">
-          <div class="label">Скрипичный ключ</div>
+          <div class="label" data-i18n="lbl_treble_clef_label">Скрипичный ключ</div>
           <div class="error-grid" id="errorsTreble"></div>
         </div>
         <div class="error-table">
-          <div class="label">Басовый ключ</div>
+          <div class="label" data-i18n="lbl_bass_clef_label">Басовый ключ</div>
           <div class="error-grid" id="errorsBass"></div>
         </div>
       </div>
-      <button class="small-btn" id="resetErrorsBtn">Очистить историю</button>
+      <button class="small-btn" id="resetErrorsBtn" data-i18n="btn_clear_history">Очистить историю</button>
     </div>
 
     <div id="scaleErrorsBlock" style="display:none">
       <div class="stats-line" id="scaleStatsLine"></div>
       <div class="error-history">
         <div class="error-table">
-          <div class="label">По ладам / ступеням</div>
+          <div class="label" data-i18n="lbl_by_scales_degrees">По ладам / ступеням</div>
           <div class="error-grid" id="scaleErrorsGrid"></div>
         </div>
       </div>
-      <button class="small-btn" id="resetScaleErrorsBtn">Очистить историю</button>
+      <button class="small-btn" id="resetScaleErrorsBtn" data-i18n="btn_clear_history">Очистить историю</button>
     </div>
 
     <div id="durErrorsBlock" style="display:none">
       <div class="stats-line" id="durStatsLine"></div>
       <div class="error-history">
         <div class="error-table">
-          <div class="label">По длительностям</div>
+          <div class="label" data-i18n="lbl_by_durations">По длительностям</div>
           <div class="error-grid" id="durErrorsGrid"></div>
         </div>
       </div>
-      <button class="small-btn" id="resetDurErrorsBtn">Очистить историю</button>
+      <button class="small-btn" id="resetDurErrorsBtn" data-i18n="btn_clear_history">Очистить историю</button>
     </div>
 
-    <div id="measureErrorsBlock" style="display:none">
-      <div class="stats-line" id="measureStatsLine"></div>
-      <div class="error-history">
-        <div class="error-table">
-          <div class="label">По длительностям (промахи)</div>
-          <div class="error-grid" id="measureErrorsGrid"></div>
-        </div>
-      </div>
-      <button class="small-btn" id="resetMeasureErrorsBtn">Очистить историю</button>
+    <div id="flowErrorsBlock" style="display:none">
+      <div class="nr-metrics" id="nrFlowStats"></div>
     </div>
 
     <div class="stepper-field">
-      <label style="width:90px">Размер шрифта</label>
+      <label style="width:90px" data-i18n="lbl_font_size">Размер шрифта</label>
       <button class="stepper-btn" id="errorFontMinus">&minus;</button>
       <span class="stepper-value" id="errorFontSizeVal"></span>
       <button class="stepper-btn" id="errorFontPlus">&plus;</button>
@@ -1267,7 +1625,7 @@
 
   let settings = {
     mode: "single",
-    clef: "both",
+    clef: "treble",
     range: "0",
     naming: "letters",
     hideButtons: "show",
@@ -1280,10 +1638,10 @@
     correctOpacity: 50,
     wrongColor: "#ff6b6b",
     wrongOpacity: 50,
-    bgColor: "#27272b",
-    clefColor: "#e9e5d8",
-    lineColor: "#e9e5d8",
-    staffBgColor: "#1a1a1c",
+    bgColor: "#161618",
+    clefColor: "#d1bfae",
+    lineColor: "#d1bfae",
+    staffBgColor: "#1c1c1e",
     pianoWhiteColor: "#68665e",
     pianoBlackColor: "#1a1a1c",
     errorFontSize: 13,
@@ -1294,15 +1652,23 @@
     // ШАГ 0: рисовать ноты разными длительностями (только внешний вид, ответ прежний)
     showDurations: false,
     // положение окна истории ошибок (px от центра экрана) — своё для каждого уровня
-    errorsPosNotesX: -600,
+    errorsPosNotesX: -753,
     errorsPosNotesY: 0,
-    errorsPosScalesX: -600,
+    errorsPosScalesX: -753,
     errorsPosScalesY: 0,
-    errorsPosDurX: -600,
-    errorsPosDurY: 0,
-    errorsPosMeasureX: -600,
-    errorsPosMeasureY: 0
+    errorsPosDurX: -753,
+    errorsPosDurY: 0
   };
+  // отдельный флажок "уже запускалось" — ставится сразу при первом запуске,
+  // не зависит от того, менял ли пользователь настройки
+  const LS_LAUNCHED = "noteTrainer_launched_v1";
+  let isFirstLaunch = false;
+  try{
+    if(!localStorage.getItem(LS_LAUNCHED)){
+      isFirstLaunch = true;
+      localStorage.setItem(LS_LAUNCHED, "1");
+    }
+  }catch(e){}
   try{
     const saved = JSON.parse(localStorage.getItem(LS_SETTINGS) || "null");
     if(saved) settings = Object.assign(settings, saved);
@@ -1311,16 +1677,20 @@
     if(!settings.allowedInversions || typeof settings.allowedInversions !== "object"){
       settings.allowedInversions = { 1:false, 2:false, 3:false, 4:false };
     }
-    if(!settings.bgColor) settings.bgColor = "#27272b";
-    if(!settings.clefColor) settings.clefColor = "#e9e5d8";
-    if(!settings.lineColor) settings.lineColor = "#e9e5d8";
-    if(!settings.staffBgColor) settings.staffBgColor = "#1a1a1c";
+    if(!settings.bgColor) settings.bgColor = "#161618";
+    if(!settings.clefColor) settings.clefColor = "#d1bfae";
+    if(!settings.lineColor) settings.lineColor = "#d1bfae";
+    if(!settings.staffBgColor) settings.staffBgColor = "#1c1c1e";
     if(!settings.pianoWhiteColor) settings.pianoWhiteColor = "#68665e";
     if(!settings.pianoBlackColor) settings.pianoBlackColor = "#1a1a1c";
     if(!settings.errorFontSize) settings.errorFontSize = 13;
     settings.errorFontSize = Math.min(50, Math.max(10, Math.round(settings.errorFontSize)));
     if(!settings.scale) settings.scale = 100;
-    if(!["notes","scales","durations","measure","ear","echo","flow"].includes(settings.activeLevel)) settings.activeLevel = "notes";
+    if(!["notes","scales","durations","flow"].includes(settings.activeLevel)) settings.activeLevel = "scales";
+    if(!saved || typeof saved.uiLang !== "string"){
+      const bl = String(navigator.language || "").toLowerCase();
+      settings.uiLang = bl.indexOf("ru") === 0 ? "ru" : (bl.indexOf("zh") === 0 ? "zh" : "en");
+    }
     delete settings.staffHeight;
     // размер и положение окна ошибок больше не хранятся в настройках — управляются
     // напрямую в коде через CSS-переменные (см. --err-width/--err-height/--errors-offset-* в :root)
@@ -1329,8 +1699,8 @@
     delete settings.errTop;
     delete settings.errLeft;
     // положение окна ошибок: если в localStorage мусор/старый формат — берём значение по умолчанию
-    [["errorsPosNotesX",-600],["errorsPosNotesY",0],["errorsPosScalesX",-600],["errorsPosScalesY",0],
-     ["errorsPosDurX",-600],["errorsPosDurY",0],["errorsPosMeasureX",-600],["errorsPosMeasureY",0]]
+    [["errorsPosNotesX",-753],["errorsPosNotesY",0],["errorsPosScalesX",-753],["errorsPosScalesY",0],
+     ["errorsPosDurX",-753],["errorsPosDurY",0]]
       .forEach(([key, def]) => {
         const n = Math.round(Number(settings[key]));
         settings[key] = Number.isFinite(n) ? n : def;
@@ -1865,20 +2235,37 @@
   el.wrongOpacityVal.addEventListener("input", () => { const v = clampNum(el.wrongOpacityVal.value, 0, 100, settings.wrongOpacity); settings.wrongOpacity = v; applyColorVars(); saveSettings(); });
 
   // ---- цвета оформления (фон / ключ / линии) ----
+  // Инверсия цвета (#rrggbb -> противоположный). Нужна для светлой темы №5.
+  function invertHex(hex){
+    var m = /^#?([0-9a-f]{6})$/i.exec(String(hex || "").trim());
+    if(!m) return hex;
+    var n = parseInt(m[1], 16);
+    var inv = 0xFFFFFF ^ n;
+    return "#" + ("000000" + inv.toString(16)).slice(-6);
+  }
+  function isLightTheme(){ return document.body.getAttribute("data-theme") === "5"; }
+
   function applyThemeVars(){
-    document.documentElement.style.setProperty("--bg", settings.bgColor);
-    document.documentElement.style.setProperty("--clef-color", settings.clefColor);
-    document.documentElement.style.setProperty("--line-color", settings.lineColor);
-    document.documentElement.style.setProperty("--staff-bg", settings.staffBgColor);
+    var light = isLightTheme();
+    // Цвет ключа всегда равен цвету нотных линеек.
+    var line = settings.lineColor;
+    var bg = settings.bgColor;
+    var staffBg = settings.staffBgColor;
+    if(light){ line = invertHex(line); bg = invertHex(bg); staffBg = invertHex(staffBg); }
+    document.documentElement.style.setProperty("--bg", bg);
+    document.documentElement.style.setProperty("--clef-color", line);
+    document.documentElement.style.setProperty("--line-color", line);
+    document.documentElement.style.setProperty("--staff-bg", staffBg);
     el.bgColorInput.value = settings.bgColor;
-    el.clefColorInput.value = settings.clefColor;
+    el.clefColorInput.value = settings.lineColor;
     el.lineColorInput.value = settings.lineColor;
     el.staffBgColorInput.value = settings.staffBgColor;
   }
+  window.ntApplyThemeVars = applyThemeVars;
   applyThemeVars();
   el.bgColorInput.addEventListener("input", () => { settings.bgColor = el.bgColorInput.value; applyThemeVars(); saveSettings(); });
-  el.clefColorInput.addEventListener("input", () => { settings.clefColor = el.clefColorInput.value; applyThemeVars(); saveSettings(); });
-  el.lineColorInput.addEventListener("input", () => { settings.lineColor = el.lineColorInput.value; applyThemeVars(); saveSettings(); });
+  el.clefColorInput.addEventListener("input", () => { settings.lineColor = el.clefColorInput.value; settings.clefColor = el.clefColorInput.value; applyThemeVars(); saveSettings(); });
+  el.lineColorInput.addEventListener("input", () => { settings.lineColor = el.lineColorInput.value; settings.clefColor = el.lineColorInput.value; applyThemeVars(); saveSettings(); });
   el.staffBgColorInput.addEventListener("input", () => { settings.staffBgColor = el.staffBgColorInput.value; applyThemeVars(); saveSettings(); });
 
   // ---- цвета клавиш большой клавиатуры пианино (C2–C6) ----
@@ -1931,6 +2318,154 @@
 
   // Общий помощник «слайдер + числовое поле рядом» (то же поведение, что у остальных
   // настроек: тянуть ползунок или вписать число руками — значения синхронизируются).
+
+  // ---- перевод интерфейса (ru/en/zh) ----------------------------------------------
+  // Единый язык на всё приложение (settings.uiLang). Кнопки-переключатели продублированы
+  // в 4 местах (Ноты, Лады, Ритм → Одна нота, Ритм → Бесконечно) — все синхронизированы.
+  const I18N = {
+    lvl_notes: { ru: "Ноты", en: "Notes", zh: "音符" },
+    lvl_scales: { ru: "Лады", en: "Scales", zh: "调式" },
+    lvl_rhythm: { ru: "Ритм", en: "Rhythm", zh: "节奏" },
+    h_complexity: { ru: "Сложность", en: "Difficulty", zh: "难度" },
+    mode_1note: { ru: "1 нота", en: "1 note", zh: "1个音" },
+    mode_2notes: { ru: "2 ноты", en: "2 notes", zh: "2个音" },
+    mode_simple: { ru: "Простые аккорды", en: "Simple chords", zh: "简单和弦" },
+    mode_medium: { ru: "Средние аккорды", en: "Medium chords", zh: "中等和弦" },
+    mode_complex: { ru: "Сложные аккорды", en: "Complex chords", zh: "复杂和弦" },
+    h_clef: { ru: "Ключ", en: "Clef", zh: "谱号" },
+    clef_treble: { ru: "Скрипичный", en: "Treble", zh: "高音谱号" },
+    clef_bass: { ru: "Басовый", en: "Bass", zh: "低音谱号" },
+    clef_both: { ru: "Оба ключа одновременно", en: "Both clefs at once", zh: "两个谱号同时" },
+    h_allowed_notes: { ru: "Разрешённые ноты (вероятность каждой = 1 / кол-во выбранных)", en: "Allowed notes (each has probability = 1 / number selected)", zh: "允许的音符（每个概率 = 1 / 已选数量）" },
+    h_ledger_lines: { ru: "Добавочные линейки", en: "Ledger lines", zh: "加线" },
+    h_note_names: { ru: "Названия нот", en: "Note names", zh: "音名" },
+    h_inversions: { ru: "Обращения аккордов (можно несколько)", en: "Chord inversions (multiple allowed)", zh: "和弦转位（可多选）" },
+    inv_1: { ru: "1-я", en: "1st", zh: "第1转位" },
+    inv_2: { ru: "2-я", en: "2nd", zh: "第2转位" },
+    inv_3: { ru: "3-я", en: "3rd", zh: "第3转位" },
+    inv_4: { ru: "4-я", en: "4th", zh: "第4转位" },
+    h_answer_buttons: { ru: "Кнопки ответов", en: "Answer buttons", zh: "答案按钮" },
+    btn_show: { ru: "Показывать", en: "Show", zh: "显示" },
+    btn_hide: { ru: "Скрыть", en: "Hide", zh: "隐藏" },
+    h_midi: { ru: "MIDI-клавиатура", en: "MIDI keyboard", zh: "MIDI键盘" },
+    btn_connect_midi: { ru: "Подключить MIDI", en: "Connect MIDI", zh: "连接MIDI" },
+    midi_not_connected: { ru: "не подключено", en: "not connected", zh: "未连接" },
+    midi_not_supported: { ru: "Web MIDI не поддерживается браузером", en: "Web MIDI is not supported by this browser", zh: "浏览器不支持Web MIDI" },
+    midi_no_devices: { ru: "устройства не найдены", en: "no devices found", zh: "未找到设备" },
+    midi_connected_prefix: { ru: "подключено: ", en: "connected: ", zh: "已连接：" },
+    midi_connect_failed: { ru: "не удалось подключиться", en: "failed to connect", zh: "连接失败" },
+    h_accuracy: { ru: "Точность ответа", en: "Answer accuracy", zh: "答案精确度" },
+    chk_show_octave: { ru: "Указывать октаву в ответе (C2–C6)", en: "Require octave in the answer (C2–C6)", zh: "答案中指定八度（C2–C6）" },
+    chk_show_piano: { ru: "Отображать клавиатуру пианино (C2–C6)", en: "Show piano keyboard (C2–C6)", zh: "显示钢琴键盘（C2–C6）" },
+    h_durations_appearance: { ru: "Длительности (внешний вид ноты)", en: "Durations (note appearance)", zh: "时值（音符外观）" },
+    chk_draw_durations: { ru: "Рисовать ноты разными длительностями", en: "Draw notes with different durations", zh: "以不同时值绘制音符" },
+    h_piano_colors: { ru: "Цвета для клавиатуры пианино (C2–C6)", en: "Piano keyboard colors (C2–C6)", zh: "钢琴键盘颜色（C2–C6）" },
+    lbl_white_keys: { ru: "Белые клавиши", en: "White keys", zh: "白键" },
+    lbl_black_keys: { ru: "Чёрные клавиши", en: "Black keys", zh: "黑键" },
+    h_hint_colors: { ru: "Цвета и размер подсказки (R / К, закрепить — T / е)", en: "Hint colors and size (R, pin — T)", zh: "提示颜色和大小（R键，固定—T键）" },
+    chk_show_hint_note: { ru: "Показывать ноту на стане в подсказке", en: "Show the note on the staff in the hint", zh: "在提示中于五线谱上显示音符" },
+    lbl_top: { ru: "Верх", en: "Top", zh: "上" },
+    lbl_side: { ru: "Бок", en: "Side", zh: "侧" },
+    lbl_left_offset: { ru: "Лево±", en: "Left±", zh: "左±" },
+    tt_left_offset_note: { ru: "Позиция считается автоматически (между нотой и ключом). 50 = без поправки, меньше — левее, больше — правее", en: "Position is calculated automatically (between the note and the clef). 50 = no adjustment, less = further left, more = further right", zh: "位置自动计算（在音符和谱号之间）。50 = 无修正，更小 = 更靠左，更大 = 更靠右" },
+    tt_left_offset_scale: { ru: "Позиция считается автоматически (от тоники). 50 = без поправки, меньше — левее, больше — правее", en: "Position is calculated automatically (from the tonic). 50 = no adjustment, less = further left, more = further right", zh: "位置自动计算（从主音起）。50 = 无修正，更小 = 更靠左，更大 = 更靠右" },
+    lbl_size: { ru: "Размер", en: "Size", zh: "大小" },
+    h_key_opacity: { ru: "Прозрачность цвета на клавишах", en: "Key color opacity", zh: "琴键颜色透明度" },
+    lbl_correct: { ru: "Верно", en: "Correct", zh: "正确" },
+    lbl_wrong: { ru: "Неверно", en: "Wrong", zh: "错误" },
+    h_colors: { ru: "Цвета оформления", en: "Design colors", zh: "界面颜色" },
+    lbl_bg: { ru: "Фон", en: "Background", zh: "背景" },
+    lbl_clef_color: { ru: "Ключ", en: "Clef", zh: "谱号" },
+    lbl_staff_lines: { ru: "Нотный стан", en: "Staff lines", zh: "五线谱线" },
+    lbl_staff_bg: { ru: "Фон стана", en: "Staff background", zh: "五线谱背景" },
+    h_errpos_notes: { ru: 'Положение окна ошибок (Q / Й) — уровень "Ноты"', en: 'Error window position (Q) — "Notes" level', zh: '错误窗口位置（Q键）— "音符"关卡' },
+    h_errpos_scales: { ru: 'Положение окна ошибок (Q / Й) — уровень "Тональности / Лады"', en: 'Error window position (Q) — "Keys / Scales" level', zh: '错误窗口位置（Q键）— "调式"关卡' },
+    h_errpos_rhythm: { ru: 'Положение окна ошибок (Q / Й) — уровень "Ритм"', en: 'Error window position (Q) — "Rhythm" level', zh: '错误窗口位置（Q键）— "节奏"关卡' },
+    lbl_leftright: { ru: "Влево-вправо", en: "Left-right", zh: "左右" },
+    tt_leftright: { ru: "Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее", en: "Horizontal offset of the error window from the screen center: minus — left, plus — right", zh: "错误窗口相对屏幕中心的水平偏移：负值向左，正值向右" },
+    lbl_updown: { ru: "Вверх-вниз", en: "Up-down", zh: "上下" },
+    tt_updown: { ru: "Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже", en: "Vertical offset of the error window from the screen center: minus — up, plus — down", zh: "错误窗口相对屏幕中心的垂直偏移：负值向上，正值向下" },
+    lbl_display_settings: { ru: "Отображать настройки:", en: "Show settings panel:", zh: "显示设置面板：" },
+    pos_left: { ru: "слева", en: "on the left", zh: "在左侧" },
+    pos_center: { ru: "по центру", en: "centered", zh: "居中" },
+    pos_right: { ru: "справа", en: "on the right", zh: "在右侧" },
+    h_tonics: { ru: "Тоники (можно несколько)", en: "Tonics (multiple allowed)", zh: "主音（可多选）" },
+    h_scales_modes: { ru: "Тональности / лады (можно несколько)", en: "Keys / scales (multiple allowed)", zh: "调性/调式（可多选）" },
+    h_start_degree: { ru: "Ступень начала", en: "Starting degree", zh: "起始音级" },
+    chk_random_start: { ru: "Начинать со случайной ступени (не только с тоники)", en: "Start on a random degree (not only the tonic)", zh: "从随机音级开始（不仅是主音）" },
+    lbl_theme: { ru: "Тема:", en: "Theme:", zh: "主题：" },
+    theme_dark: { ru: "Тёмная", en: "Dark", zh: "深色" },
+    theme_grayyellow: { ru: "Серо-жёлтая", en: "Gray-yellow", zh: "灰黄色" },
+    theme_darkblue: { ru: "Тёмно-синяя", en: "Dark blue", zh: "深蓝色" },
+    theme_blackorange: { ru: "Чёрно-оранжевая", en: "Black-orange", zh: "黑橙色" },
+    theme_light: { ru: "Светлая", en: "Light", zh: "浅色" },
+    h_scale_label_pos: { ru: "Надпись названия лада (D dorian и т.д.) — позиция и размер", en: "Scale name label (D dorian, etc.) — position and size", zh: "调式名称标签（如D dorian）— 位置和大小" },
+    h_hint_colors_scales: { ru: "Цвета и размер подсказки в ладах (R / К, закрепить — T / е)", en: "Hint colors and size in scales (R, pin — T)", zh: "调式提示颜色和大小（R键，固定—T键）" },
+    sub_one_note: { ru: "Одна нота", en: "One note", zh: "单个音符" },
+    sub_infinite: { ru: "Бесконечно", en: "Infinite", zh: "无限模式" },
+    h_time_signature: { ru: "Размер такта (можно несколько)", en: "Time signature (multiple allowed)", zh: "拍号（可多选）" },
+    h_allowed_durations: { ru: "Разрешённые длительности (вероятность каждой = 1 / кол-во выбранных)", en: "Allowed durations (each has probability = 1 / number selected)", zh: "允许的时值（每个概率 = 1 / 已选数量）" },
+    h_can_occur: { ru: "Что может встретиться", en: "What can appear", zh: "可能出现的内容" },
+    h_scroll_speed: { ru: "Скорость прокрутки", en: "Scroll speed", zh: "滚动速度" },
+    tt_scroll_speed: { ru: "Меняет только картинку на экране, а не сам ритм. Чем больше значение — тем быстрее ноты едут по экрану и тем плотнее они расположены друг к другу. Чем меньше — тем медленнее и просторнее. Момент, когда нужно сыграть ноту, при этом не меняется.", en: "Changes only the on-screen picture, not the rhythm itself. The higher the value, the faster the notes move across the screen and the closer together they are. The lower it is, the slower and more spread out. The moment you need to play the note stays the same.", zh: "仅改变屏幕上的画面，不改变节奏本身。数值越大，音符在屏幕上移动越快、排列越密；数值越小，则越慢越疏。演奏音符的时刻本身不会改变。" },
+    lbl_px_per_beat: { ru: "Пикс./долю", en: "Px/beat", zh: "像素/拍" },
+    h_sound: { ru: "Звук", en: "Sound", zh: "声音" },
+    lbl_tempo: { ru: "Темп (BPM)", en: "Tempo (BPM)", zh: "速度（BPM）" },
+    tt_tempo: { ru: "Скорость метронома в ударах в минуту", en: "Metronome speed in beats per minute", zh: "节拍器速度（每分钟拍数）" },
+    lbl_metro_volume: { ru: "Громкость метронома", en: "Metronome volume", zh: "节拍器音量" },
+    tt_metro_volume: { ru: "Громкость звука метронома", en: "Metronome click volume", zh: "节拍器音量大小" },
+    chk_metro_during: { ru: "Метроном во время ритма", en: "Metronome during rhythm", zh: "节奏时播放节拍器" },
+    lbl_metro_division: { ru: "Дробление метронома", en: "Metronome subdivision", zh: "节拍器细分" },
+    h_calibration: { ru: "Калибровка звуковой задержки", en: "Audio latency calibration", zh: "音频延迟校准" },
+    tt_calibration_hint: { ru: "Звук из динамиков/наушников доходит с небольшой задержкой, и на разных устройствах она разная. Калибровка учитывает её при оценке тапов.", en: "Sound from speakers/headphones arrives with a small delay that varies between devices. Calibration accounts for it when scoring taps.", zh: "扬声器/耳机的声音会有轻微延迟，且不同设备各不相同。校准会在评估点击时考虑这一延迟。" },
+    lbl_offset: { ru: "Смещение", en: "Offset", zh: "偏移" },
+    btn_calibrate: { ru: "Откалибровать", en: "Calibrate", zh: "校准" },
+    lbl_treble_clef_label: { ru: "Скрипичный ключ", en: "Treble clef", zh: "高音谱号" },
+    lbl_bass_clef_label: { ru: "Басовый ключ", en: "Bass clef", zh: "低音谱号" },
+    lbl_by_scales_degrees: { ru: "По ладам / ступеням", en: "By scale / degree", zh: "按调式/音级" },
+    lbl_by_durations: { ru: "По длительностям", en: "By duration", zh: "按时值" },
+    btn_clear_history: { ru: "Очистить историю", en: "Clear history", zh: "清除历史" },
+    lbl_font_size: { ru: "Размер шрифта", en: "Font size", zh: "字体大小" },
+    errors_title_notes: { ru: "Ошибки — Ноты (Q / Й)", en: "Errors — Notes (Q)", zh: "错误 — 音符（Q键）" },
+    errors_title_scales: { ru: "Ошибки — Тональности / Лады (Q / Й)", en: "Errors — Keys / Scales (Q)", zh: "错误 — 调式（Q键）" },
+    errors_title_durations: { ru: "Ошибки — Ритм (Q / Й)", en: "Errors — Rhythm (Q)", zh: "错误 — 节奏（Q键）" },
+    errors_title_flow: { ru: "Статистика — Ритм: Бесконечно (Q / Й)", en: "Stats — Rhythm: Infinite (Q)", zh: "统计 — 节奏：无限模式（Q键）" }
+  };
+
+  function t(key){
+    const row = I18N[key];
+    if(!row) return key;
+    return row[settings.uiLang] || row.ru;
+  }
+  window.__t = t;
+
+  function applyUiLang(){
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if(I18N[key]) el.textContent = t(key);
+    });
+    document.querySelectorAll("[data-i18n-title]").forEach(el => {
+      const key = el.getAttribute("data-i18n-title");
+      if(I18N[key]) el.setAttribute("title", t(key));
+    });
+    document.querySelectorAll(".lang-switch-group").forEach(g => {
+      g.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.value === settings.uiLang));
+    });
+    if(typeof setErrorsWindowLevel === "function" && window.__lastErrorsLevel){
+      setErrorsWindowLevel(window.__lastErrorsLevel);
+    }
+  }
+  window.__applyUiLang = applyUiLang;
+
+  document.querySelectorAll(".lang-switch-group").forEach(g => {
+    g.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+      settings.uiLang = b.dataset.value;
+      applyUiLang();
+      saveSettings();
+    }));
+  });
+  applyUiLang();
+
   function wireRangeField(rangeEl, numEl, min, max, getVal, setVal, onChange){
     if(!rangeEl || !numEl) return;
     rangeEl.min = min; rangeEl.max = max;
@@ -1957,14 +2492,17 @@
   // Хранятся в settings (то есть в localStorage) и переопределяют --errors-offset-* из :root.
   function errorsPosKeys(level){
     if(level === "scales")    return { x: "errorsPosScalesX",  y: "errorsPosScalesY"  };
-    if(level === "durations") return { x: "errorsPosDurX",     y: "errorsPosDurY"     };
-    if(level === "measure")   return { x: "errorsPosMeasureX", y: "errorsPosMeasureY" };
+    if(level === "durations" || level === "flow") return { x: "errorsPosDurX", y: "errorsPosDurY" };
     return { x: "errorsPosNotesX", y: "errorsPosNotesY" };
   }
   function applyErrorsPosVars(levelOverride){
     const level = levelOverride || settings.activeLevel || "notes";
     const k = errorsPosKeys(level);
-    document.documentElement.style.setProperty("--errors-offset-x", settings[k.x] + "px");
+    // Если панель настроек открыта слева — окно ошибок зеркалится на то же
+    // расстояние от центра, но вправо, чтобы не перекрываться с настройками.
+    const mirror = (settings.settingsPosition || "center") === "left";
+    const x = mirror ? -settings[k.x] : settings[k.x];
+    document.documentElement.style.setProperty("--errors-offset-x", x + "px");
     document.documentElement.style.setProperty("--errors-offset-y", settings[k.y] + "px");
   }
   window.__applyErrorsPosVars = applyErrorsPosVars;
@@ -2045,23 +2583,24 @@
   // localStorage-ключи, свой счётчик, своя таблица), а не переключаемые вручную вкладки
   // внутри одной панели. Переключение происходит там же, где меняется основной уровень
   // приложения — см. activateNotesLevel()/activateScalesLevel() в конце файла.
-  const ERRORS_TITLES = {
-    notes:     "Ошибки — Ноты (Q / Й)",
-    scales:    "Ошибки — Тональности / Лады (Q / Й)",
-    durations: "Ошибки — Ритм (Q / Й)",
-    measure:   "Ошибки — Ритм (Q / Й)"
+  const ERRORS_TITLE_KEYS = {
+    notes:     "errors_title_notes",
+    scales:    "errors_title_scales",
+    durations: "errors_title_durations",
+    flow:      "errors_title_flow"
   };
   function setErrorsWindowLevel(level){
     // старые вызовы передавали true/false (лады/ноты) — поддерживаем оба варианта
     const lv = (typeof level === "boolean") ? (level ? "scales" : "notes") : (level || "notes");
+    window.__lastErrorsLevel = lv;
     const durBlock = document.getElementById("durErrorsBlock");
-    const meaBlock = document.getElementById("measureErrorsBlock");
+    const flowBlock = document.getElementById("flowErrorsBlock");
     el.notesErrorsBlock.style.display = lv === "notes" ? "" : "none";
     el.scaleErrorsBlock.style.display = lv === "scales" ? "" : "none";
     if(durBlock) durBlock.style.display = lv === "durations" ? "" : "none";
-    if(meaBlock) meaBlock.style.display = lv === "measure" ? "" : "none";
-    if(el.errorsTitle) el.errorsTitle.textContent = ERRORS_TITLES[lv] || ERRORS_TITLES.notes;
-    // у каждого уровня своё положение окна ошибок
+    if(flowBlock) flowBlock.style.display = lv === "flow" ? "" : "none";
+    if(el.errorsTitle) el.errorsTitle.textContent = window.__t ? window.__t(ERRORS_TITLE_KEYS[lv] || ERRORS_TITLE_KEYS.notes) : "";
+    // у каждого уровня своё положение окна ошибок (у "Бесконечно" — то же, что у "Ритма")
     applyErrorsPosVars(lv);
   }
   window.__setErrorsWindowLevel = setErrorsWindowLevel;
@@ -2097,10 +2636,87 @@
   // ---- открытие/закрытие панелей (без выезда сбоку — просто показ/скрытие) ----
   function toggleSettings(){
     el.settingsPanel.classList.toggle("open");
+    syncSettingsBackdrop();
   }
   function toggleErrors(){
     el.errorsPanel.classList.toggle("open");
   }
+
+  // ---- Положение панели настроек: слева / по центру / справа ----
+  const settingsBackdrop = document.getElementById("settingsBackdrop");
+  const settingsPositionCheckboxes = [...document.querySelectorAll(".settings-position-checkbox")];
+
+  function getSettingsPosition(){
+    const checked = settingsPositionCheckboxes.find((cb) => cb.checked);
+    return checked ? checked.dataset.position : "center";
+  }
+
+  function syncSettingsBackdrop(){
+    if(!settingsBackdrop) return;
+    const shouldShow = el.settingsPanel.classList.contains("open") && getSettingsPosition() === "center";
+    settingsBackdrop.classList.toggle("visible", shouldShow);
+  }
+
+  function applySettingsPositionMode(skipAnimation){
+    const panel = el.settingsPanel;
+    if(skipAnimation) panel.classList.add("no-position-transition");
+    const pos = getSettingsPosition();
+    panel.classList.toggle("pos-left", pos === "left");
+    panel.classList.toggle("pos-center", pos === "center");
+    panel.classList.toggle("pos-right", pos === "right");
+    if(skipAnimation){
+      void panel.offsetHeight;
+      panel.classList.remove("no-position-transition");
+    }
+    syncSettingsBackdrop();
+  }
+
+  if(settingsPositionCheckboxes.length){
+    const savedPos = settings.settingsPosition || "center";
+    settingsPositionCheckboxes.forEach((cb) => {
+      cb.checked = cb.dataset.position === savedPos;
+      cb.addEventListener("change", () => {
+        if(!cb.checked){
+          // Хотя бы одна из трёх галок должна оставаться выбранной
+          cb.checked = true;
+          return;
+        }
+        settingsPositionCheckboxes.forEach((other) => { if(other !== cb) other.checked = false; });
+        settings.settingsPosition = cb.dataset.position;
+        applySettingsPositionMode(true);
+        applyErrorsPosVars();
+        saveSettings();
+      });
+    });
+  }
+  applySettingsPositionMode(true);
+
+  // при первом открытии приложения (нет сохранённых настроек) окно настроек
+  // должно быть открыто само по себе; это состояние не сохраняется в localStorage
+  if(isFirstLaunch){
+    el.settingsPanel.classList.add("open");
+    syncSettingsBackdrop();
+  }
+
+  // Клик по затемнённому фону закрывает настройки (режим "по центру")
+  if(settingsBackdrop){
+    settingsBackdrop.addEventListener("click", () => {
+      el.settingsPanel.classList.remove("open");
+      syncSettingsBackdrop();
+    });
+  }
+
+  // средняя кнопка мыши тоже открывает/закрывает настройки (button === 1);
+  // preventDefault, чтобы браузер не включал автопрокрутку
+  document.addEventListener("mousedown", (e) => {
+    if(e.button === 1){
+      e.preventDefault();
+      toggleSettings();
+    }
+  });
+  document.addEventListener("auxclick", (e) => {
+    if(e.button === 1) e.preventDefault();
+  });
 
   // ================= НОТНАЯ ЛОГИКА =================
   function noteFromStep(step, clef){
@@ -3396,6 +4012,10 @@
       toggleSettings();
       return;
     }
+    if((lower === "y" || lower === "н") && !e.repeat){
+      toggleSettings();
+      return;
+    }
     if((lower === "q" || lower === "й") && !e.repeat){
       toggleErrors();
       return;
@@ -3499,11 +4119,8 @@
     const [status, note, velocity] = msg.data;
     if((status & 0xf0) !== 0x90 || velocity <= 0) return;
     if(isDuplicateMidiNoteOn(note, msg.timeStamp)) return;
-    if(settings.activeLevel === "measure"){ // подуровень "123": любая клавиша — это тап
-      if(typeof rhTap === "function") rhTap();
-      return;
-    }
-    if(["echo","flow"].includes(settings.activeLevel)){ // "Эхо" и "Поток": клавиша — тап
+    if(rhCalibrating){ if(typeof rhTap === "function") rhTap(); return; }
+    if(settings.activeLevel === "flow"){ // "Поток": клавиша — тап
       if(window.__nrTap) window.__nrTap();
       return;
     }
@@ -3535,22 +4152,22 @@
   }
   el.midiConnectBtn.addEventListener("click", () => {
     if(!navigator.requestMIDIAccess){
-      el.midiStatus.textContent = "Web MIDI не поддерживается браузером";
+      el.midiStatus.textContent = window.__t ? window.__t("midi_not_supported") : "Web MIDI не поддерживается браузером";
       el.midiStatus.className = "midi-status err";
       return;
     }
     navigator.requestMIDIAccess({ sysex: false }).then(access => {
       const inputs = Array.from(access.inputs.values());
       if(inputs.length === 0){
-        el.midiStatus.textContent = "устройства не найдены";
+        el.midiStatus.textContent = window.__t ? window.__t("midi_no_devices") : "устройства не найдены";
         el.midiStatus.className = "midi-status err";
         return;
       }
       inputs.forEach(input => { input.onmidimessage = handleMIDIMessage; });
-      el.midiStatus.textContent = "подключено: " + inputs.map(i => i.name).join(", ");
+      el.midiStatus.textContent = (window.__t ? window.__t("midi_connected_prefix") : "подключено: ") + inputs.map(i => i.name).join(", ");
       el.midiStatus.className = "midi-status ok";
     }).catch(() => {
-      el.midiStatus.textContent = "не удалось подключиться";
+      el.midiStatus.textContent = window.__t ? window.__t("midi_connect_failed") : "не удалось подключиться";
       el.midiStatus.className = "midi-status err";
     });
   });
@@ -3747,12 +4364,12 @@
 
     let scaleSettings = {
       tonics: {},
-      types: { major:true, natMin:true },
+      types: { major:true, natMin:false },
       randomStart: false,
       clef: "treble",
-      labelTop: 108,
+      labelTop: 90,
       labelLeft: 50,
-      labelSize: 14,
+      labelSize: 30,
       hintTop: 7,
       hintLeft: 23,
       hintSize: 42
@@ -3762,11 +4379,12 @@
       if(saved) scaleSettings = Object.assign(scaleSettings, saved);
     }catch(e){}
     SCALE_TONICS.forEach(t => { if(typeof scaleSettings.tonics[t.key] !== "boolean") scaleSettings.tonics[t.key] = true; });
-    SCALE_TYPES.forEach(t => { if(typeof scaleSettings.types[t.key] !== "boolean") scaleSettings.types[t.key] = (t.key === "major" || t.key === "natMin"); });
+    SCALE_TYPES.forEach(t => { if(typeof scaleSettings.types[t.key] !== "boolean") scaleSettings.types[t.key] = (t.key === "major"); });
     if(scaleSettings.clef !== "treble" && scaleSettings.clef !== "bass" && scaleSettings.clef !== "both") scaleSettings.clef = "treble";
-    if(typeof scaleSettings.labelTop !== "number") scaleSettings.labelTop = 108;
+    if(typeof scaleSettings.labelTop !== "number") scaleSettings.labelTop = 90;
     if(typeof scaleSettings.labelLeft !== "number") scaleSettings.labelLeft = 50;
-    if(typeof scaleSettings.labelSize !== "number") scaleSettings.labelSize = 14;
+    if(typeof scaleSettings.labelSize !== "number") scaleSettings.labelSize = 30;
+    scaleSettings.labelSize = Math.min(50, Math.max(30, scaleSettings.labelSize));
     if(typeof scaleSettings.hintTop !== "number") scaleSettings.hintTop = 7;
     if(typeof scaleSettings.hintLeft !== "number") scaleSettings.hintLeft = 23;
     if(typeof scaleSettings.hintSize !== "number") scaleSettings.hintSize = 42;
@@ -3850,7 +4468,7 @@
     wireScaleRangeField(elS.scaleLabelLeft, elS.scaleLabelLeftVal, 0, 100,
       () => scaleSettings.labelLeft, v => scaleSettings.labelLeft = v,
       () => { applyScaleLabelVars(); saveScaleSettings(); });
-    wireScaleRangeField(elS.scaleLabelSize, elS.scaleLabelSizeVal, 8, 40,
+    wireScaleRangeField(elS.scaleLabelSize, elS.scaleLabelSizeVal, 30, 50,
       () => scaleSettings.labelSize, v => scaleSettings.labelSize = v,
       () => { applyScaleLabelVars(); saveScaleSettings(); });
     wireScaleRangeField(elS.scaleHintTop, elS.scaleHintTopVal, 0, 100,
@@ -4352,8 +4970,6 @@
     const LS_DUR         = "noteTrainer_durSettings_v1";
     const LS_DUR_ERRORS  = "noteTrainer_durErrors_v1";
     const LS_DUR_STATS   = "noteTrainer_durStats_v1";
-    const LS_MEA_ERRORS  = "noteTrainer_measureErrors_v1";
-    const LS_MEA_STATS   = "noteTrainer_measureStats_v1";
 
     // Размеры такта. units — сколько тридцать вторых помещается в такт
     // (та же единица измерения, что и у DURATIONS, поэтому суммы точные).
@@ -4370,88 +4986,41 @@
     // ---- настройки обоих уровней (свой ключ localStorage) ----
     let durSettings = {
       allowed:  {},          // разрешённые длительности уровня "Длительности"
-      mAllowed: {},          // разрешённые длительности уровня "Дополни такт"
-      dTimeSigs: {},         // разрешённые размеры такта уровня "Длительность ноты"
-      timeSigs: {},          // разрешённые размеры такта уровня "Дополни такт"
-      noteCount: 4,          // сколько нот в такте на подуровне "Ритм" (2..8)
-      rhBpm: 80,             // темп метронома
       rhVolume: 80,          // громкость метронома, %
-      rhMetroPlay: true,     // щёлкать ли метроном во время самого простукивания
-      rhHidePlayhead: false, // убрать полоску-бегунок, едущую по нотному стану
       rhLatencyMs: 0,         // смещение звука относительно часов AudioContext, найденное калибровкой
-      // ---- подуровни "На слух" / "Эхо" / "Поток" ----
+      // ---- подуровень "Поток" ----
       nrTimeSigs: {},         // разрешённые размеры такта
       nrTags: {},             // что может встретиться (длительности, паузы, триоли...)
-      nrBars: 2,              // тактов в задании
-      nrOptCount: 4,          // вариантов ответа в "На слух"
-      nrFlowSpeed: 95,        // пикселей на долю в "Потоке"
-      nrBpm: 80,
+      nrFlowSpeed: 100,       // пикселей на долю в "Потоке"
+      nrBpm: 60,
       nrVolume: 20,
       nrSustained: true,      // тянущийся звук — иначе длина ноты не слышна
       nrSinewave: false,      // false = играть сэмпл из samples/Sound 1.wav, true = синтезированный звук
-      nrMetroPlay: false
+      nrMetroPlay: true,
+      nrMetroDiv: "auto"      // на какие доли дробит такт метроном: auto/1/4/1/8/1/16/trip
     };
     try{
       const savedDur = JSON.parse(localStorage.getItem(LS_DUR) || "null");
       if(savedDur) durSettings = Object.assign(durSettings, savedDur);
     }catch(e){}
     if(!durSettings.allowed  || typeof durSettings.allowed  !== "object") durSettings.allowed = {};
-    if(!durSettings.mAllowed || typeof durSettings.mAllowed !== "object") durSettings.mAllowed = {};
-    if(!durSettings.timeSigs  || typeof durSettings.timeSigs  !== "object") durSettings.timeSigs  = {};
-    if(!durSettings.dTimeSigs || typeof durSettings.dTimeSigs !== "object") durSettings.dTimeSigs = {};
-    DURATIONS.forEach(d => {
-      const byDefault = ["1","1/2","1/4","1/8"].includes(d.key);
-      if(typeof durSettings.allowed[d.key]  !== "boolean") durSettings.allowed[d.key]  = byDefault;
-      if(typeof durSettings.mAllowed[d.key] !== "boolean") durSettings.mAllowed[d.key] = byDefault;
-    });
-    TIME_SIGS.forEach(t => {
-      const byDefault = (t.key === "4/4" || t.key === "3/4");
-      if(typeof durSettings.timeSigs[t.key]  !== "boolean") durSettings.timeSigs[t.key]  = byDefault;
-      if(typeof durSettings.dTimeSigs[t.key] !== "boolean") durSettings.dTimeSigs[t.key] = byDefault;
-    });
-    if(!(durSettings.noteCount >= 2 && durSettings.noteCount <= 8)) durSettings.noteCount = 4;
-    if(!(durSettings.rhBpm >= 40 && durSettings.rhBpm <= 240)) durSettings.rhBpm = 80;
     if(!(durSettings.rhVolume >= 0 && durSettings.rhVolume <= 100)) durSettings.rhVolume = 80;
-    if(typeof durSettings.rhMetroPlay !== "boolean") durSettings.rhMetroPlay = true;
-    if(typeof durSettings.rhHidePlayhead !== "boolean") durSettings.rhHidePlayhead = false;
     if(!(durSettings.rhLatencyMs >= -300 && durSettings.rhLatencyMs <= 300)) durSettings.rhLatencyMs = 0;
     function saveDurSettings(){ localStorage.setItem(LS_DUR, JSON.stringify(durSettings)); }
 
     const elD = {
       durBlocks:            document.getElementById("durSettingsBlocks"),
-      measureBlocks:        document.getElementById("measureSettingsBlocks"),
       nrBlocks:             document.getElementById("nrSettingsBlocks"),
       durationsRoot:        document.getElementById("durationsRoot"),
       durSubTabs:           document.getElementById("durSubTabs"),
       durGrid:              document.getElementById("durGrid"),
-      durTsGrid:            document.getElementById("durTsGrid"),
-      measureTsGrid:        document.getElementById("measureTsGrid"),
-      measureDurGrid:       document.getElementById("measureDurGrid"),
-      measureCountRow:      document.getElementById("measureCountRow"),
-      measureNoComboHint:   document.getElementById("measureNoComboHint"),
       durStatsLine:         document.getElementById("durStatsLine"),
       durErrorsGrid:        document.getElementById("durErrorsGrid"),
       resetDurErrorsBtn:    document.getElementById("resetDurErrorsBtn"),
-      measureStatsLine:     document.getElementById("measureStatsLine"),
-      measureErrorsGrid:    document.getElementById("measureErrorsGrid"),
-      resetMeasureErrorsBtn:document.getElementById("resetMeasureErrorsBtn"),
       errorsDurPosX:        document.getElementById("errorsDurPosX"),
       errorsDurPosXVal:     document.getElementById("errorsDurPosXVal"),
       errorsDurPosY:        document.getElementById("errorsDurPosY"),
       errorsDurPosYVal:     document.getElementById("errorsDurPosYVal"),
-      errorsMeasurePosX:    document.getElementById("errorsMeasurePosX"),
-      errorsMeasurePosXVal: document.getElementById("errorsMeasurePosXVal"),
-      errorsMeasurePosY:    document.getElementById("errorsMeasurePosY"),
-      errorsMeasurePosYVal: document.getElementById("errorsMeasurePosYVal"),
-      rhBpm:                document.getElementById("rhBpm"),
-      rhBpmVal:             document.getElementById("rhBpmVal"),
-      rhVolume:             document.getElementById("rhVolume"),
-      rhVolumeVal:          document.getElementById("rhVolumeVal"),
-      rhMetroPlay:          document.getElementById("rhMetroPlay"),
-      rhHidePlayhead:       document.getElementById("rhHidePlayhead"),
-      rhTapPad:             null,
-      rhStartBtn:           null,
-      rhStatus:             null,
       rhCalibrateBtn:       document.getElementById("rhCalibrateBtn"),
       rhCalibrateVal:       document.getElementById("rhCalibrateVal"),
       rhCalibrateStatus:    document.getElementById("rhCalibrateStatus")
@@ -4469,9 +5038,7 @@
       return st;
     }
     let durErrorCounts = loadCounts(LS_DUR_ERRORS);
-    let meaErrorCounts = loadCounts(LS_MEA_ERRORS);
     let durStats = loadStats(LS_DUR_STATS);
-    let meaStats = loadStats(LS_MEA_STATS);
 
     function renderDurationErrorGrid(container, counts){
       const rows = DURATIONS
@@ -4488,20 +5055,12 @@
       node.innerHTML = `Правильно: <b>${st.correct}</b> / <b>${st.total}</b> (<b>${pct}%</b>)`;
     }
     function refreshDurErrors(){ renderDurationErrorGrid(elD.durErrorsGrid, durErrorCounts); renderStatsLine(elD.durStatsLine, durStats); }
-    function refreshMeaErrors(){ renderDurationErrorGrid(elD.measureErrorsGrid, meaErrorCounts); renderStatsLine(elD.measureStatsLine, meaStats); }
     refreshDurErrors();
-    refreshMeaErrors();
     elD.resetDurErrorsBtn.addEventListener("click", () => {
       durErrorCounts = {}; durStats = { correct:0, total:0 };
       localStorage.setItem(LS_DUR_ERRORS, "{}"); localStorage.setItem(LS_DUR_STATS, JSON.stringify(durStats));
       refreshDurErrors();
     });
-    elD.resetMeasureErrorsBtn.addEventListener("click", () => {
-      meaErrorCounts = {}; meaStats = { correct:0, total:0 };
-      localStorage.setItem(LS_MEA_ERRORS, "{}"); localStorage.setItem(LS_MEA_STATS, JSON.stringify(meaStats));
-      refreshMeaErrors();
-    });
-
     // ---- общий стан для обоих уровней: одиночный скрипичный ключ ----
     // extra — на сколько расширить стан вправо (нужно, когда нот в такте много).
     function durPrepStaff(extra){
@@ -4569,29 +5128,19 @@
     const RHYTHM_Y = STAFF_BASE_Y - 4 * STEP_PX; // средняя линейка стана — на ней стоят все ноты
 
     // ======================= УРОВЕНЬ "ДЛИТЕЛЬНОСТИ" (шаг 1) =======================
-    let durCurrent = null, durCurrentTs = null, durLastKey = null, durAwaiting = true, durButtons = {}, durParts = null;
+    let durCurrent = null, durLastKey = null, durAwaiting = true, durButtons = {}, durParts = null;
 
     const DUR_NOTE_X = 260; // нота стоит правее размера такта, по центру свободной части стана
 
     function durAllowedList(){ return DURATIONS.filter(d => durSettings.allowed[d.key]); }
-    function durTsList(){ return TIME_SIGS.filter(t => durSettings.dTimeSigs[t.key]); }
 
     function durGenerate(){
       const list = durAllowedList();
-      if(!list.length){ durCurrent = null; durCurrentTs = null; return; }
+      if(!list.length){ durCurrent = null; return; }
       let pool = list.length > 1 ? list.filter(d => d.key !== durLastKey) : list;
       if(!pool.length) pool = list;
       durCurrent = pool[Math.floor(Math.random() * pool.length)];
       durLastKey = durCurrent.key;
-      // размер такта: по возможности такой, в который нота помещается целиком
-      const sigs = durTsList();
-      if(sigs.length){
-        const fit = sigs.filter(t => t.units >= durCurrent.units);
-        const src = fit.length ? fit : sigs;
-        durCurrentTs = src[Math.floor(Math.random() * src.length)];
-      }else{
-        durCurrentTs = null;
-      }
       durAwaiting = true;
     }
     function durRender(){
@@ -4599,7 +5148,6 @@
       durParts = null;
       if(!durCurrent) return;
       const g = ns("g");
-      if(durCurrentTs) drawTimeSignature(g, durCurrentTs);
       durParts = drawDurationNote(g, NOTE_X, RHYTHM_Y, durCurrent.key, true, "var(--note-fill)", true);
       el.notesGroup.appendChild(g);
     }
@@ -4624,28 +5172,7 @@
       }, 750);
     }
 
-    // ======================= ПОДУРОВЕНЬ "РИТМ" (простукивание) =======================
-    // Показывается такт со случайным ритмом. Идёт отсчёт метронома (один такт),
-    // затем нужно простучать ноты, попадая в моменты их НАЧАЛА (атаки).
-    // Длительность удержания не проверяется — оценивается только точность атак.
-    // Тап: кнопка на экране, пробел, любая клавиша MIDI-клавиатуры.
-
-    const RH_X0 = 150;                    // x первой ноты такта
-    const RH_W  = 200;                    // ширина такта в координатах SVG
-    const RH_BAR_X = 366;                 // тактовая черта
-    const RH_STEM_TOP = RHYTHM_Y - 40;    // верх хвостика (все хвостики вверх)
-    const RH_BEAM_H = 5;                  // толщина балки
-    const RH_BEAM_GAP = 9;                // расстояние между балками
-    const RH_TAIL_SEC = 0.6;              // сколько ждать после конца такта перед оценкой
-
-    let rhCurrent = null;                 // { ts, slots:[{ d, start, units }] }
-    let rhSlotParts = [];                 // части нот для перекраски по результату
-    let rhRunning = false;
-    let rhExpected = [];                  // абсолютные времена атак (по часам AudioContext)
-    let rhTaps = [];
-    let rhTimer = null;
-    let rhRaf = 0;
-    let rhBarStart = 0, rhBarEnd = 0;
+    // ---- общий движок клика метронома (используется в "Потоке" и калибровке) ----
     let rhScheduled = [];                 // запущенные осцилляторы (чтобы можно было прервать)
 
     // ---- аудио: клик метронома в духе Cubase (синус + быстрое затухание) ----
@@ -4666,6 +5193,18 @@
       }
       nrLoadSample(rhAudioCtx);
       return rhAudioCtx;
+    }
+    // Раньше "пробуждение" звукового контекста (resume()) не дожидалось —
+    // время следующих кликов метронома считалось от currentTime контекста,
+    // который в этот момент ещё мог быть "заморожен" (контекст создаётся в
+    // спящем состоянии и просыпается не мгновенно). Из-за этого клики иногда
+    // планировались уже в прошлом и просто не звучали. Теперь явно ждём,
+    // пока контекст точно заработает, и только после этого возвращаем его.
+    function rhEnsureAudioReady(){
+      const ctx = rhEnsureAudio();
+      if(!ctx) return Promise.resolve(null);
+      if(ctx.state === "running") return Promise.resolve(ctx);
+      return ctx.resume().then(() => ctx).catch(() => ctx);
     }
     // Громкость меняем прямо на общем узле — это применяется мгновенно, в отличие
     // от значения, "зашитого" в конверт конкретного клика в момент планирования.
@@ -4693,316 +5232,7 @@
       rhScheduled.push(osc);
     }
 
-    // ---- параметры размера ----
-    // случайно выбираем один из отмеченных в настройках размеров такта;
-    // null, если ни один не выбран
-    function rhTimeSig(){
-      const list = TIME_SIGS.filter(t => durSettings.timeSigs[t.key]);
-      if(!list.length) return null;
-      return list[Math.floor(Math.random() * list.length)];
-    }
-    function rhUnitsPerBeat(ts){
-      // составные размеры (6/8, 9/8, 12/8) считаются по нотам с точкой
-      if(ts.d === 8 && ts.n % 3 === 0) return 12;
-      return 32 / ts.d;
-    }
-    function rhBeatsPerBar(ts){ return Math.round(ts.units / rhUnitsPerBeat(ts)); }
-
-    function rhAllowedList(){ return DURATIONS.filter(d => durSettings.mAllowed[d.key]); }
-
-    // ---- генерация ритма: набор длительностей с суммой ровно в такт ----
-    function rhFindCombo(total, count, list){
-      if(!list.length) return null;
-      const minU = Math.min.apply(null, list.map(d => d.units));
-      const maxU = Math.max.apply(null, list.map(d => d.units));
-      const path = [];
-      let nodes = 0;
-      function dfs(rem, k){
-        if(++nodes > 20000) return false;
-        if(k === 0) return rem === 0;
-        if(rem < minU * k || rem > maxU * k) return false;
-        const pool = shuffledArray(list);
-        for(let i = 0; i < pool.length; i++){
-          const d = pool[i];
-          if(d.units > rem) continue;
-          path.push(d);
-          if(dfs(rem - d.units, k - 1)) return true;
-          path.pop();
-        }
-        return false;
-      }
-      return dfs(total, count) ? path.slice() : null;
-    }
-
-    // Ноты не должны пересекать границу доли: иначе их пришлось бы записывать
-    // через лигу, а балки в таком такте не построить. Поэтому найденную комбинацию
-    // проверяем и при неудаче ищем другую.
-    function rhAligned(combo, upb){
-      let pos = 0;
-      for(let i = 0; i < combo.length; i++){
-        const u = combo[i].units;
-        if(u < upb && Math.floor(pos / upb) !== Math.floor((pos + u - 0.5) / upb)) return false;
-        if(u >= upb && pos % upb !== 0) return false;
-        pos += u;
-      }
-      return true;
-    }
-
-    function rhGenerate(){
-      rhSlotParts = [];
-      const list = rhAllowedList();
-      const ts = rhTimeSig();
-      if(!ts){
-        rhCurrent = null;
-        elD.measureNoComboHint.textContent = "Выберите хотя бы один размер такта.";
-        elD.measureNoComboHint.style.display = "";
-        return;
-      }
-      const count = durSettings.noteCount;
-      const upb = rhUnitsPerBeat(ts);
-      let combo = null;
-      for(let attempt = 0; attempt < 60; attempt++){
-        const c = rhFindCombo(ts.units, count, list);
-        if(!c) break;
-        if(rhAligned(c, upb)){ combo = c; break; }
-        if(!combo) combo = c;   // запасной вариант, если ровных так и не найдётся
-      }
-      if(!combo){
-        rhCurrent = null;
-        elD.measureNoComboHint.textContent = "Для выбранных длительностей, количества нот и размера такта комбинация не складывается — включите другие длительности, другое количество нот или другой размер такта.";
-        elD.measureNoComboHint.style.display = "";
-        return;
-      }
-      elD.measureNoComboHint.style.display = "none";
-      let pos = 0;
-      const slots = combo.map(d => { const s = { d, start: pos, units: d.units }; pos += d.units; return s; });
-      // Расстановка по горизонтали: чисто пропорциональная запись сплющивает мелкие
-      // длительности так, что головки нот налезают друг на друга. Поэтому ширина,
-      // отводимая ноте, растёт как корень из её длительности — как в настоящих нотах.
-      const w = slots.map(s => Math.sqrt(s.units));
-      const wSum = w.reduce((a, b) => a + b, 0);
-      let acc = 0;
-      slots.forEach((s, i) => { s.x = RH_X0 + RH_W * (acc / wSum); acc += w[i]; });
-      rhCurrent = { ts, slots, upb };
-    }
-
-    // ---- группировка под балки: подряд идущие ноты с флажками внутри одной доли ----
-    function rhBeamGroups(){
-      const groups = [];
-      let cur = [];
-      const flush = () => { if(cur.length) groups.push(cur); cur = []; };
-      rhCurrent.slots.forEach((s, i) => {
-        const flags = durShape(s.d.key).flags;
-        const beat = Math.floor(s.start / rhCurrent.upb);
-        const endBeat = Math.floor((s.start + s.units - 0.5) / rhCurrent.upb);
-        if(flags >= 1 && beat === endBeat){
-          if(cur.length && cur[cur.length - 1].beat !== beat) flush();
-          cur.push({ i, flags, beat });
-        }else{
-          flush();
-        }
-      });
-      flush();
-      return groups.filter(g => g.length >= 2);
-    }
-
-    function rhSlotX(i){ return rhCurrent.slots[i].x; }
-
-    // x бегунка по прошедшим "юнитам" такта — не линейно от времени, а так же,
-    // как расставлены сами ноты (через sqrt-вес), иначе бегунок обгоняет/отстаёт
-    // от нот и кликов метронома, хотя формально время идёт ровно.
-    function rhPlayheadX(elapsedUnits){
-      const slots = rhCurrent.slots;
-      const total = rhCurrent.ts.units;
-      if(elapsedUnits <= 0) return RH_X0;
-      if(elapsedUnits >= total) return RH_BAR_X;
-      for(let i = 0; i < slots.length; i++){
-        const s = slots[i];
-        const startU = s.start, endU = s.start + s.units;
-        if(elapsedUnits < endU || i === slots.length - 1){
-          const xStart = s.x;
-          const xEnd = (i + 1 < slots.length) ? slots[i + 1].x : RH_BAR_X;
-          const frac = Math.max(0, Math.min(1, (elapsedUnits - startU) / s.units));
-          return xStart + (xEnd - xStart) * frac;
-        }
-      }
-      return RH_BAR_X;
-    }
-
-    function rhBeamRect(g, x1, x2, level, color){
-      const r = ns("rect");
-      r.setAttribute("x", Math.min(x1, x2));
-      r.setAttribute("y", RH_STEM_TOP + level * RH_BEAM_GAP);
-      r.setAttribute("width", Math.abs(x2 - x1));
-      r.setAttribute("height", RH_BEAM_H);
-      r.setAttribute("fill", color);
-      g.appendChild(r);
-      return r;
-    }
-
-    function rhRender(){
-      durPrepStaff(0);
-      if(!rhCurrent) return;
-      const g = ns("g");
-      drawTimeSignature(g, rhCurrent.ts);
-
-      const beamed = new Set();
-      const groups = rhBeamGroups();
-      groups.forEach(gr => gr.forEach(n => beamed.add(n.i)));
-
-      // ---- ноты ----
-      rhSlotParts = rhCurrent.slots.map((s, i) =>
-        drawDurationNote(g, s.x, RHYTHM_Y, s.d.key, true, "var(--note-fill)", true, beamed.has(i)));
-
-      // ---- балки (рисуем поверх хвостиков) ----
-      const color = "var(--note-fill)";
-      groups.forEach(gr => {
-        const sx = idx => rhSlotX(idx) + 8.5;
-        const parts = [];
-        parts.push(rhBeamRect(g, sx(gr[0].i), sx(gr[gr.length - 1].i) + 2, 0, color));
-        // вторая и третья балки — только между соседями, у которых хватает флажков
-        for(let level = 1; level <= 2; level++){
-          for(let k = 0; k < gr.length; k++){
-            if(gr[k].flags <= level) continue;
-            const prevOk = k > 0 && gr[k - 1].flags > level;
-            const nextOk = k < gr.length - 1 && gr[k + 1].flags > level;
-            if(nextOk){
-              parts.push(rhBeamRect(g, sx(gr[k].i), sx(gr[k + 1].i) + 2, level, color));
-            }else if(!prevOk){
-              // одиночная короткая нота в группе — короткая балка-обрубок внутрь группы
-              const dir = (k === 0) ? 1 : -1;
-              parts.push(rhBeamRect(g, sx(gr[k].i), sx(gr[k].i) + dir * 12 + (dir > 0 ? 2 : 0), level, color));
-            }
-          }
-        }
-        gr.forEach(n => { rhSlotParts[n.i].beams = parts; });
-      });
-
-      // ---- тактовая черта ----
-      const bar = ns("line");
-      bar.setAttribute("x1", RH_BAR_X); bar.setAttribute("x2", RH_BAR_X);
-      bar.setAttribute("y1", 64);       bar.setAttribute("y2", 120);
-      bar.setAttribute("stroke", "var(--line-color)");
-      bar.setAttribute("stroke-width", "3");
-      g.appendChild(bar);
-
-      // ---- бегунок (появляется во время исполнения) ----
-      const ph = ns("line");
-      ph.setAttribute("id", "rhPlayhead");
-      ph.setAttribute("y1", 52); ph.setAttribute("y2", 132);
-      ph.setAttribute("stroke", "var(--accent)");
-      ph.setAttribute("stroke-width", "2");
-      ph.setAttribute("opacity", "0");
-      g.appendChild(ph);
-
-      // ---- строка отсчёта / подсказки над станом ----
-      const cnt = ns("text");
-      cnt.setAttribute("id", "rhCountText");
-      cnt.setAttribute("x", RH_X0 + RH_W / 2);
-      cnt.setAttribute("y", RHYTHM_Y - 62);
-      cnt.setAttribute("text-anchor", "middle");
-      cnt.setAttribute("font-size", "22");
-      cnt.setAttribute("font-weight", "700");
-      cnt.setAttribute("font-family", "var(--font-ui)");
-      cnt.setAttribute("fill", "var(--accent)");
-      g.appendChild(cnt);
-
-      el.notesGroup.appendChild(g);
-    }
-
-    // ---- перекраска ноты вместе с её балками ----
-    function rhColorSlot(i, color){
-      const p = rhSlotParts[i];
-      if(!p) return;
-      colorDurationParts(p, color);
-      if(p.beams) p.beams.forEach(b => { b.setAttribute("fill", color); b.setAttribute("fill-opacity", 0.5); });
-    }
-
-    // ---- допуски: считаем в долях от длины доли, чтобы они работали на любом темпе ----
-    function rhTolerances(beatSec){
-      return {
-        perfect: Math.max(0.040, beatSec * 0.08),
-        good:    Math.max(0.080, beatSec * 0.18),
-        miss:    Math.max(0.160, beatSec * 0.35)
-      };
-    }
-
-    function rhSetStatus(html){ if(elD.rhStatus) elD.rhStatus.innerHTML = html; }
-
-    // ---- запуск упражнения ----
-    function rhStart(){
-      if(rhRunning || !rhCurrent) return;
-      const ctx = rhEnsureAudio();
-      if(!ctx){ rhSetStatus('<span class="rh-miss">Браузер не поддерживает Web Audio</span>'); return; }
-
-      rhRunning = true;
-      rhTaps = [];
-      rhScheduled = [];
-      rhRender();                       // сброс цветов от прошлой попытки
-      if(elD.rhStartBtn) elD.rhStartBtn.disabled = true;
-
-      const ts = rhCurrent.ts;
-      const beatSec = 60 / durSettings.rhBpm;
-      const beats = rhBeatsPerBar(ts);
-      const t0 = ctx.currentTime + 0.25;
-
-      // отсчёт — один полный такт
-      for(let i = 0; i < beats; i++) rhClick(t0 + i * beatSec, i === 0);
-
-      rhBarStart = t0 + beats * beatSec;
-      rhBarEnd   = rhBarStart + beats * beatSec;
-
-      // метроном во время исполнения — по галке в настройках
-      if(durSettings.rhMetroPlay){
-        for(let i = 0; i < beats; i++) rhClick(rhBarStart + i * beatSec, i === 0);
-      }
-
-      rhExpected = rhCurrent.slots.map(s => rhBarStart + (s.start / rhUnitsPerBeat(ts)) * beatSec);
-
-      rhSetStatus("Слушай отсчёт…");
-      rhAnimate(beatSec, beats);
-
-      rhTimer = setTimeout(rhEvaluate, (rhBarEnd + RH_TAIL_SEC - ctx.currentTime) * 1000);
-    }
-
-    // ---- анимация отсчёта и бегунка ----
-    function rhAnimate(beatSec, beats){
-      const ph = document.getElementById("rhPlayhead");
-      const cnt = document.getElementById("rhCountText");
-      const countStart = rhBarStart - beats * beatSec;
-      const step = () => {
-        if(!rhRunning) return;
-        const t = rhAudioCtx.currentTime;
-        if(t < rhBarStart){
-          const n = Math.min(beats, Math.floor((t - countStart) / beatSec) + 1);
-          if(cnt) cnt.textContent = n > 0 ? String(n) : "";
-          if(ph) ph.setAttribute("opacity", "0");
-        }else{
-          if(cnt) cnt.textContent = "";
-          if(ph){
-            if(durSettings.rhHidePlayhead){
-              ph.setAttribute("opacity", "0");
-            }else{
-              const elapsedUnits = ((t - rhBarStart) / beatSec) * rhCurrent.upb;
-              const x = rhPlayheadX(elapsedUnits);
-              ph.setAttribute("opacity", t <= rhBarEnd ? "0.75" : "0");
-              ph.setAttribute("x1", x); ph.setAttribute("x2", x);
-            }
-          }
-          if(t > rhBarStart && rhStatusPhase !== "play"){
-            rhStatusPhase = "play";
-            rhSetStatus("Стучи!");
-          }
-        }
-        rhRaf = requestAnimationFrame(step);
-      };
-      rhStatusPhase = "count";
-      rhRaf = requestAnimationFrame(step);
-    }
-    let rhStatusPhase = "";
-
-    // ---- тап ----
-    // ---- калибровка звуковой задержки ----
+    // ---- калибровка звуковой задержки (используется в "Потоке") ----
     // Проигрываем ровный ряд кликов на спокойном темпе и просим стучать в такт.
     // Первые клики — разгон (не считаются), остальные — замер. Считаем среднюю
     // разницу (тап минус время клика по часам AudioContext) и сохраняем как
@@ -5017,9 +5247,9 @@
       if(elD.rhCalibrateVal) elD.rhCalibrateVal.textContent = Math.round(durSettings.rhLatencyMs) + " мс";
     }
 
-    function rhRunCalibration(){
-      if(rhRunning || rhCalibrating) return;
-      const ctx = rhEnsureAudio();
+    async function rhRunCalibration(){
+      if(rhCalibrating) return;
+      const ctx = await rhEnsureAudioReady();
       if(!ctx) return;
       rhCalibrating = true;
       rhCalibTaps = [];
@@ -5070,163 +5300,19 @@
 
     function rhTap(){
       if(rhCalibrating && rhAudioCtx){ rhCalibTaps.push(rhAudioCtx.currentTime); }
-      if(elD.rhTapPad){
-        elD.rhTapPad.classList.add("hit");
-        setTimeout(() => elD.rhTapPad && elD.rhTapPad.classList.remove("hit"), 70);
-      }
-      if(!rhRunning || !rhAudioCtx) return;
-      rhTaps.push(rhAudioCtx.currentTime);
     }
 
-    function rhStop(){
-      rhRunning = false;
-      rhStatusPhase = "";
-      if(rhTimer){ clearTimeout(rhTimer); rhTimer = null; }
-      if(rhRaf){ cancelAnimationFrame(rhRaf); rhRaf = 0; }
-      rhScheduled.forEach(o => { try{ o.stop(); }catch(e){} });
-      rhScheduled = [];
-      if(elD.rhStartBtn) elD.rhStartBtn.disabled = false;
-    }
-
-    // ---- оценка: каждой ноте — ближайший ЕЩЁ НЕ ИСПОЛЬЗОВАННЫЙ тап ----
-    // Поправка на звуковую задержку (durSettings.rhLatencyMs, найдена калибровкой):
-    // человек слышит клик метронома позже, чем он реально запланирован по часам
-    // AudioContext, и подстраивает свой тап под услышанное — поэтому ожидаемое
-    // время атаки для оценки сдвигаем на ту же величину.
-    function rhEvaluate(){
-      const beatSec = 60 / durSettings.rhBpm;
-      const tol = rhTolerances(beatSec);
-      const latency = (durSettings.rhLatencyMs || 0) / 1000;
-      const taps = rhTaps.slice().sort((a, b) => a - b);
-      const used = new Array(taps.length).fill(false);
-      const g = document.querySelector("#notesGroup g");
-
-      let perfect = 0, good = 0, missed = 0;
-
-      rhExpected.forEach((expRaw, i) => {
-        const exp = expRaw + latency;
-        let best = -1, bestDiff = Infinity;
-        for(let k = 0; k < taps.length; k++){
-          if(used[k]) continue;
-          const diff = Math.abs(taps[k] - exp);
-          if(diff < bestDiff){ bestDiff = diff; best = k; }
-        }
-        let color, label = "";
-        if(best < 0 || bestDiff > tol.miss){
-          color = "var(--wrong-color)"; missed++;
-          label = "—";
-        }else{
-          used[best] = true;
-          const ms = Math.round((taps[best] - exp) * 1000);
-          label = (ms > 0 ? "+" : "") + ms;
-          if(bestDiff <= tol.perfect){ color = "var(--correct-color)"; perfect++; }
-          else if(bestDiff <= tol.good){ color = "var(--accent)"; good++; }
-          else { color = "var(--wrong-color)"; missed++; }
-        }
-        rhColorSlot(i, color);
-        if(g){
-          const t = ns("text");
-          t.setAttribute("x", rhSlotX(i));
-          t.setAttribute("y", RHYTHM_Y - 56);
-          t.setAttribute("text-anchor", "middle");
-          t.setAttribute("font-size", "11");
-          t.setAttribute("font-family", "var(--font-ui)");
-          t.setAttribute("fill", color);
-          t.textContent = label;
-          g.appendChild(t);
-        }
-        if(color === "var(--wrong-color)"){
-          const key = rhCurrent.slots[i].d.key;
-          meaErrorCounts[key] = (meaErrorCounts[key] || 0) + 1;
-        }
-      });
-
-      const extra = used.filter(u => !u).length;
-      const total = rhExpected.length;
-      const score = Math.round(((perfect + good * 0.5) / Math.max(1, total)) * 100);
-
-      meaStats.total += total;
-      meaStats.correct += perfect + good;
-      localStorage.setItem(LS_MEA_ERRORS, JSON.stringify(meaErrorCounts));
-      localStorage.setItem(LS_MEA_STATS, JSON.stringify(meaStats));
-      refreshMeaErrors();
-
-      rhSetStatus(
-        `Точность <b>${score}%</b> &nbsp;·&nbsp; ` +
-        `<span class="rh-perfect">точно ${perfect}</span> · ` +
-        `<span class="rh-good">почти ${good}</span> · ` +
-        `<span class="rh-miss">мимо ${missed}</span>` +
-        (extra ? ` · <span class="rh-miss">лишних ударов: ${extra}</span>` : "")
-      );
-
-      rhStop();
-    }
-
-    // MIDI отдельно не запрашиваем: подключение — общей кнопкой "Подключить MIDI"
-    // в "Нотах" (см. handleMIDIMessage), которая при открытом подуровне "Ритм"
-    // просто вызывает rhTap() для любой нажатой клавиши.
-
-    // ---- элементы управления вместо кнопок-ответов ----
-    function rhBuildControls(){
-      el.answersGrid.innerHTML = "";
-      el.answersGrid.classList.remove("dur-answers", "rh-controls");
-      el.answersGrid.classList.add("rh-controls");
-      el.answersGrid.classList.remove("hidden");
-      el.answersGrid.style.display = "";
-      el.pianoAnswers.style.display = "none";
-      el.octaveSelector.style.display = "none";
-      el.bigPiano.style.display = "none";
-
-      const wrap = document.createElement("div");
-      wrap.className = "rh-wrap";
-
-      const pad = document.createElement("button");
-      pad.className = "rh-tap-pad";
-      pad.type = "button";
-      pad.innerHTML = "TAP<span>пробел \u00b7 MIDI: кнопка в \u00abНотах\u00bb</span>";
-      pad.addEventListener("pointerdown", (ev) => { ev.preventDefault(); rhTap(); });
-
-      const row = document.createElement("div");
-      row.className = "rh-btn-row";
-
-      const start = document.createElement("button");
-      start.className = "small-btn rh-start";
-      start.type = "button";
-      start.textContent = "Старт";
-      start.addEventListener("click", rhStart);
-
-      const next = document.createElement("button");
-      next.className = "small-btn rh-next";
-      next.type = "button";
-      next.textContent = "Новый ритм";
-      next.addEventListener("click", () => { rhStop(); rhGenerate(); rhRender(); rhSetStatus("Нажми «Старт»"); });
-
-      const status = document.createElement("div");
-      status.className = "rh-status";
-
-      row.appendChild(start); row.appendChild(next);
-      wrap.appendChild(pad); wrap.appendChild(row); wrap.appendChild(status);
-      el.answersGrid.appendChild(wrap);
-
-      elD.rhTapPad = pad;
-      elD.rhStartBtn = start;
-      elD.rhStatus = status;
-
-      rhSetStatus("Нажми «Старт»");
-      scheduleBottomAnchor();
-    }
-
-    // пробел — тап, но только когда открыт этот подуровень
+    // пробел — тап (в "Потоке") или отметка калибровки
     document.addEventListener("keydown", (e) => {
       if(e.code !== "Space") return;
-      const lv = settings.activeLevel;
-      if(lv !== "measure" && lv !== "echo" && lv !== "flow") return;
       if(e.repeat) return;
       const tag = (e.target && e.target.tagName || "").toLowerCase();
       if(tag === "input" || tag === "textarea") return;
+      if(rhCalibrating){ e.preventDefault(); rhTap(); return; }
+      const lv = settings.activeLevel;
+      if(lv !== "flow") return;
       e.preventDefault();
-      if(lv === "measure") rhTap();
-      else if(window.__nrTap) window.__nrTap();
+      if(window.__nrTap) window.__nrTap();
     });
 
 
@@ -5256,54 +5342,26 @@
       durGenerate();
       durRender();
     }
-    function rebuildMeasureLevel(){
-      rhStop();
-      rhBuildControls();
-      rhGenerate();
-      rhRender();
-    }
+
+    // Цифры 1..0 — быстрый ответ в "Ритм → Одна нота": кнопка №1 (по порядку слева
+    // направо, как выбрано в настройках) — клавиша 1, №2 — клавиша 2, ... №10 — клавиша 0.
+    const DUR_DIGIT_CODES = ["Digit1","Digit2","Digit3","Digit4","Digit5","Digit6","Digit7","Digit8","Digit9","Digit0"];
+    document.addEventListener("keydown", (e) => {
+      if(e.repeat) return;
+      const idx = DUR_DIGIT_CODES.indexOf(e.code);
+      if(idx === -1) return;
+      if(settings.activeLevel !== "durations") return;
+      const tag = (e.target && e.target.tagName || "").toLowerCase();
+      if(tag === "input" || tag === "textarea") return;
+      const btn = el.answersGrid.children[idx];
+      if(!btn) return;
+      e.preventDefault();
+      btn.click();
+    });
 
     buildToggleGrid(elD.durGrid, DURATIONS, durSettings.allowed,
       () => { if(settings.activeLevel === "durations") rebuildDurLevel(); });
-    buildToggleGrid(elD.durTsGrid, TIME_SIGS, durSettings.dTimeSigs,
-      () => { if(settings.activeLevel === "durations") rebuildDurLevel(); });
-    function rhRefresh(){
-      if(settings.activeLevel !== "measure") return;
-      rhStop(); rhGenerate(); rhRender(); rhSetStatus("Нажми «Старт»");
-    }
-    buildToggleGrid(elD.measureDurGrid, DURATIONS, durSettings.mAllowed, rhRefresh);
-    buildToggleGrid(elD.measureTsGrid, TIME_SIGS, durSettings.timeSigs, rhRefresh);
 
-    function syncMeasureCountUI(){
-      elD.measureBlocks.querySelectorAll('[data-mgroup="noteCount"] button').forEach(b => {
-        b.classList.toggle("active", Number(b.dataset.value) === durSettings.noteCount);
-      });
-    }
-    elD.measureBlocks.querySelectorAll('[data-mgroup="noteCount"] button').forEach(b => {
-      b.addEventListener("click", () => {
-        durSettings.noteCount = Number(b.dataset.value);
-        saveDurSettings(); syncMeasureCountUI(); rhRefresh();
-      });
-    });
-    syncMeasureCountUI();
-
-    // ---- темп / громкость / галка метронома ----
-    wireRangeField(elD.rhBpm, elD.rhBpmVal, 40, 240,
-      () => durSettings.rhBpm, v => durSettings.rhBpm = v, () => saveDurSettings());
-    wireRangeField(elD.rhVolume, elD.rhVolumeVal, 0, 100,
-      () => durSettings.rhVolume, v => durSettings.rhVolume = v, () => { saveDurSettings(); rhUpdateLiveVolume(); });
-    elD.rhMetroPlay.checked = durSettings.rhMetroPlay;
-    elD.rhMetroPlay.addEventListener("change", () => {
-      durSettings.rhMetroPlay = elD.rhMetroPlay.checked;
-      saveDurSettings();
-    });
-    if(elD.rhHidePlayhead){
-      elD.rhHidePlayhead.checked = durSettings.rhHidePlayhead;
-      elD.rhHidePlayhead.addEventListener("change", () => {
-        durSettings.rhHidePlayhead = elD.rhHidePlayhead.checked;
-        saveDurSettings();
-      });
-    }
     if(elD.rhCalibrateBtn) elD.rhCalibrateBtn.addEventListener("click", () => { rhEnsureAudio(); rhRunCalibration(); });
     rhUpdateCalibrateUI();
 
@@ -5314,12 +5372,6 @@
     wireRangeField(elD.errorsDurPosY, elD.errorsDurPosYVal, -ERR_POS_LIMIT_Y, ERR_POS_LIMIT_Y,
       () => settings.errorsPosDurY, v => settings.errorsPosDurY = v,
       () => { applyErrorsPosVars(); saveSettings(); });
-    wireRangeField(elD.errorsMeasurePosX, elD.errorsMeasurePosXVal, -ERR_POS_LIMIT_X, ERR_POS_LIMIT_X,
-      () => settings.errorsPosMeasureX, v => settings.errorsPosMeasureX = v,
-      () => { applyErrorsPosVars(); saveSettings(); });
-    wireRangeField(elD.errorsMeasurePosY, elD.errorsMeasurePosYVal, -ERR_POS_LIMIT_Y, ERR_POS_LIMIT_Y,
-      () => settings.errorsPosMeasureY, v => settings.errorsPosMeasureY = v,
-      () => { applyErrorsPosVars(); saveSettings(); });
 
     // какой блок настроек показывать для выбранного уровня
     function showLevelSettings(level){
@@ -5328,7 +5380,6 @@
       elS.scaleBlocks.style.display    = level === "scales"    ? "" : "none";
       elD.durationsRoot.style.display  = isDur                 ? "" : "none";
       elD.durBlocks.style.display      = level === "durations" ? "" : "none";
-      elD.measureBlocks.style.display  = level === "measure"   ? "" : "none";
       if(elD.nrBlocks) elD.nrBlocks.style.display = NR_SUBLEVELS.includes(level) ? "" : "none";
       if(isDur){
         elD.durSubTabs.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.value === level));
@@ -5357,18 +5408,6 @@
       showLevelSettings("durations");
       rebuildDurLevel();
     }
-    function activateMeasureLevel(){
-      window.__scaleLevelActive = false;
-      window.__durLevelActive = true;
-      if(window.__setErrorsWindowLevel) window.__setErrorsWindowLevel("measure");
-      hideReveal();
-      elS.scaleChordReveal.classList.remove("show");
-      if(elS.scaleNameLabel) elS.scaleNameLabel.style.display = "none";
-      revealPinned = false;
-      showLevelSettings("measure");
-      rebuildMeasureLevel();
-    }
-
     // ---- переключение уровней внутри ОДНОЙ И ТОЙ ЖЕ панели настроек и ТОГО ЖЕ стана ----
     function activateNotesLevel(){
       window.__scaleLevelActive = false;
@@ -5411,13 +5450,13 @@
     }
 
     /* ==========================================================================
-       ПОДУРОВНИ "НА СЛУХ" / "ЭХО" / "ПОТОК"
+       ПОДУРОВЕНЬ "ПОТОК"
        Своя единица длительности: целая = 96 (а не 32, как в остальном
        приложении). 96 делится на 3, поэтому триоли ложатся целыми числами:
        доля = 24, триоль восьмыми = три ноты по 8.
        ========================================================================== */
-    const NR_SUBLEVELS = ["ear", "echo", "flow"];
-    const DUR_SUBLEVELS = ["durations", "measure"].concat(NR_SUBLEVELS);
+    const NR_SUBLEVELS = ["flow"];
+    const DUR_SUBLEVELS = ["durations"].concat(NR_SUBLEVELS);
 
     const NR_DUR = {
       "1":     { units: 96, flags: 0, open: true,  stem: false },
@@ -5500,6 +5539,28 @@
       { key:"rest",  label:"Паузы" }
     ];
 
+    // варианты дробления метронома внутри такта
+    const NR_METRO_DIVS = [
+      { key:"auto", label:"Под такт" },
+      { key:"1/4",  label:"1/4" },
+      { key:"1/8",  label:"1/8" },
+      { key:"1/16", label:"1/16" },
+      { key:"trip", label:"Триоли" }
+    ];
+
+    // сколько единиц (в шкале units, где четверть = 24) занимает один клик
+    // метронома при выбранном дроблении, и сколько кликов в такте
+    function nrMetroDivUnits(ts){
+      let div = durSettings.nrMetroDiv || "auto";
+      if(div === "auto") div = (ts.d === 8) ? "1/8" : "1/4"; // подстраиваемся под размер такта
+      if(div === "trip"){
+        // триольная восьмая = 8 units (три штуки укладываются в долю на 24 units);
+        // в составных размерах (6/8) доля уже восьмая, отдельных триолей не делаем
+        return ts.compound ? 12 : 8;
+      }
+      return (NR_DUR[div] || NR_DUR["1/4"]).units;
+    }
+
     const NR_TOL_PERFECT = 60, NR_TOL_GOOD = 160, NR_TOL_MISS = 300;
 
     // ---- значения по умолчанию, если настройки ещё пустые ----
@@ -5508,8 +5569,8 @@
         durSettings.nrTimeSigs = { "4/4":true, "3/4":false, "2/4":false, "6/8":false };
       }
       if(!durSettings.nrTags || !Object.keys(durSettings.nrTags).length){
-        durSettings.nrTags = { whole:false, half:true, q:true, e:true, s:false,
-                               t32:false, dot:true, trip:false, sync:false, rest:true };
+        durSettings.nrTags = { whole:false, half:false, q:true, e:true, s:false,
+                               t32:false, dot:false, trip:false, sync:false, rest:false };
       }
     })();
 
@@ -5569,21 +5630,6 @@
     }
     function nrLookSig(bars){ return bars.map(f => f.map(x => x.id).join(",")).join("|"); }
 
-    function nrBarEvents(bars, ts){
-      const out = [];
-      let base = 0;
-      bars.forEach(figs => {
-        let pos = 0;
-        figs.forEach(f => f.items.forEach(it => {
-          const u = NR_DUR[it.d].units;
-          out.push({ units: base + pos, len: u, rest: !!it.rest, d: it.d });
-          pos += u;
-        }));
-        base += ts.units;
-      });
-      return out;
-    }
-
     function nrGenerateBars(count){
       const list = NR_TIME_SIGS.filter(t => durSettings.nrTimeSigs[t.key]);
       if(!list.length) return { error: "Выберите хотя бы один размер такта." };
@@ -5604,48 +5650,6 @@
       return { error: "Не удалось собрать такт — включите больше длительностей." };
     }
 
-    // Неверные варианты — порча правильного: подмена одной фигуры на другую
-    // такой же длины. Тогда все варианты одинаково правдоподобны.
-    function nrDistractor(bars, pool){
-      const copy = bars.map(f => f.slice());
-      for(let attempt = 0; attempt < 40; attempt++){
-        const bi = Math.floor(Math.random() * copy.length);
-        const fi = Math.floor(Math.random() * copy[bi].length);
-        const cur = copy[bi][fi];
-        const alt = nrShuffle(pool.filter(f => f.units === cur.units && f.id !== cur.id))[0];
-        if(!alt) continue;
-        const test = copy.map(f => f.slice());
-        test[bi][fi] = alt;
-        return test;
-      }
-      return null;
-    }
-
-    function nrBuildQuestion(){
-      const g = nrGenerateBars(durSettings.nrBars);
-      if(g.error) return g;
-      const want = durSettings.nrOptCount;
-      if(g.pool.filter(f => f.units === g.ts.beat).length < 2){
-        return { error: "Слишком мало включено — вариантов ответа не из чего строить." };
-      }
-      const options = [g.bars];
-      const seenLook = new Set([nrLookSig(g.bars)]);
-      const seenSound = new Set([nrSoundSig(g.bars, g.ts)]);
-      let tries = 0;
-      while(options.length < want && tries++ < 300){
-        const d = nrDistractor(g.bars, g.pool);
-        if(!d) break;
-        const l = nrLookSig(d), snd = nrSoundSig(d, g.ts);
-        // вариант должен и выглядеть, и звучать иначе — иначе верных два
-        if(seenLook.has(l) || seenSound.has(snd)) continue;
-        seenLook.add(l); seenSound.add(snd);
-        options.push(d);
-      }
-      if(options.length < 2) return { error: "Не удалось собрать варианты ответа." };
-      const order = nrShuffle(options);
-      return { ts: g.ts, bars: g.bars, options: order, answer: order.indexOf(g.bars) };
-    }
-
     /* ---------------------------- отрисовка ---------------------------- */
     const NR_SVGNS = "http://www.w3.org/2000/svg";
     function nrEl(t){ return document.createElementNS(NR_SVGNS, t); }
@@ -5656,22 +5660,6 @@
     const NR_STEM_TOP = NR_MID - 40;
     const NR_BEAM_H = 4, NR_BEAM_GAP = 6, NR_SVG_H = 108;
 
-    function nrDrawStaff(g, x0, x1){
-      for(let i = 0; i < 5; i++){
-        g.appendChild(nrAt(nrEl("line"), {
-          x1: x0, x2: x1, y1: NR_TOP + i * NR_GAP, y2: NR_TOP + i * NR_GAP,
-          stroke: "var(--line-color)", "stroke-width": 1, opacity: .55
-        }));
-      }
-    }
-    function nrDrawTimeSig(g, ts, x){
-      [[ts.n, NR_MID - 5], [ts.d, NR_MID + 17]].forEach(([v, y]) => {
-        g.appendChild(nrAt(nrEl("text"), {
-          x: x, y: y, "text-anchor": "middle", "font-size": 21, "font-weight": 700,
-          "font-family": "var(--font-ui)", fill: "var(--clef-color)"
-        })).textContent = v;
-      });
-    }
     function nrFlag(x, yTop, i, color){
       const y0 = yTop + i * 9;
       return nrAt(nrEl("path"), {
@@ -5723,118 +5711,6 @@
       }
       if(d.dot) g.appendChild(nrAt(nrEl("circle"), { cx: x + 11, cy: NR_MID - NR_GAP / 2, r: 2.2, fill: color }));
     }
-    function nrDrawBeam(g, x1, x2, level, color){
-      g.appendChild(nrAt(nrEl("rect"), {
-        x: Math.min(x1, x2), y: NR_STEM_TOP + level * NR_BEAM_GAP,
-        width: Math.max(3, Math.abs(x2 - x1)), height: NR_BEAM_H, fill: color
-      }));
-    }
-    function nrDrawTuplet(g, x1, x2, color){
-      const y = NR_STEM_TOP - 11;
-      g.appendChild(nrAt(nrEl("path"), {
-        d: `M ${x1} ${y+5} L ${x1} ${y} L ${(x1+x2)/2-6} ${y} M ${(x1+x2)/2+6} ${y} L ${x2} ${y} L ${x2} ${y+5}`,
-        fill: "none", stroke: color, "stroke-width": 1.4
-      }));
-      g.appendChild(nrAt(nrEl("text"), {
-        x: (x1 + x2) / 2, y: y + 4, "text-anchor": "middle", "font-size": 11,
-        "font-weight": 700, "font-family": "var(--font-ui)", fill: color
-      })).textContent = "3";
-    }
-
-    function nrLayout(bars){
-      const notes = [];
-      bars.forEach((figs, bi) => {
-        let pos = 0;
-        figs.forEach(f => {
-          const group = [];
-          f.items.forEach(it => {
-            const u = NR_DUR[it.d].units;
-            notes.push({ bar: bi, fig: f, item: it, units: u, pos: pos, group: group });
-            group.push(notes.length - 1);
-            pos += u;
-          });
-        });
-      });
-      return notes;
-    }
-
-    // marks — цвет отдельных звучащих нот (для разбора попаданий в "Эхо")
-    function nrRenderBars(bars, ts, color, marks){
-      const notes = nrLayout(bars);
-      const PAD_L = 54, PAD_R = 14, BAR_GAP = 16;
-      const weights = notes.map(x => Math.sqrt(x.units));
-      const wSum = weights.reduce((a, b) => a + b, 0);
-      const perBar = Math.max(70, 75 + (bars.length <= 2 ? 65 : 20));
-      const contentW = perBar * bars.length;
-      const totalW = PAD_L + contentW + PAD_R + BAR_GAP * (bars.length - 1);
-
-      const svg = nrAt(nrEl("svg"), {
-        viewBox: `0 0 ${totalW} ${NR_SVG_H}`, width: totalW, height: NR_SVG_H,
-        style: "display:block; max-width:100%; height:auto; margin:0 auto;"
-      });
-      const g = nrEl("g");
-      svg.appendChild(g);
-
-      nrDrawStaff(g, 10, totalW - 6);
-      nrDrawTimeSig(g, ts, 24);
-
-      let acc = 0;
-      const xs = notes.map((x, i) => {
-        const px = PAD_L + x.bar * BAR_GAP + contentW * (acc / wSum);
-        acc += weights[i];
-        return px;
-      });
-
-      for(let b = 1; b <= bars.length; b++){
-        const idx = notes.findIndex(x => x.bar === b);
-        const bx = idx >= 0 ? (xs[idx] - 9) : (totalW - 8);
-        g.appendChild(nrAt(nrEl("line"), {
-          x1: bx, x2: bx, y1: NR_TOP, y2: NR_TOP + 4 * NR_GAP,
-          stroke: "var(--line-color)", "stroke-width": b === bars.length ? 3 : 1.6, opacity: .8
-        }));
-      }
-
-      const beamed = new Set(), seen = new Set();
-      notes.forEach((x) => {
-        if(seen.has(x.group)) return;
-        seen.add(x.group);
-        const ids = x.group.filter(j => !notes[j].item.rest && NR_DUR[notes[j].item.d].flags > 0);
-        if(ids.length < 2) return;
-        ids.forEach(j => beamed.add(j));
-        const sx = j => xs[j] + 6.5;
-        const minF = Math.min.apply(null, ids.map(j => NR_DUR[notes[j].item.d].flags));
-        for(let lvl = 0; lvl < Math.max(1, minF); lvl++){
-          nrDrawBeam(g, sx(ids[0]), sx(ids[ids.length - 1]) + 1.8, lvl, color);
-        }
-        for(let k = 0; k + 1 < ids.length; k++){
-          const a = NR_DUR[notes[ids[k]].item.d].flags, b2 = NR_DUR[notes[ids[k+1]].item.d].flags;
-          for(let lvl = Math.max(1, minF); lvl < Math.min(a, b2); lvl++){
-            nrDrawBeam(g, sx(ids[k]), sx(ids[k+1]) + 1.8, lvl, color);
-          }
-        }
-        // обрубок для "восьмая с точкой + шестнадцатая"
-        ids.forEach((j, k) => {
-          const f = NR_DUR[notes[j].item.d].flags;
-          const prev = k > 0 ? NR_DUR[notes[ids[k-1]].item.d].flags : 0;
-          const next = k < ids.length - 1 ? NR_DUR[notes[ids[k+1]].item.d].flags : 0;
-          for(let lvl = Math.max(1, minF); lvl < f; lvl++){
-            if(prev > lvl || next > lvl) continue;
-            nrDrawBeam(g, sx(j), sx(j) + (k === 0 ? 9 : -9), lvl, color);
-          }
-        });
-        if(x.fig.tuplet) nrDrawTuplet(g, xs[ids[0]] - 3, xs[ids[ids.length-1]] + 10, color);
-      });
-
-      let voiced = -1;
-      notes.forEach((x, i) => {
-        let c = color;
-        if(!x.item.rest){ voiced++; if(marks && marks[voiced]) c = marks[voiced]; }
-        if(x.item.rest) nrDrawRest(g, xs[i], x.item.d, c);
-        else nrDrawNote(g, xs[i], x.item.d, c, beamed.has(i));
-      });
-      return svg;
-    }
-
     /* ------------------------------ звук ------------------------------- */
     function nrVol(){ return Math.max(0, durSettings.nrVolume) / 100; }
     function nrBeatSec(){ return 60 / Math.max(20, durSettings.nrBpm); }
@@ -5930,6 +5806,10 @@
     function nrClearTimer(){ if(nrTimer){ clearInterval(nrTimer); nrTimer = null; } }
 
     function nrBuildRoot(){
+      const oldFloat = document.getElementById("nrFlowFloat");
+      if(oldFloat) oldFloat.remove();
+      if(NRFlow && NRFlow.removeTap) NRFlow.removeTap();
+      if(el.staffSvg) el.staffSvg.classList.remove("nr-flow-taparea", "hit");
       el.answersGrid.innerHTML = "";
       el.answersGrid.classList.remove("dur-answers");
       el.answersGrid.classList.add("rh-controls");
@@ -5955,393 +5835,84 @@
       return b;
     }
 
-    /* =========================== "НА СЛУХ" ============================= */
-    const NREar = { q:null, answered:false, playing:false, stats:{c:0,t:0,streak:0} };
-
-    function nrEarBuild(){
-      const wrap = nrBuildRoot();
-
-      const row = document.createElement("div");
-      row.className = "nr-row";
-      const play = nrBtn("Играть ритм", true);
-      const again = nrBtn("Ещё раз");
-      const next = nrBtn("Следующий");
-      const reveal = nrBtn("Показать ответ");
-      row.append(play, again, next, reveal);
-
-      const count = document.createElement("div"); count.className = "nr-count";
-      const status = document.createElement("div"); status.className = "nr-status";
-      const metrics = document.createElement("div"); metrics.className = "nr-metrics";
-      const warn = document.createElement("div"); warn.className = "nr-warn"; warn.style.display = "none";
-      const opts = document.createElement("div"); opts.style.width = "100%";
-
-      wrap.append(row, count, status, metrics, warn, opts);
-      NREar.el = { play, again, next, reveal, count, status, metrics, warn, opts };
-
-      play.addEventListener("click", nrEarPlay);
-      again.addEventListener("click", () => { NREar.el.play.disabled = false; nrEarPlay(); });
-      next.addEventListener("click", nrEarNew);
-      reveal.addEventListener("click", nrEarReveal);
-
-      nrEarNew();
-      scheduleBottomAnchor();
-    }
-
-    function nrEarStats(){
-      const s = NREar.stats;
-      NREar.el.metrics.innerHTML =
-        `<span>Верно: <b>${s.c}</b> из <b>${s.t}</b></span><span>Подряд: <b>${s.streak}</b></span>`;
-    }
-
-    function nrEarNew(){
-      nrClearTimer();
-      const q = nrBuildQuestion();
-      NREar.answered = false;
-      NREar.playing = false;
-      if(q.error){
-        NREar.q = null;
-        NREar.el.warn.style.display = "";
-        NREar.el.warn.textContent = q.error;
-        NREar.el.opts.innerHTML = "";
-        NREar.el.play.disabled = true;
-        NREar.el.again.disabled = true;
-        NREar.el.reveal.disabled = true;
-        return;
-      }
-      NREar.el.warn.style.display = "none";
-      NREar.q = q;
-      NREar.el.play.disabled = false;
-      NREar.el.again.disabled = true;
-      NREar.el.reveal.disabled = false;
-      NREar.el.count.textContent = "";
-      NREar.el.status.textContent = "Нажми «Играть ритм» и выбери, какая запись прозвучала.";
-      nrEarStats();
-
-      NREar.el.opts.innerHTML = "";
-      q.options.forEach((bars, i) => {
-        const row = document.createElement("div");
-        row.className = "nr-option";
-        const num = document.createElement("div");
-        num.className = "nr-num";
-        num.textContent = (i + 1);
-        row.appendChild(num);
-        row.appendChild(nrRenderBars(bars, q.ts, "var(--note-fill, var(--accent))"));
-        row.addEventListener("click", () => nrEarPick(i));
-        NREar.el.opts.appendChild(row);
-      });
-    }
-
-    function nrEarPlay(){
-      if(!NREar.q || NREar.playing) return;
-      rhEnsureAudio();
-      const ctx = rhAudioCtx;
-      NREar.playing = true;
-      NREar.el.play.disabled = true;
-      NREar.el.again.disabled = true;
-
-      const ts = NREar.q.ts;
-      const bs = nrBeatSec();
-      const secPerUnit = bs / ts.beat;
-      const beats = ts.units / ts.beat;
-      const t0 = ctx.currentTime + 0.25;
-
-      for(let i = 0; i < beats; i++) rhClick(t0 + i * bs, i === 0);
-      const start = t0 + beats * bs;
-
-      if(durSettings.nrMetroPlay){
-        for(let b = 0; b < NREar.q.bars.length; b++)
-          for(let i = 0; i < beats; i++) rhClick(start + (b * beats + i) * bs, i === 0);
-      }
-
-      nrBarEvents(NREar.q.bars, ts).forEach(ev => {
-        if(!ev.rest) nrTone(start + ev.units * secPerUnit, ev.len * secPerUnit);
-      });
-
-      const total = NREar.q.bars.length * ts.units * secPerUnit;
-      NREar.el.status.textContent = "Слушай отсчёт…";
-
-      nrClearTimer();
-      nrTimer = setInterval(() => {
-        const t = ctx.currentTime;
-        if(t < start){
-          const nth = Math.floor((t - t0) / bs) + 1;
-          NREar.el.count.textContent = nth > 0 ? String(Math.min(beats, nth)) : "";
-        }else if(t < start + total){
-          NREar.el.count.textContent = "\u266a";
-          NREar.el.status.textContent = "Звучит ритм…";
-        }else nrClearTimer();
-      }, 40);
-
-      setTimeout(() => {
-        NREar.playing = false;
-        NREar.el.again.disabled = false;
-        NREar.el.count.textContent = "";
-        if(!NREar.answered) NREar.el.status.textContent = "Какой из вариантов прозвучал?";
-      }, (start - ctx.currentTime + total + 0.35) * 1000);
-    }
-
-    function nrEarPick(i){
-      if(!NREar.q || NREar.answered || NREar.playing) return;
-      NREar.answered = true;
-      const rows = NREar.el.opts.querySelectorAll(".nr-option");
-      rows[NREar.q.answer].classList.add("right");
-      NREar.stats.t++;
-      if(i === NREar.q.answer){
-        NREar.stats.c++; NREar.stats.streak++;
-        NREar.el.status.textContent = "Верно";
-      }else{
-        rows[i].classList.add("wrong");
-        NREar.stats.streak = 0;
-        NREar.el.status.textContent = "Мимо — правильный вариант подсвечен";
-      }
-      NREar.el.reveal.disabled = true;
-      nrEarStats();
-    }
-
-    function nrEarReveal(){
-      if(!NREar.q || NREar.answered) return;
-      NREar.answered = true;
-      NREar.el.opts.querySelectorAll(".nr-option")[NREar.q.answer].classList.add("right");
-      NREar.el.status.textContent = "Ответ показан";
-      NREar.el.reveal.disabled = true;
-    }
-
-    /* ============================== "ЭХО" ============================== */
-    const NREcho = { q:null, phase:"idle", taps:[] };
-
-    function nrEchoBuild(){
-      const wrap = nrBuildRoot();
-
-      const row = document.createElement("div");
-      row.className = "nr-row";
-      const start = nrBtn("Начать", true);
-      const repeat = nrBtn("Прослушать ещё раз");
-      const next = nrBtn("Следующий");
-      row.append(start, repeat, next);
-
-      const count = document.createElement("div"); count.className = "nr-count";
-      const status = document.createElement("div"); status.className = "nr-status";
-      const metrics = document.createElement("div"); metrics.className = "nr-metrics";
-      const warn = document.createElement("div"); warn.className = "nr-warn"; warn.style.display = "none";
-
-      const pad = document.createElement("button");
-      pad.className = "rh-tap-pad";
-      pad.type = "button";
-      pad.innerHTML = "TAP<span>пробел \u00b7 MIDI: кнопка в \u00abНотах\u00bb</span>";
-      pad.disabled = true;
-      pad.addEventListener("pointerdown", ev => { ev.preventDefault(); nrEchoTap(); });
-
-      const sheet = document.createElement("div");
-      sheet.style.width = "100%";
-
-      wrap.append(row, count, status, metrics, warn, pad, sheet);
-      NREcho.el = { start, repeat, next, count, status, metrics, warn, pad, sheet };
-
-      start.addEventListener("click", () => nrEchoRun(false));
-      repeat.addEventListener("click", () => nrEchoRun(true));
-      next.addEventListener("click", nrEchoNew);
-
-      nrEchoNew();
-      scheduleBottomAnchor();
-    }
-
-    function nrEchoNew(){
-      nrClearTimer();
-      NREcho.phase = "idle";
-      NREcho.taps = [];
-      NREcho.el.pad.disabled = true;
-      const g = nrGenerateBars(durSettings.nrBars);
-      if(g.error){
-        NREcho.q = null;
-        NREcho.el.warn.style.display = "";
-        NREcho.el.warn.textContent = g.error;
-        NREcho.el.start.disabled = true;
-        return;
-      }
-      NREcho.el.warn.style.display = "none";
-      NREcho.el.start.disabled = false;
-      NREcho.q = { ts: g.ts, bars: g.bars, events: nrBarEvents(g.bars, g.ts) };
-      NREcho.el.sheet.innerHTML = "";
-      NREcho.el.repeat.disabled = true;
-      NREcho.el.count.textContent = "";
-      NREcho.el.status.textContent = "Ритм прозвучит без нот — повтори его простукиванием.";
-      NREcho.el.metrics.innerHTML = "";
-    }
-
-    function nrEchoRun(listenOnly){
-      if(!NREcho.q) return;
-      rhEnsureAudio();
-      const ctx = rhAudioCtx;
-      nrClearTimer();
-      NREcho.taps = [];
-
-      const ts = NREcho.q.ts;
-      const bs = nrBeatSec();
-      const secPerUnit = bs / ts.beat;
-      const beats = ts.units / ts.beat;
-      const barSec = beats * bs;
-      const total = NREcho.q.bars.length * ts.units * secPerUnit;
-
-      const t0 = ctx.currentTime + 0.3;
-      for(let i = 0; i < beats; i++) rhClick(t0 + i * bs, i === 0);
-
-      const listenStart = t0 + barSec;
-      NREcho.q.events.forEach(ev => {
-        if(!ev.rest) nrTone(listenStart + ev.units * secPerUnit, ev.len * secPerUnit);
-      });
-      if(durSettings.nrMetroPlay){
-        for(let b = 0; b < NREcho.q.bars.length; b++)
-          for(let i = 0; i < beats; i++) rhClick(listenStart + b * barSec + i * bs, i === 0);
-      }
-      const listenEnd = listenStart + total;
-
-      NREcho.phase = "listen";
-      NREcho.el.start.disabled = true;
-      NREcho.el.repeat.disabled = true;
-      NREcho.el.next.disabled = true;
-      NREcho.el.pad.disabled = true;
-      NREcho.el.status.textContent = "Слушай…";
-
-      if(listenOnly){
-        nrEchoTicker(t0, bs, beats, listenStart, listenEnd, null, null);
-        setTimeout(() => {
-          NREcho.phase = "idle";
-          NREcho.el.start.disabled = false;
-          NREcho.el.repeat.disabled = false;
-          NREcho.el.next.disabled = false;
-          NREcho.el.count.textContent = "";
-          NREcho.el.status.textContent = "Готов повторить? Нажми «Начать».";
-        }, (listenEnd - ctx.currentTime + 0.3) * 1000);
-        return;
-      }
-
-      const tapCount = listenEnd + 0.15;
-      for(let i = 0; i < beats; i++) rhClick(tapCount + i * bs, i === 0);
-      const tapStart = tapCount + barSec;
-      for(let b = 0; b < NREcho.q.bars.length; b++)
-        for(let i = 0; i < beats; i++) rhClick(tapStart + b * barSec + i * bs, i === 0);
-
-      NREcho.q.tapStart = tapStart;
-      NREcho.q.secPerUnit = secPerUnit;
-
-      nrEchoTicker(t0, bs, beats, listenStart, listenEnd, tapCount, tapStart);
-
-      setTimeout(() => {
-        NREcho.phase = "tap";
-        NREcho.el.pad.disabled = false;
-        NREcho.el.status.textContent = "Твоя очередь — простукивай";
-      }, Math.max(0, (tapCount - ctx.currentTime) * 1000));
-
-      setTimeout(nrEchoFinish, (tapStart + total - ctx.currentTime + 0.45) * 1000);
-    }
-
-    function nrEchoTicker(t0, bs, beats, lStart, lEnd, tCount, tStart){
-      nrClearTimer();
-      nrTimer = setInterval(() => {
-        const t = rhAudioCtx.currentTime;
-        if(t < lStart){
-          const nth = Math.floor((t - t0) / bs) + 1;
-          NREcho.el.count.textContent = nth > 0 ? String(Math.min(beats, nth)) : "";
-        }else if(t < lEnd){
-          NREcho.el.count.textContent = "\u266a";
-        }else if(tCount !== null && t < tStart){
-          const nth = Math.floor((t - tCount) / bs) + 1;
-          NREcho.el.count.textContent = nth > 0 ? String(Math.min(beats, nth)) : "";
-        }else if(tStart !== null){
-          NREcho.el.count.textContent = "\u25b6";
-        }
-      }, 40);
-    }
-
-    function nrEchoTap(){
-      if(NREcho.phase !== "tap") return;
-      const t = rhAudioCtx.currentTime - (durSettings.rhLatencyMs || 0) / 1000;
-      NREcho.taps.push(t);
-      NREcho.el.pad.classList.add("hit");
-      setTimeout(() => NREcho.el.pad.classList.remove("hit"), 90);
-    }
-
-    function nrEchoFinish(){
-      nrClearTimer();
-      if(!NREcho.q) return;
-      NREcho.phase = "done";
-      NREcho.el.pad.disabled = true;
-      NREcho.el.count.textContent = "";
-
-      const expected = NREcho.q.events.filter(e => !e.rest)
-        .map(e => NREcho.q.tapStart + e.units * NREcho.q.secPerUnit);
-      const used = new Array(expected.length).fill(false);
-      const marks = {};
-      let perfect = 0, good = 0, extra = 0;
-
-      NREcho.taps.forEach(tap => {
-        let best = -1, bestD = Infinity;
-        expected.forEach((t, i) => {
-          if(used[i]) return;
-          const d = Math.abs(tap - t);
-          if(d < bestD){ bestD = d; best = i; }
-        });
-        const ms = bestD * 1000;
-        if(best >= 0 && ms <= NR_TOL_MISS){
-          used[best] = true;
-          if(ms <= NR_TOL_PERFECT){ perfect++; marks[best] = "var(--correct-color)"; }
-          else if(ms <= NR_TOL_GOOD){ good++; marks[best] = "var(--accent)"; }
-          else marks[best] = "var(--wrong-color)";
-        }else extra++;
-      });
-
-      const missed = used.filter(u => !u).length;
-      used.forEach((u, i) => { if(!u) marks[i] = "var(--wrong-color)"; });
-
-      let score = expected.length ? (perfect + good * 0.6) / expected.length : 0;
-      score = Math.max(0, score - extra * 0.1);
-
-      NREcho.el.metrics.innerHTML =
-        `<span>Точно: <b>${perfect}</b></span><span>Близко: <b>${good}</b></span>` +
-        `<span>Мимо: <b>${missed}</b></span><span>Лишних: <b>${extra}</b></span>` +
-        `<span>Результат: <b>${Math.round(score * 100)}%</b></span>`;
-      NREcho.el.status.textContent = score >= 0.9 ? "Отлично" : score >= 0.6 ? "Неплохо" : "Ещё разок";
-
-      NREcho.el.sheet.innerHTML = "";
-      NREcho.el.sheet.appendChild(nrRenderBars(NREcho.q.bars, NREcho.q.ts, "var(--note-fill, var(--accent))", marks));
-
-      NREcho.el.start.disabled = false;
-      NREcho.el.repeat.disabled = false;
-      NREcho.el.next.disabled = false;
-    }
-
     /* ============================= "ПОТОК" ============================= */
-    const NR_FLOW_H = 150, NR_FLOW_Y = 24;
+    // Раньше "Поток" рисовал собственный маленький нотный стан в отдельном
+    // блоке под настройками. Теперь бегущие ноты рисуются прямо на общем
+    // нотном стане (#staff), который уже показан по центру экрана на всех
+    // уровнях — свой отдельный стан больше не создаётся.
     let NRFlow = null;
+
+    // Геометрия ОБЩЕГО стана (id="staff"): 5 линий y=64..120 (шаг 14), рабочая
+    // ширина по x — от края скрипичного ключа (90) до правого края линий (390).
+    const NR_MAIN_TOP = 64, NR_MAIN_GAP = 14, NR_MAIN_X0 = 95, NR_MAIN_X1 = 390;
+    // Масштаб, которым фигуры нот/пауз (нарисованные функциями nrDrawNote/nrDrawRest
+    // в их "родных" координатах NR_TOP/NR_MID/NR_GAP) приводятся к масштабу общего
+    // стана — так ноты остаются той же формы, просто крупнее/мельче.
+    const NR_FLOW_SCALE = NR_MAIN_GAP / NR_GAP;
+    const NR_FLOW_OFFSET_Y = NR_MAIN_TOP - NR_TOP * NR_FLOW_SCALE;
+    const NR_FLOW_TRACK_W = (NR_MAIN_X1 - NR_MAIN_X0) / NR_FLOW_SCALE; // ширина дорожки в "родных" единицах
+
+    // Слой для бегущих нот создаётся один раз внутри #staffContent — благодаря этому
+    // он всегда стоит на том же месте и с тем же выравниванием, что и сами линии
+    // стана (включая их центрирование при одиночном ключе).
+    function nrFlowEnsureLayer(){
+      let layer = document.getElementById("nrFlowLayer");
+      if(!layer && el.staffContent){
+        layer = nrAt(nrEl("g"), { id: "nrFlowLayer" });
+        el.staffContent.appendChild(layer);
+      }
+      return layer;
+    }
+    function nrFlowClearLayer(){
+      const layer = document.getElementById("nrFlowLayer");
+      if(layer) layer.innerHTML = "";
+    }
 
     function nrFlowBuild(){
       const wrap = nrBuildRoot();
+      wrap.classList.add("nr-flow-wrap");
+
+      // элементы "Потока" лежат ВНУТРИ .staff-wrap — благодаря этому они
+      // масштабируются и двигаются вместе со станом (в т.ч. при F11 и при
+      // изменении масштаба стана); положение задаётся --flow-*-x/y выше
+      const old = document.getElementById("nrFlowFloat");
+      if(old) old.remove();
+      const float = document.createElement("div");
+      float.id = "nrFlowFloat";
+      float.className = "nr-flow-wrap";
+      const staffWrap = el.staffSvg ? el.staffSvg.closest(".staff-wrap") : null;
+      (staffWrap || document.body).appendChild(float);
 
       const row = document.createElement("div");
       row.className = "nr-row";
-      const start = nrBtn("Старт", true);
-      const stop = nrBtn("Стоп");
+      row.id = "nrFlowCtrl";
+      const start = document.createElement("button");
+      start.type = "button";
+      start.className = "nrflow-ctrl-btn nrflow-play";
+      start.title = "Старт";
+      start.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+      const stop = document.createElement("button");
+      stop.type = "button";
+      stop.className = "nrflow-ctrl-btn nrflow-stop";
+      stop.title = "Стоп";
+      stop.innerHTML = '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
       stop.disabled = true;
       row.append(start, stop);
 
-      const feed = document.createElement("div"); feed.className = "nr-count";
-      const metrics = document.createElement("div"); metrics.className = "nr-metrics";
-      const warn = document.createElement("div"); warn.className = "nr-warn"; warn.style.display = "none";
+      const feed = document.createElement("div"); feed.className = "nr-count"; feed.id = "nrFlowFeed";
+      const metrics = document.getElementById("nrFlowStats") || document.createElement("div");
+      const warn = document.createElement("div"); warn.className = "nr-warn"; warn.id = "nrFlowWarn"; warn.style.display = "none";
 
-      const box = document.createElement("div");
-      box.className = "nr-flow";
-      const svg = nrAt(nrEl("svg"), { width: "100%", height: NR_FLOW_H });
-      box.appendChild(svg);
+      // весь нотный стан служит зоной тапа — отдельной кнопки TAP больше нет
+      const pad = el.staffSvg;
+      let flowPadEnabled = false;
+      const onFlowTap = ev => { if(flowPadEnabled){ ev.preventDefault(); nrFlowTap(); } };
+      pad.addEventListener("pointerdown", onFlowTap);
 
-      const pad = document.createElement("button");
-      pad.className = "rh-tap-pad";
-      pad.type = "button";
-      pad.innerHTML = "TAP<span>бей, когда нота на линии</span>";
-      pad.disabled = true;
-      pad.addEventListener("pointerdown", ev => { ev.preventDefault(); nrFlowTap(); });
-
-      wrap.append(row, box, feed, metrics, warn, pad);
-      NRFlow = { el:{ start, stop, feed, metrics, warn, svg, pad }, run:null };
+      float.append(feed, warn, row);
+      NRFlow = { el:{ start, stop, feed, metrics, warn, pad, row }, run:null,
+        setPadEnabled: v => { flowPadEnabled = v; pad.classList.toggle("nr-flow-taparea", v); },
+        removeTap: () => pad.removeEventListener("pointerdown", onFlowTap) };
 
       start.addEventListener("click", nrFlowStart);
       stop.addEventListener("click", nrFlowStop);
@@ -6360,8 +5931,7 @@
     }
 
     function nrFlowWidth(){
-      const w = NRFlow.el.svg.getBoundingClientRect().width;
-      return w > 10 ? w : 800;
+      return NR_FLOW_TRACK_W;
     }
 
     function nrFlowStop(){
@@ -6369,14 +5939,20 @@
       const r = NRFlow.run;
       if(r && r.raf) cancelAnimationFrame(r.raf);
       NRFlow.run = null;
+      // глушим уже запланированные (но ещё не сыгранные) клики метронома,
+      // иначе после "Стоп" они всё равно дозвучивали
+      rhScheduled.forEach(o => { try{ o.stop(); }catch(e){} });
+      rhScheduled = [];
       NRFlow.el.start.disabled = false;
       NRFlow.el.stop.disabled = true;
-      NRFlow.el.pad.disabled = true;
+      NRFlow.setPadEnabled(false);
       NRFlow.el.feed.textContent = "";
+      NRFlow.el.row.classList.remove("nr-flow-auto-hide");
+      nrFlowClearLayer();
     }
 
-    function nrFlowStart(){
-      rhEnsureAudio();
+    async function nrFlowStart(){
+      await rhEnsureAudioReady();
       nrFlowStop();
 
       const g = nrGenerateBars(1);
@@ -6386,6 +5962,7 @@
         return;
       }
       NRFlow.el.warn.style.display = "none";
+      NRFlow.el.row.classList.add("nr-flow-auto-hide");
 
       const ts = g.ts;
       const bs = nrBeatSec();
@@ -6402,7 +5979,7 @@
       nrFlowStage();
       NRFlow.el.start.disabled = true;
       NRFlow.el.stop.disabled = false;
-      NRFlow.el.pad.disabled = false;
+      NRFlow.setPadEnabled(true);
       nrFlowMetrics(NRFlow.run.stats);
       nrFlowLoop();
     }
@@ -6410,31 +5987,22 @@
     function nrFlowStage(){
       const r = NRFlow.run;
       const W = nrFlowWidth();
-      r.hitX = W / 2;
-      NRFlow.el.svg.innerHTML = "";
-      NRFlow.el.svg.setAttribute("height", NR_FLOW_H);
+      // жёлтая линия — по центру всех 5 линий стана (40..390 в координатах #staff),
+      // а не по центру рабочей дорожки, которая начинается правее (за ключом)
+      r.hitX = ((40 + STAFF_LINE_X2) / 2 - NR_MAIN_X0) / NR_FLOW_SCALE;
 
-      const staff = nrEl("g");
-      nrAt(staff, { transform: `translate(0 ${NR_FLOW_Y})` });
-      for(let i = 0; i < 5; i++){
-        staff.appendChild(nrAt(nrEl("line"), {
-          x1: 0, x2: W, y1: NR_TOP + i * NR_GAP, y2: NR_TOP + i * NR_GAP,
-          stroke: "var(--line-color)", "stroke-width": 1, opacity: .45
-        }));
-      }
-      NRFlow.el.svg.appendChild(staff);
+      const layer = nrFlowEnsureLayer();
+      layer.innerHTML = "";
+      nrAt(layer, { transform: `translate(${NR_MAIN_X0} ${NR_FLOW_OFFSET_Y}) scale(${NR_FLOW_SCALE})` });
 
-      // линия попадания — по центру дорожки
-      NRFlow.el.svg.appendChild(nrAt(nrEl("rect"), {
-        x: r.hitX - 26, y: 6, width: 52, height: NR_FLOW_H - 12, fill: "var(--accent)", opacity: .07
-      }));
-      NRFlow.el.svg.appendChild(nrAt(nrEl("rect"), {
-        x: r.hitX - 1.5, y: 6, width: 3, height: NR_FLOW_H - 12,
+      // линия попадания — по центру дорожки, во всю высоту 5 линий стана
+      layer.appendChild(nrAt(nrEl("rect"), {
+        x: r.hitX - 1.5, y: NR_TOP - 12, width: 3, height: 4 * NR_GAP + 24,
         fill: "var(--accent)", opacity: .85, rx: 1.5
       }));
 
       const scroll = nrEl("g");
-      NRFlow.el.svg.appendChild(scroll);
+      layer.appendChild(scroll);
       r.scroll = scroll;
     }
 
@@ -6447,23 +6015,22 @@
 
       const line = nrAt(nrEl("line"), {
         x1: r.hitX + startU * r.pxPerUnit - 14, x2: r.hitX + startU * r.pxPerUnit - 14,
-        y1: NR_FLOW_Y + NR_TOP, y2: NR_FLOW_Y + NR_TOP + 4 * NR_GAP,
+        y1: NR_TOP, y2: NR_TOP + 4 * NR_GAP,
         stroke: "var(--line-color)", "stroke-width": 1.4, opacity: .5
       });
       r.scroll.appendChild(line);
-      r.notes.push({ decor:true, units:startU, el:line });
+      r.notes.push({ decor:true, units:startU, el:line, spawnPx: r.pxPerUnit });
 
       figs.forEach(f => f.items.forEach(it => {
         const u = NR_DUR[it.d].units;
         const units = startU + pos;
         const x = r.hitX + units * r.pxPerUnit;
         const grp = nrEl("g");
-        nrAt(grp, { transform: `translate(0 ${NR_FLOW_Y})` });
         if(it.rest) nrDrawRest(grp, x, it.d, "var(--text-dim)");
         else nrDrawNote(grp, x, it.d, "var(--note-fill, var(--accent))", false);
         r.scroll.appendChild(grp);
         r.notes.push({
-          units: units, rest: !!it.rest, el: grp,
+          units: units, rest: !!it.rest, el: grp, x: x, spawnPx: r.pxPerUnit, labels: [],
           time: r.t0 + units * r.secPerUnit, judged: false
         });
         pos += u;
@@ -6474,16 +6041,78 @@
 
     function nrFlowMetro(){
       if(!durSettings.nrMetroPlay) return;
-      const r = NRFlow.run;
-      const bs = nrBeatSec();
-      const beats = r.ts.units / r.ts.beat;
-      while(r.t0 + r.metroBars * beats * bs < rhAudioCtx.currentTime + 2.5){
-        const barT = r.t0 + r.metroBars * beats * bs;
-        if(barT > rhAudioCtx.currentTime)
-          for(let i = 0; i < beats; i++) rhClick(barT + i * bs, i === 0);
+      const r = NRFlow && NRFlow.run;
+      if(!r || !rhAudioCtx) return;
+      const divUnits = nrMetroDivUnits(r.ts);
+      const beats = r.ts.units / divUnits;
+      const stepSec = divUnits * r.secPerUnit;
+      const barDur = beats * stepSec;
+      while(r.t0 + r.metroBars * barDur < rhAudioCtx.currentTime + 2.5){
+        const barT = r.t0 + r.metroBars * barDur;
+        // проверяем каждую долю отдельно (а не такт целиком), чтобы при включении
+        // галки в середине такта сразу заиграли оставшиеся доли этого такта,
+        // а не пришлось ждать начала следующего такта
+        for(let i = 0; i < beats; i++){
+          const beatT = barT + i * stepSec;
+          if(beatT > rhAudioCtx.currentTime) rhClick(beatT, i === 0);
+        }
         r.metroBars++;
         if(r.metroBars > 5000) break;
       }
+    }
+
+    // Повторное включение метронома посреди игры: счётчик тактов метронома
+    // (metroBars) к этому моменту уже "убежал" вперёд, поэтому обычное
+    // планирование ничего бы не добавило и звук вернулся бы только через
+    // такт-другой. Сдвигаем счётчик обратно на текущий такт и планируем
+    // оставшиеся доли — метроном включается мгновенно.
+    function nrFlowMetroResync(){
+      const r = NRFlow && NRFlow.run;
+      if(!r || !rhAudioCtx) return;
+      const divUnits = nrMetroDivUnits(r.ts);
+      const beats = r.ts.units / divUnits;
+      const barLen = beats * divUnits * r.secPerUnit;
+      if(barLen > 0){
+        const idx = Math.floor((rhAudioCtx.currentTime - r.t0) / barLen);
+        r.metroBars = Math.max(0, idx);
+      }
+      nrFlowMetro();
+    }
+
+    function nrFlowLabel(nt, text, color){
+      const r = NRFlow && NRFlow.run;
+      if(!r) return;
+      const t = nrEl("text");
+      nrAt(t, {
+        x: nt.x, y: NR_TOP - 37,
+        "text-anchor": "middle",
+        "font-size": "11",
+        "font-family": "var(--font-ui)",
+        fill: color
+      });
+      t.textContent = text;
+      r.scroll.appendChild(t);
+      if(nt.labels) nt.labels.push(t);
+      if(nt.spawnPx != null){
+        const dx = nt.units * (r.pxPerUnit - nt.spawnPx);
+        if(dx) t.setAttribute("transform", `translate(${dx} 0)`);
+      }
+    }
+
+    // Смена "Скорости прокрутки" во время игры: пересчитываем шаг и сдвигаем
+    // уже нарисованные ноты на новые места, не перезапуская упражнение.
+    function nrFlowRescale(){
+      const r = NRFlow && NRFlow.run;
+      if(!r) return;
+      const np = durSettings.nrFlowSpeed / r.ts.beat;
+      if(np === r.pxPerUnit) return;
+      r.pxPerUnit = np;
+      r.notes.forEach(nt => {
+        if(nt.spawnPx == null) return;
+        const dx = nt.units * (np - nt.spawnPx);
+        nt.el.setAttribute("transform", `translate(${dx} 0)`);
+        if(nt.labels) nt.labels.forEach(l => l.setAttribute("transform", `translate(${dx} 0)`));
+      });
     }
 
     function nrPaint(nt, color){
@@ -6512,6 +6141,7 @@
           nt.judged = true;
           r.stats.skip++; r.stats.streak = 0;
           nrPaint(nt, "var(--wrong-color)");
+          nrFlowLabel(nt, "—", "var(--wrong-color)");
           nrFlowMetrics(r.stats);
         }
         if(r.hitX + (nt.units - elapsed) * r.pxPerUnit < -70){
@@ -6539,22 +6169,27 @@
       const ms = bestD * 1000;
       if(best && ms <= NR_TOL_MISS){
         best.judged = true;
+        const signedMs = Math.round((now - best.time) * 1000);
+        const label = (signedMs > 0 ? "+" : "") + signedMs;
         if(ms <= NR_TOL_PERFECT){
           r.stats.perfect++; r.stats.streak++;
           nrPaint(best, "var(--correct-color)");
-          NRFlow.el.feed.textContent = "Точно";
+          nrFlowLabel(best, label, "var(--correct-color)");
+          NRFlow.el.feed.textContent = "";
         }else if(ms <= NR_TOL_GOOD){
           r.stats.good++; r.stats.streak++;
           nrPaint(best, "var(--accent)");
-          NRFlow.el.feed.textContent = (now > best.time ? "Поздно " : "Рано ") + Math.round(ms) + " мс";
+          nrFlowLabel(best, label, "var(--accent)");
+          NRFlow.el.feed.textContent = "";
         }else{
           r.stats.miss++; r.stats.streak = 0;
           nrPaint(best, "var(--wrong-color)");
-          NRFlow.el.feed.textContent = (now > best.time ? "Поздно " : "Рано ") + Math.round(ms) + " мс";
+          nrFlowLabel(best, label, "var(--wrong-color)");
+          NRFlow.el.feed.textContent = "";
         }
       }else{
         r.stats.miss++; r.stats.streak = 0;
-        NRFlow.el.feed.textContent = "Лишний удар";
+        NRFlow.el.feed.textContent = "";
       }
       nrFlowMetrics(r.stats);
     }
@@ -6563,20 +6198,18 @@
     window.__nrStopAll = function(){
       nrClearTimer();
       if(NRFlow && NRFlow.run) nrFlowStop();
-      NREcho.phase = "idle";
       nrLevel = null;
     };
 
-    // тап пробелом и с MIDI работает только на подуровнях, где он нужен
+    // тап пробелом и с MIDI работает на подуровне "Поток"
     window.__nrTap = function(){
-      if(nrLevel === "echo") nrEchoTap();
-      else if(nrLevel === "flow") nrFlowTap();
+      if(nrLevel === "flow") nrFlowTap();
     };
 
     function activateNrLevel(level){
       window.__scaleLevelActive = false;
       window.__durLevelActive = true;
-      if(window.__setErrorsWindowLevel) window.__setErrorsWindowLevel("measure");
+      if(window.__setErrorsWindowLevel) window.__setErrorsWindowLevel("flow");
       hideReveal();
       elS.scaleChordReveal.classList.remove("show");
       if(elS.scaleNameLabel) elS.scaleNameLabel.style.display = "none";
@@ -6586,22 +6219,22 @@
       window.__nrStopAll();
       nrLevel = level;
 
-      // блоки настроек, нужные не всем подуровням
-      const barsBlock = document.getElementById("nrBarsBlock");
-      const optBlock  = document.getElementById("nrOptBlock");
-      const flowBlock = document.getElementById("nrFlowBlock");
-      if(barsBlock) barsBlock.style.display = level === "flow" ? "none" : "";
-      if(optBlock)  optBlock.style.display  = level === "ear"  ? "" : "none";
-      if(flowBlock) flowBlock.style.display = level === "flow" ? "" : "none";
-
-      // на этих подуровнях общий нотный стан не используется
+      // на этом подуровне общий нотный стан не используется как обычно
       if(el.notesGroup) el.notesGroup.innerHTML = "";
       if(el.hintNotesGroup) el.hintNotesGroup.innerHTML = "";
       if(el.ledgerLines) el.ledgerLines.innerHTML = "";
 
-      if(level === "ear")       nrEarBuild();
-      else if(level === "echo") nrEchoBuild();
-      else                      nrFlowBuild();
+      // в "Потоке" ключ и вторая (басовая) линейка не нужны — только 5 линий стана
+      if(el.clefTreble) el.clefTreble.style.display = "none";
+      if(el.clefBass) el.clefBass.style.display = "none";
+      if(el.staffLinesTreble) el.staffLinesTreble.style.display = "none";
+      if(el.middleCLedger) el.middleCLedger.style.display = "none";
+      // линии стана на этом подуровне всегда стоят по центру (одиночный стан)
+      // и не должны зависеть от того, какой ключ выбран в "Нотах" —
+      // поэтому центрируем принудительно, а не по settings.clef
+      applyStaffCentering(false);
+
+      nrFlowBuild();
     }
 
     /* ---------------------- настройки этих подуровней ------------------- */
@@ -6647,73 +6280,79 @@
       });
     }
 
-    function nrWireSeg(rowId, get, set){
-      const row = document.getElementById(rowId);
-      if(!row) return;
-      const mark = () => row.querySelectorAll("button").forEach(b =>
-        b.classList.toggle("active", +b.dataset.value === get()));
-      row.querySelectorAll("button").forEach(b => {
+    function nrBuildMetroDivGrid(){
+      const box = document.getElementById("nrMetroDivGrid");
+      if(!box) return;
+      box.innerHTML = "";
+      NR_METRO_DIVS.forEach(t => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "note-btn";
+        b.textContent = t.label;
+        if((durSettings.nrMetroDiv || "auto") === t.key) b.classList.add("active");
         b.addEventListener("click", () => {
-          set(+b.dataset.value);
+          durSettings.nrMetroDiv = t.key;
           saveDurSettings();
-          mark();
+          nrBuildMetroDivGrid();
           nrRefreshCurrent();
         });
+        box.appendChild(b);
       });
-      mark();
     }
 
     function nrRefreshCurrent(){
-      if(nrLevel === "ear") nrEarNew();
-      else if(nrLevel === "echo") nrEchoNew();
-      else if(nrLevel === "flow") nrFlowStop();
+      if(nrLevel === "flow") nrFlowStop();
     }
 
     nrBuildTsGrid();
     nrBuildTagGrid();
-    nrWireSeg("nrBarsRow", () => durSettings.nrBars, v => durSettings.nrBars = v);
-    nrWireSeg("nrOptRow",  () => durSettings.nrOptCount, v => durSettings.nrOptCount = v);
+    nrBuildMetroDivGrid();
 
     wireRangeField(document.getElementById("nrBpm"), document.getElementById("nrBpmVal"), 40, 200,
       () => durSettings.nrBpm, v => durSettings.nrBpm = v, () => saveDurSettings());
-    wireRangeField(document.getElementById("nrVolume"), document.getElementById("nrVolumeVal"), 0, 100,
-      () => durSettings.nrVolume, v => durSettings.nrVolume = v,
-      () => { saveDurSettings(); });
     wireRangeField(document.getElementById("nrMetroVolume"), document.getElementById("nrMetroVolumeVal"), 0, 100,
       () => durSettings.rhVolume, v => durSettings.rhVolume = v,
       () => { rhUpdateLiveVolume(); saveDurSettings(); });
     wireRangeField(document.getElementById("nrFlowSpeed"), document.getElementById("nrFlowSpeedVal"), 50, 200,
-      () => durSettings.nrFlowSpeed, v => durSettings.nrFlowSpeed = v, () => saveDurSettings());
+      () => durSettings.nrFlowSpeed, v => durSettings.nrFlowSpeed = v,
+      () => { saveDurSettings(); if(typeof nrFlowRescale === "function") nrFlowRescale(); });
 
     (function nrWireChecks(){
-      const sine = document.getElementById("nrSinewave");
-      if(sine){
-        sine.checked = !!durSettings.nrSinewave;
-        sine.addEventListener("change", () => { durSettings.nrSinewave = sine.checked; saveDurSettings(); });
-      }
-      const sus = document.getElementById("nrSustained");
+      // чекбоксы "Тянущийся звук" и "Sinewave" убраны: всегда тянущийся звук и сэмпл
+      durSettings.nrSustained = true;
+      durSettings.nrSinewave = false;
       const met = document.getElementById("nrMetroPlay");
-      if(sus){
-        sus.checked = !!durSettings.nrSustained;
-        sus.addEventListener("change", () => { durSettings.nrSustained = sus.checked; saveDurSettings(); });
-      }
       if(met){
         met.checked = !!durSettings.nrMetroPlay;
-        met.addEventListener("change", () => { durSettings.nrMetroPlay = met.checked; saveDurSettings(); });
+        met.addEventListener("change", () => {
+          durSettings.nrMetroPlay = met.checked;
+          saveDurSettings();
+          // выключили галочку — сразу глушим уже запланированные (но ещё не сыгранные)
+          // клики метронома, а не только те, что будут запланированы дальше
+          if(!met.checked){
+            rhScheduled.forEach(o => { try{ o.stop(); }catch(e){} });
+            rhScheduled = [];
+          } else if(NRFlow && NRFlow.run){
+            // включили галку заново — сразу планируем оставшиеся доли текущего такта
+            nrFlowMetroResync();
+          }
+        });
       }
     })();
 
 
     function activateLevel(level){
-      if(level !== "measure") rhStop();
-      if(!NR_SUBLEVELS.includes(level) && window.__nrStopAll) window.__nrStopAll();
+      if(!NR_SUBLEVELS.includes(level) && window.__nrStopAll){
+        window.__nrStopAll();
+        const f = document.getElementById("nrFlowFloat");
+        if(f) f.remove();
+      }
       if(level === "scales")         activateScalesLevel();
       else if(level === "durations") activateDurationsLevel();
-      else if(level === "measure")   activateMeasureLevel();
       else if(NR_SUBLEVELS.includes(level)) activateNrLevel(level);
       else                           activateNotesLevel();
     }
-    // подуровень "measure" живёт внутри вкладки "Длительности"
+    // подуровень "flow" живёт внутри вкладки "Длительности"
     function tabOf(level){ return DUR_SUBLEVELS.includes(level) ? "durations" : level; }
     let lastDurSub = DUR_SUBLEVELS.includes(settings.activeLevel) ? settings.activeLevel : "durations";
 
@@ -6790,10 +6429,76 @@
     }
     lockDurationsBlockHeight();
 
+    // ---- Подуровни "Одна нота" и "Бесконечно" короче общей высоты панели
+    // (см. lockDurationsBlockHeight выше), поэтому внизу остаётся пустое место.
+    // Панель при этом всё равно прокручивается колесом мыши в это пустое место —
+    // ограничиваем прокрутку так, чтобы нижняя строка настроек была границей. ----
+    function getDurationsActiveBlock(){
+      const panel = el.settingsPanel;
+      if(!panel || !panel.classList.contains("open")) return null;
+      const level = settings.activeLevel;
+      return level === "durations" ? elD.durBlocks
+           : level === "flow"      ? elD.nrBlocks
+           : null;
+    }
+    // Прокрутку ограничиваем ДО того, как она произойдёт (прямо в обработчике
+    // колеса), а не откатываем назад после — иначе виден рывок вниз-вверх.
+    function clampDurationsWheel(e){
+      const activeBlock = getDurationsActiveBlock();
+      if(!activeBlock) return;
+      const panel = el.settingsPanel;
+      const panelRect = panel.getBoundingClientRect();
+      const blockRect = activeBlock.getBoundingClientRect();
+      // Максимально допустимый scrollTop — тот, при котором нижняя строка
+      // настроек ровно совпадает с нижним краем панели.
+      const maxScrollTop = panel.scrollTop + Math.max(0, blockRect.bottom - panelRect.bottom);
+      let next = panel.scrollTop + e.deltaY;
+      if(next > maxScrollTop) next = maxScrollTop;
+      if(next < 0) next = 0;
+      if(next !== panel.scrollTop){
+        e.preventDefault();
+        panel.scrollTop = next;
+      } else if(e.deltaY > 0 && panel.scrollTop >= maxScrollTop){
+        // упёрлись в границу — гасим прокрутку, а не пускаем дальше
+        e.preventDefault();
+      }
+    }
+    el.settingsPanel.addEventListener("wheel", clampDurationsWheel, { passive:false });
+
   })();
 
 })();
 </script>
 
+
+<script>
+/* ===== Выбор темы интерфейса (общий для всех уровней) ===== */
+(function(){
+  var KEY = "ntThemeV1";
+  var LIST = ["1","2","3","4","5"];
+  function applyTheme(v){
+    document.body.setAttribute("data-theme", v);
+    // Фон, стан, линейки и ключ задаются пикерами (инлайн-стилями), поэтому их
+    // нужно пересчитать вручную: в светлой теме №5 они инвертируются.
+    if(typeof window.ntApplyThemeVars === "function") window.ntApplyThemeVars();
+  }
+  function init(){
+    var sel = document.getElementById("themeSelect");
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch(e){}
+    if(LIST.indexOf(saved) === -1) saved = "1";
+    applyTheme(saved);
+    if(sel){
+      sel.value = saved;
+      sel.addEventListener("change", function(){
+        applyTheme(sel.value);
+        try { localStorage.setItem(KEY, sel.value); } catch(e){}
+      });
+    }
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
 </body>
 </html>
