@@ -1099,7 +1099,7 @@
   <div class="settings-block">
     <h3 class="h3-with-info"><span data-i18n="h_complexity">Сложность</span>
       <span class="info-icon" tabindex="0">i
-        <span class="info-tooltip">
+        <span class="info-tooltip" id="chordComplexityInfo" data-i18n-html="info_chord_complexity">
           <b>Простые:</b> мажорное трезвучие (maj), минорное трезвучие (min)<br><br>
           <b>Средние:</b> большой мажорный септаккорд (maj7), доминантсептаккорд (7), малый минорный септаккорд (min7), sus2, sus4<br><br>
           <b>Сложные:</b> уменьшённое трезвучие (dim), увеличенное трезвучие (aug), секстаккорд (6), минорный секстаккорд (min6), нонаккорд add9, полууменьшённый септаккорд (m7&#x266D;5)
@@ -1154,7 +1154,7 @@
     <div class="segmented" data-group="naming">
       <div class="seg-row">
         <button data-value="letters" class="active">A B C</button>
-        <button data-value="solfege">До Ре Ми</button>
+        <button data-value="solfege" data-i18n="naming_solfege">До Ре Ми</button>
       </div>
     </div>
   </div>
@@ -1234,9 +1234,9 @@
       <input type="checkbox" id="revealShowNoteIconToggle">
       <span data-i18n="chk_show_hint_note">Показывать ноту на стане в подсказке</span>
     </label>
-    <div class="range-field"><label style="width:50px">Верх</label><input type="range" id="revealTop" min="0" max="100"><input type="number" class="range-number" id="revealTopVal" min="0" max="100"></div>
-    <div class="range-field"><label style="width:50px" title="Позиция считается автоматически (между нотой и ключом). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="revealLeft" min="0" max="100"><input type="number" class="range-number" id="revealLeftVal" min="0" max="100"></div>
-    <div class="range-field"><label style="width:50px">Размер</label><input type="range" id="revealSize" min="10" max="100"><input type="number" class="range-number" id="revealSizeVal" min="10" max="100"></div>
+    <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="revealTop" min="0" max="100"><input type="number" class="range-number" id="revealTopVal" min="0" max="100"></div>
+    <div class="range-field"><label style="width:50px" data-i18n="lbl_left_offset" data-i18n-title="tt_left_offset_note" title="Позиция считается автоматически (между нотой и ключом). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="revealLeft" min="0" max="100"><input type="number" class="range-number" id="revealLeftVal" min="0" max="100"></div>
+    <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="revealSize" min="10" max="100"><input type="number" class="range-number" id="revealSizeVal" min="10" max="100"></div>
   </div>
 
   <div class="settings-block">
@@ -1344,15 +1344,15 @@
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_scale_label_pos">Надпись названия лада (D dorian и т.д.) — позиция и размер</h3>
-      <div class="range-field"><label style="width:50px">Верх</label><input type="range" id="scaleLabelTop" min="0" max="200"><input type="number" class="range-number" id="scaleLabelTopVal" min="0" max="200"></div>
+      <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="scaleLabelTop" min="0" max="200"><input type="number" class="range-number" id="scaleLabelTopVal" min="0" max="200"></div>
       <div class="range-field"><label style="width:50px" data-i18n="lbl_side">Бок</label><input type="range" id="scaleLabelLeft" min="0" max="100"><input type="number" class="range-number" id="scaleLabelLeftVal" min="0" max="100"></div>
-      <div class="range-field"><label style="width:50px">Размер</label><input type="range" id="scaleLabelSize" min="30" max="50"><input type="number" class="range-number" id="scaleLabelSizeVal" min="30" max="50"></div>
+      <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="scaleLabelSize" min="30" max="50"><input type="number" class="range-number" id="scaleLabelSizeVal" min="30" max="50"></div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_hint_colors_scales">Цвета и размер подсказки в ладах (R / К, закрепить — T / е)</h3>
-      <div class="range-field"><label style="width:50px">Верх</label><input type="range" id="scaleHintTop" min="0" max="100"><input type="number" class="range-number" id="scaleHintTopVal" min="0" max="100"></div>
-      <div class="range-field"><label style="width:50px" title="Позиция считается автоматически (от тоники). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="scaleHintLeft" min="0" max="100"><input type="number" class="range-number" id="scaleHintLeftVal" min="0" max="100"></div>
-      <div class="range-field"><label style="width:50px">Размер</label><input type="range" id="scaleHintSize" min="10" max="100"><input type="number" class="range-number" id="scaleHintSizeVal" min="10" max="100"></div>
+      <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="scaleHintTop" min="0" max="100"><input type="number" class="range-number" id="scaleHintTopVal" min="0" max="100"></div>
+      <div class="range-field"><label style="width:50px" data-i18n="lbl_left_offset" data-i18n-title="tt_left_offset_scale" title="Позиция считается автоматически (от тоники). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="scaleHintLeft" min="0" max="100"><input type="number" class="range-number" id="scaleHintLeftVal" min="0" max="100"></div>
+      <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="scaleHintSize" min="10" max="100"><input type="number" class="range-number" id="scaleHintSizeVal" min="10" max="100"></div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_errpos_scales">Положение окна ошибок (Q / Й) — уровень "Тональности / Лады"</h3>
@@ -2503,7 +2503,73 @@
     errors_title_scales: { ru: "Ошибки — Тональности / Лады (Q / Й)", en: "Errors — Keys / Scales (Q)", zh: "错误 — 调式（Q键）" },
     errors_title_durations: { ru: "Ошибки — Ритм (Q / Й)", en: "Errors — Rhythm (Q)", zh: "错误 — 节奏（Q键）" },
     errors_title_flow: { ru: "Статистика — Ритм: Бесконечно (Q / Й)", en: "Stats — Rhythm: Infinite (Q)", zh: "统计 — 节奏：无限模式（Q键）" },
-    page_title: { ru: "Заучивание нот и ритма", en: "Learning notes and rhythm", zh: "学习音符与节奏" }
+    page_title: { ru: "Заучивание нот и ритма", en: "Learning notes and rhythm", zh: "学习音符与节奏" },
+
+    naming_solfege: { ru: "До Ре Ми", en: "Do Re Mi", zh: "首调唱名" },
+
+    lad_major:    { ru: "Мажор",                en: "Major",           zh: "大调" },
+    lad_natmin:   { ru: "Натуральный минор",    en: "Natural minor",   zh: "自然小调" },
+    lad_harmin:   { ru: "Гармонический минор",  en: "Harmonic minor",  zh: "和声小调" },
+    lad_melmin:   { ru: "Мелодический минор",   en: "Melodic minor",   zh: "旋律小调" },
+    lad_dorian:   { ru: "Дорийский",            en: "Dorian",          zh: "多利亚调式" },
+    lad_phrygian: { ru: "Фригийский",           en: "Phrygian",        zh: "弗里几亚调式" },
+    lad_lydian:   { ru: "Лидийский",            en: "Lydian",          zh: "利底亚调式" },
+    lad_mixo:     { ru: "Миксолидийский",       en: "Mixolydian",      zh: "混合利底亚调式" },
+    lad_locrian:  { ru: "Локрийский",           en: "Locrian",         zh: "洛克里亚调式" },
+    lbl_degree:   { ru: "ступень", en: "degree", zh: "级" },
+
+    dur_whole:            { ru: "Целая",                en: "Whole note",           zh: "全音符" },
+    dur_whole_dot:        { ru: "Целая с точкой",       en: "Dotted whole note",    zh: "附点全音符" },
+    dur_half:             { ru: "Половинная",           en: "Half note",            zh: "二分音符" },
+    dur_half_dot:         { ru: "Половинная с точкой",  en: "Dotted half note",     zh: "附点二分音符" },
+    dur_quarter:          { ru: "Четвертная",           en: "Quarter note",         zh: "四分音符" },
+    dur_quarter_dot:      { ru: "Четвертная с точкой",  en: "Dotted quarter note",  zh: "附点四分音符" },
+    dur_eighth:           { ru: "Восьмая",              en: "Eighth note",          zh: "八分音符" },
+    dur_eighth_dot:       { ru: "Восьмая с точкой",     en: "Dotted eighth note",   zh: "附点八分音符" },
+    dur_sixteenth:        { ru: "Шестнадцатая",         en: "Sixteenth note",       zh: "十六分音符" },
+    dur_sixteenth_dot:    { ru: "Шестнадцатая с точкой",en: "Dotted sixteenth note",zh: "附点十六分音符" },
+    dur_thirtysecond:     { ru: "Тридцать вторая",      en: "Thirty-second note",   zh: "三十二分音符" },
+
+    tag_whole:     { ru: "Целые",     en: "Whole notes",  zh: "全音符" },
+    tag_half:      { ru: "Половинные",en: "Half notes",   zh: "二分音符" },
+    tag_dot:       { ru: "С точкой",  en: "Dotted",       zh: "附点" },
+    tag_triplets:  { ru: "Триоли",    en: "Triplets",     zh: "三连音" },
+    tag_syncopes:  { ru: "Синкопы",   en: "Syncopes",     zh: "切分音" },
+    tag_rests:     { ru: "Паузы",     en: "Rests",        zh: "休止符" },
+    div_by_bar:    { ru: "Под такт",  en: "Per bar",       zh: "按小节" },
+
+    lbl_stats_correct: { ru: "Правильно:", en: "Correct:", zh: "正确：" },
+    lbl_perfect:  { ru: "Точно:",      en: "Perfect:", zh: "精准：" },
+    lbl_good:     { ru: "Близко:",     en: "Good:",    zh: "较准：" },
+    lbl_miss:     { ru: "Мимо:",       en: "Miss:",    zh: "错过：" },
+    lbl_skip:     { ru: "Пропущено:",  en: "Skipped:", zh: "遗漏：" },
+    lbl_accuracy: { ru: "Точность:",   en: "Accuracy:",zh: "准确率：" },
+    lbl_streak:   { ru: "Подряд:",     en: "Streak:",  zh: "连续：" },
+
+    msg_no_errors:        { ru: "пока нет ошибок",        en: "no errors yet",             zh: "暂无错误" },
+    lbl_errors_count:     { ru: "ошибок",                 en: "errors",                    zh: "错误数" },
+    msg_chord_not_chosen: { ru: "Аккорд ещё не выбран",   en: "No chord selected yet",     zh: "尚未选择和弦" },
+    msg_no_answers_yet:   { ru: "Ответов ещё не было",    en: "No answers yet",            zh: "尚无答案" },
+    col_none:              { ru: "без",                   en: "none",                       zh: "无" },
+
+    err_choose_time_sig:  { ru: "Выберите хотя бы один размер такта.", en: "Choose at least one time signature.", zh: "请至少选择一种拍号。" },
+    err_cant_build_bar:   { ru: "Не удалось собрать такт — включите больше длительностей.", en: "Could not build a bar — enable more durations.", zh: "无法生成小节 — 请启用更多时值。" },
+
+    calib_listen:  { ru: "Слушай ровные клики и стучи в такт (кнопкой, пробелом или MIDI)…", en: "Listen to the steady clicks and tap along (button, spacebar, or MIDI)…", zh: "聆听均匀的节拍声并跟着敲击（按钮、空格键或MIDI）……" },
+    calib_failed:  { ru: "Не получилось — попробуй ещё раз, стуча ровно на каждый клик.", en: "Didn't work — try again, tapping right on each click.", zh: "未成功 — 请重试，准确地在每次点击时敲击。" },
+    calib_done_prefix: { ru: "Готово — смещение ", en: "Done — offset ", zh: "完成 — 偏移 " },
+    calib_done_mid:    { ru: " мс (по ", en: " ms (based on ", zh: " 毫秒（基于 " },
+    calib_done_suffix: { ru: " ударам).", en: " taps).", zh: " 次敲击）。" },
+    unit_ms: { ru: "мс", en: "ms", zh: "毫秒" },
+
+    btn_start: { ru: "Старт", en: "Start", zh: "开始" },
+    btn_stop:  { ru: "Стоп",  en: "Stop",  zh: "停止" },
+
+    info_chord_complexity: {
+      ru: "<b>Простые:</b> мажорное трезвучие (maj), минорное трезвучие (min)<br><br><b>Средние:</b> большой мажорный септаккорд (maj7), доминантсептаккорд (7), малый минорный септаккорд (min7), sus2, sus4<br><br><b>Сложные:</b> уменьшённое трезвучие (dim), увеличенное трезвучие (aug), секстаккорд (6), минорный секстаккорд (min6), нонаккорд add9, полууменьшённый септаккорд (m7&#x266D;5)",
+      en: "<b>Simple:</b> major triad (maj), minor triad (min)<br><br><b>Medium:</b> major seventh (maj7), dominant seventh (7), minor seventh (min7), sus2, sus4<br><br><b>Complex:</b> diminished triad (dim), augmented triad (aug), sixth chord (6), minor sixth (min6), add9, half-diminished seventh (m7&#x266D;5)",
+      zh: "<b>简单：</b>大三和弦（maj）、小三和弦（min）<br><br><b>中等：</b>大七和弦（maj7）、属七和弦（7）、小七和弦（min7）、sus2、sus4<br><br><b>复杂：</b>减三和弦（dim）、增三和弦（aug）、六和弦（6）、小六和弦（min6）、add9、半减七和弦（m7&#x266D;5）"
+    }
   };
 
   function t(key){
@@ -2523,6 +2589,10 @@
       const key = el.getAttribute("data-i18n-title");
       if(I18N[key]) el.setAttribute("title", t(key));
     });
+    document.querySelectorAll("[data-i18n-html]").forEach(el => {
+      const key = el.getAttribute("data-i18n-html");
+      if(I18N[key]) el.innerHTML = t(key);
+    });
     document.querySelectorAll(".lang-switch-group").forEach(g => {
       g.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.value === settings.uiLang));
     });
@@ -2532,10 +2602,17 @@
   }
   window.__applyUiLang = applyUiLang;
 
+  // список функций, которые нужно перевызвать при смене языка интерфейса —
+  // они строят подписи (кнопки, таблицы ошибок) один раз при создании, а не
+  // берут перевод "на лету", поэтому сами не обновятся без повторного вызова.
+  window.__i18nRefresh = [];
+  function runI18nRefresh(){ window.__i18nRefresh.forEach(fn => { try{ fn(); }catch(e){} }); }
+
   document.querySelectorAll(".lang-switch-group").forEach(g => {
     g.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
       settings.uiLang = b.dataset.value;
       applyUiLang();
+      runI18nRefresh();
       saveSettings();
     }));
   });
@@ -2604,6 +2681,7 @@
   // Столбцы: "без" (октава не отображалась/не выбрана в настройках) + номера октав,
   // встретившихся в данных (обычно 2–6, но если появятся другие — колонка добавится сама).
   const ERR_BASE_COLS = ["без", "2", "3", "4", "5", "6"];
+  function colDisplayLabel(c){ return c === "без" ? t("col_none") : c; }
   function renderErrorHistory(){
     // rows[clef] = Map(noteLabel -> Map(col -> count))
     const rows = { treble: new Map(), bass: new Map() };
@@ -2621,14 +2699,14 @@
     const cols = ERR_BASE_COLS;
 
     function renderGrid(container, map){
-      if(map.size === 0){ container.innerHTML = '<div class="empty">пока нет ошибок</div>'; return; }
+      if(map.size === 0){ container.innerHTML = `<div class="empty">${t("msg_no_errors")}</div>`; return; }
       // сортируем ноты по суммарному числу ошибок, по убыванию
       const entries = Array.from(map.entries()).map(([label, colMap]) => {
         const total = Array.from(colMap.values()).reduce((a,b)=>a+b,0);
         return { label, colMap, total };
       }).sort((a,b) => b.total - a.total);
 
-      let html = `<div class="gh"></div>` + cols.map(c => `<div class="gh">${c}</div>`).join("");
+      let html = `<div class="gh"></div>` + cols.map(c => `<div class="gh">${colDisplayLabel(c)}</div>`).join("");
       entries.forEach(({label, colMap}) => {
         html += `<div class="gn">${label}</div>`;
         cols.forEach(c => {
@@ -2683,7 +2761,7 @@
   // ---- статистика правильных ответов: процент = correct / total * 100 ----
   function renderStats(){
     const pct = stats.total ? ((stats.correct / stats.total) * 100).toFixed(1) : "0.0";
-    el.statsLine.innerHTML = `Правильно: <b>${stats.correct}</b> / <b>${stats.total}</b> (<b>${pct}%</b>)`;
+    el.statsLine.innerHTML = `${t("lbl_stats_correct")} <b>${stats.correct}</b> / <b>${stats.total}</b> (<b>${pct}%</b>)`;
   }
   function recordAnswer(isCorrect){
     stats.total++;
@@ -3043,18 +3121,19 @@
   // суммы внутри такта складываются точно, без ошибок дробной арифметики.
   // short — подпись на кнопке, label — полное название (подсказка + таблица ошибок).
   const DURATIONS = [
-    { key:"1",     units:32, short:"1",         label:"Целая" },
-    { key:"1.",    units:48, short:"1\u2022",    label:"Целая с точкой" },
-    { key:"1/2",   units:16, short:"1/2",       label:"Половинная" },
-    { key:"1/2.",  units:24, short:"1/2\u2022",  label:"Половинная с точкой" },
-    { key:"1/4",   units:8,  short:"1/4",       label:"Четвертная" },
-    { key:"1/4.",  units:12, short:"1/4\u2022",  label:"Четвертная с точкой" },
-    { key:"1/8",   units:4,  short:"1/8",       label:"Восьмая" },
-    { key:"1/8.",  units:6,  short:"1/8\u2022",  label:"Восьмая с точкой" },
-    { key:"1/16",  units:2,  short:"1/16",      label:"Шестнадцатая" },
-    { key:"1/16.", units:3,  short:"1/16\u2022", label:"Шестнадцатая с точкой" },
-    { key:"1/32",  units:1,  short:"1/32",      label:"Тридцать вторая" }
+    { key:"1",     units:32, short:"1",         labelKey:"dur_whole" },
+    { key:"1.",    units:48, short:"1\u2022",    labelKey:"dur_whole_dot" },
+    { key:"1/2",   units:16, short:"1/2",       labelKey:"dur_half" },
+    { key:"1/2.",  units:24, short:"1/2\u2022",  labelKey:"dur_half_dot" },
+    { key:"1/4",   units:8,  short:"1/4",       labelKey:"dur_quarter" },
+    { key:"1/4.",  units:12, short:"1/4\u2022",  labelKey:"dur_quarter_dot" },
+    { key:"1/8",   units:4,  short:"1/8",       labelKey:"dur_eighth" },
+    { key:"1/8.",  units:6,  short:"1/8\u2022",  labelKey:"dur_eighth_dot" },
+    { key:"1/16",  units:2,  short:"1/16",      labelKey:"dur_sixteenth" },
+    { key:"1/16.", units:3,  short:"1/16\u2022", labelKey:"dur_sixteenth_dot" },
+    { key:"1/32",  units:1,  short:"1/32",      labelKey:"dur_thirtysecond" }
   ];
+  DURATIONS.forEach(d => Object.defineProperty(d, "label", { get(){ return window.__t ? window.__t(d.labelKey) : d.labelKey; } }));
   const DUR_BY_KEY = {};
   DURATIONS.forEach(d => { DUR_BY_KEY[d.key] = d; });
 
@@ -3880,7 +3959,7 @@
   }
   function renderReveal(){
     const data = getRevealData();
-    if(!data){ el.chordReveal.innerHTML = "Аккорд ещё не выбран"; el.hintNotesGroup.innerHTML = ""; return; }
+    if(!data){ el.chordReveal.innerHTML = t("msg_chord_not_chosen"); el.hintNotesGroup.innerHTML = ""; return; }
     if(data.notes.length >= 3 && data.chordName){
       const allCorrect = data.notes.every(n => n.correct);
       const rootLabel = displayNameFor(data.chordRootLetter, data.chordRootAccidental);
@@ -4437,16 +4516,17 @@
 
     // 8 значений (0..7 ступень, 7-я = тоника октавой выше = 12 полутонов)
     const SCALE_TYPES = [
-      { key:"major",   label:"Мажор",             semis:[0,2,4,5,7,9,11,12] },
-      { key:"natMin",  label:"Натуральный минор",      semis:[0,2,3,5,7,8,10,12] },
-      { key:"harMin",  label:"Гармонический минор",    semis:[0,2,3,5,7,8,11,12] },
-      { key:"melMin",  label:"Мелодический минор",     semis:[0,2,3,5,7,9,11,12] },
-      { key:"dorian",  label:"Дорийский",         semis:[0,2,3,5,7,9,10,12] },
-      { key:"phrygian",label:"Фригийский",        semis:[0,1,3,5,7,8,10,12] },
-      { key:"lydian",  label:"Лидийский",         semis:[0,2,4,6,7,9,11,12] },
-      { key:"mixo",    label:"Миксолидийский",    semis:[0,2,4,5,7,9,10,12] },
-      { key:"locrian", label:"Локрийский",        semis:[0,1,3,5,6,8,10,12] }
+      { key:"major",   labelKey:"lad_major",   semis:[0,2,4,5,7,9,11,12] },
+      { key:"natMin",  labelKey:"lad_natmin",  semis:[0,2,3,5,7,8,10,12] },
+      { key:"harMin",  labelKey:"lad_harmin",  semis:[0,2,3,5,7,8,11,12] },
+      { key:"melMin",  labelKey:"lad_melmin",  semis:[0,2,3,5,7,9,11,12] },
+      { key:"dorian",  labelKey:"lad_dorian",  semis:[0,2,3,5,7,9,10,12] },
+      { key:"phrygian",labelKey:"lad_phrygian",semis:[0,1,3,5,7,8,10,12] },
+      { key:"lydian",  labelKey:"lad_lydian",  semis:[0,2,4,6,7,9,11,12] },
+      { key:"mixo",    labelKey:"lad_mixo",    semis:[0,2,4,5,7,9,10,12] },
+      { key:"locrian", labelKey:"lad_locrian", semis:[0,1,3,5,6,8,10,12] }
     ];
+    SCALE_TYPES.forEach(t => Object.defineProperty(t, "label", { get(){ return window.__t ? window.__t(t.labelKey) : t.labelKey; } }));
 
     // ---- отдельная (независимая от "Нот") история ошибок и статистика уровня
     // "Тональности / Лады" — свои ключи localStorage, свой счётчик, своя таблица.
@@ -4468,7 +4548,7 @@
 
     function renderScaleStats(){
       const pct = scaleAnswerStats.total ? ((scaleAnswerStats.correct / scaleAnswerStats.total) * 100).toFixed(1) : "0.0";
-      el.scaleStatsLine.innerHTML = `Правильно: <b>${scaleAnswerStats.correct}</b> / <b>${scaleAnswerStats.total}</b> (<b>${pct}%</b>)`;
+      el.scaleStatsLine.innerHTML = `${t("lbl_stats_correct")} <b>${scaleAnswerStats.correct}</b> / <b>${scaleAnswerStats.total}</b> (<b>${pct}%</b>)`;
     }
     function scRecordAnswerStat(isCorrect){
       scaleAnswerStats.total++;
@@ -4490,7 +4570,7 @@
         const total = counts.reduce((a,b)=>a+b,0);
         return { label: t.label, counts, total };
       }).filter(r => r.total > 0).sort((a,b) => b.total - a.total);
-      if(rows.length === 0){ el.scaleErrorsGrid.innerHTML = '<div class="empty">пока нет ошибок</div>'; return; }
+      if(rows.length === 0){ el.scaleErrorsGrid.innerHTML = `<div class="empty">${t("msg_no_errors")}</div>`; return; }
       let html = `<div class="gh"></div>` + degrees.map(d => `<div class="gh">${d}</div>`).join("");
       rows.forEach(r => {
         html += `<div class="gn">${r.label}</div>`;
@@ -4501,6 +4581,7 @@
     }
     renderScaleStats();
     renderScaleErrorHistory();
+    window.__i18nRefresh.push(renderScaleStats, renderScaleErrorHistory);
     el.resetScaleErrorsBtn.addEventListener("click", () => {
       scaleErrorCounts = {};
       saveScaleErrors();
@@ -4650,10 +4731,11 @@
       const baseName = tonicLabel + " " + SCALE_TYPE_EN[scaleCurrent.type.key];
       let text = baseName;
       if(scaleSettings.randomStart && typeof scaleCurrent.startDegree === "number"){
-        text = (scaleCurrent.startDegree + 1) + " ступень " + baseName;
+        text = (scaleCurrent.startDegree + 1) + " " + t("lbl_degree") + " " + baseName;
       }
       elS.scaleNameLabel.textContent = text;
     }
+    window.__i18nRefresh.push(updateScaleNameLabel);
 
     function applyScaleClefUI(){
       elS.scaleClefGroup.querySelectorAll("button").forEach(btn => {
@@ -4700,6 +4782,8 @@
       cell.className = "scale-type-cell";
       const b = document.createElement("button");
       const labelSpan = document.createElement("span");
+      labelSpan.className = "scale-type-label";
+      labelSpan.dataset.scaleTypeKey = t.key;
       labelSpan.textContent = t.label;
       b.appendChild(labelSpan);
       const icon = document.createElement("span");
@@ -4728,6 +4812,12 @@
         else scaleCurrent = null;
       });
       elS.scaleTypeGrid.appendChild(cell);
+    });
+    window.__i18nRefresh.push(() => {
+      elS.scaleTypeGrid.querySelectorAll(".scale-type-label").forEach(span => {
+        const type = SCALE_TYPES.find(x => x.key === span.dataset.scaleTypeKey);
+        if(type) span.textContent = type.label;
+      });
     });
 
     elS.scaleRandomStartToggle.checked = !!scaleSettings.randomStart;
@@ -4825,7 +4915,7 @@
     }
     function scRenderReveal(){
       scApplyRevealVars();
-      if(!placedHistory.length){ elS.scaleChordReveal.innerHTML = "Ответов ещё не было"; return; }
+      if(!placedHistory.length){ elS.scaleChordReveal.innerHTML = t("msg_no_answers_yet"); return; }
       elS.scaleChordReveal.innerHTML = placedHistory.map(p => {
         const label = displayNameFor(p.note.letter, p.note.accidental) + (settings.showOctave ? p.note.octave : "");
         const cls = p.state === "wrong" ? "bad" : "ok";
@@ -5193,17 +5283,18 @@
         .map(d => ({ label: d.label, n: counts[d.key] || 0 }))
         .filter(r => r.n > 0)
         .sort((a, b) => b.n - a.n);
-      if(!rows.length){ container.innerHTML = '<div class="empty">пока нет ошибок</div>'; return; }
+      if(!rows.length){ container.innerHTML = `<div class="empty">${t("msg_no_errors")}</div>`; return; }
       container.style.setProperty("--err-cols", 1);
-      container.innerHTML = '<div class="gh"></div><div class="gh">ошибок</div>'
+      container.innerHTML = `<div class="gh"></div><div class="gh">${t("lbl_errors_count")}</div>`
         + rows.map(r => `<div class="gn">${r.label}</div><div class="gc">${r.n}</div>`).join("");
     }
     function renderStatsLine(node, st){
       const pct = st.total ? ((st.correct / st.total) * 100).toFixed(1) : "0.0";
-      node.innerHTML = `Правильно: <b>${st.correct}</b> / <b>${st.total}</b> (<b>${pct}%</b>)`;
+      node.innerHTML = `${t("lbl_stats_correct")} <b>${st.correct}</b> / <b>${st.total}</b> (<b>${pct}%</b>)`;
     }
     function refreshDurErrors(){ renderDurationErrorGrid(elD.durErrorsGrid, durErrorCounts); renderStatsLine(elD.durStatsLine, durStats); }
     refreshDurErrors();
+    window.__i18nRefresh.push(refreshDurErrors);
     elD.resetDurErrorsBtn.addEventListener("click", () => {
       durErrorCounts = {}; durStats = { correct:0, total:0 };
       localStorage.setItem(LS_DUR_ERRORS, "{}"); localStorage.setItem(LS_DUR_STATS, JSON.stringify(durStats));
@@ -5397,8 +5488,9 @@
     const RH_CALIB_MEASURE = 8; // клики замера
 
     function rhUpdateCalibrateUI(){
-      if(elD.rhCalibrateVal) elD.rhCalibrateVal.textContent = Math.round(durSettings.rhLatencyMs) + " мс";
+      if(elD.rhCalibrateVal) elD.rhCalibrateVal.textContent = Math.round(durSettings.rhLatencyMs) + " " + t("unit_ms");
     }
+    window.__i18nRefresh.push(rhUpdateCalibrateUI);
 
     async function rhRunCalibration(){
       if(rhCalibrating) return;
@@ -5407,7 +5499,7 @@
       rhCalibrating = true;
       rhCalibTaps = [];
       if(elD.rhCalibrateBtn) elD.rhCalibrateBtn.disabled = true;
-      if(elD.rhCalibrateStatus) elD.rhCalibrateStatus.textContent = "Слушай ровные клики и стучи в такт (кнопкой, пробелом или MIDI)…";
+      if(elD.rhCalibrateStatus) elD.rhCalibrateStatus.textContent = t("calib_listen");
 
       const bpm = 92, beat = 60 / bpm;
       const total = RH_CALIB_LEAD + RH_CALIB_MEASURE;
@@ -5438,8 +5530,7 @@
         rhCalibrating = false;
         if(elD.rhCalibrateBtn) elD.rhCalibrateBtn.disabled = false;
         if(diffs.length < RH_CALIB_MEASURE * 0.5){
-          if(elD.rhCalibrateStatus) elD.rhCalibrateStatus.textContent =
-            "Не получилось — попробуй ещё раз, стуча ровно на каждый клик.";
+          if(elD.rhCalibrateStatus) elD.rhCalibrateStatus.textContent = t("calib_failed");
           return;
         }
         const avg = diffs.reduce((a, b) => a + b, 0) / diffs.length;
@@ -5447,7 +5538,7 @@
         saveDurSettings();
         rhUpdateCalibrateUI();
         if(elD.rhCalibrateStatus) elD.rhCalibrateStatus.textContent =
-          "Готово — смещение " + Math.round(durSettings.rhLatencyMs) + " мс (по " + diffs.length + " ударам).";
+          t("calib_done_prefix") + Math.round(durSettings.rhLatencyMs) + t("calib_done_mid") + diffs.length + t("calib_done_suffix");
       }, (t0 + total * beat - ctx.currentTime) * 1000 + 300);
     }
 
@@ -5515,6 +5606,15 @@
 
     buildToggleGrid(elD.durGrid, DURATIONS, durSettings.allowed,
       () => { if(settings.activeLevel === "durations") rebuildDurLevel(); });
+    // при смене языка перерисовываем подписи (title) на кнопках сетки и на
+    // кнопках-ответах текущего вопроса, не трогая сам вопрос/прогресс
+    window.__i18nRefresh.push(() => {
+      buildToggleGrid(elD.durGrid, DURATIONS, durSettings.allowed,
+        () => { if(settings.activeLevel === "durations") rebuildDurLevel(); });
+      if(durButtons) Object.keys(durButtons).forEach(k => {
+        if(DUR_BY_KEY[k]) durButtons[k].title = DUR_BY_KEY[k].label;
+      });
+    });
 
     if(elD.rhCalibrateBtn) elD.rhCalibrateBtn.addEventListener("click", () => { rhEnsureAudio(); rhRunCalibration(); });
     rhUpdateCalibrateUI();
@@ -5681,26 +5781,28 @@
     ];
 
     const NR_TAGS = [
-      { key:"whole", label:"Целые" },
-      { key:"half",  label:"Половинные" },
+      { key:"whole", labelKey:"tag_whole" },
+      { key:"half",  labelKey:"tag_half" },
       { key:"q",     label:"1/4" },
       { key:"e",     label:"1/8" },
       { key:"s",     label:"1/16" },
       { key:"t32",   label:"1/32" },
-      { key:"dot",   label:"С точкой" },
-      { key:"trip",  label:"Триоли" },
-      { key:"sync",  label:"Синкопы" },
-      { key:"rest",  label:"Паузы" }
+      { key:"dot",   labelKey:"tag_dot" },
+      { key:"trip",  labelKey:"tag_triplets" },
+      { key:"sync",  labelKey:"tag_syncopes" },
+      { key:"rest",  labelKey:"tag_rests" }
     ];
+    NR_TAGS.forEach(t => { if(t.labelKey) Object.defineProperty(t, "label", { get(){ return window.__t ? window.__t(t.labelKey) : t.labelKey; } }); });
 
     // варианты дробления метронома внутри такта
     const NR_METRO_DIVS = [
-      { key:"auto", label:"Под такт" },
+      { key:"auto", labelKey:"div_by_bar" },
       { key:"1/4",  label:"1/4" },
       { key:"1/8",  label:"1/8" },
       { key:"1/16", label:"1/16" },
-      { key:"trip", label:"Триоли" }
+      { key:"trip", labelKey:"tag_triplets" }
     ];
+    NR_METRO_DIVS.forEach(t => { if(t.labelKey) Object.defineProperty(t, "label", { get(){ return window.__t ? window.__t(t.labelKey) : t.labelKey; } }); });
 
     // сколько единиц (в шкале units, где четверть = 24) занимает один клик
     // метронома при выбранном дроблении, и сколько кликов в такте
@@ -5786,7 +5888,7 @@
 
     function nrGenerateBars(count){
       const list = NR_TIME_SIGS.filter(t => durSettings.nrTimeSigs[t.key]);
-      if(!list.length) return { error: "Выберите хотя бы один размер такта." };
+      if(!list.length) return { error: t("err_choose_time_sig") };
       const ts = nrRnd(list);
       const pool = nrFigurePool(ts);
       for(let attempt = 0; attempt < 60; attempt++){
@@ -5801,7 +5903,7 @@
         if(nrSoundSig(bars, ts).split("|").filter(Boolean).length < 2) continue;
         return { ts: ts, bars: bars, pool: pool };
       }
-      return { error: "Не удалось собрать такт — включите больше длительностей." };
+      return { error: t("err_cant_build_bar") };
     }
 
     /* ---------------------------- отрисовка ---------------------------- */
@@ -6043,12 +6145,12 @@
       const start = document.createElement("button");
       start.type = "button";
       start.className = "nrflow-ctrl-btn nrflow-play";
-      start.title = "Старт";
+      start.title = t("btn_start");
       start.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
       const stop = document.createElement("button");
       stop.type = "button";
       stop.className = "nrflow-ctrl-btn nrflow-stop";
-      stop.title = "Стоп";
+      stop.title = t("btn_stop");
       stop.innerHTML = '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
       stop.disabled = true;
       row.append(start, stop);
@@ -6070,19 +6172,23 @@
 
       start.addEventListener("click", nrFlowStart);
       stop.addEventListener("click", nrFlowStop);
+      window.__i18nRefresh.push(() => { start.title = t("btn_start"); stop.title = t("btn_stop"); });
 
       nrFlowMetrics({ perfect:0, good:0, miss:0, skip:0, streak:0 });
       scheduleBottomAnchor();
     }
 
+    let nrLastMetrics = { perfect:0, good:0, miss:0, skip:0, streak:0 };
     function nrFlowMetrics(s){
+      nrLastMetrics = s;
       const tot = s.perfect + s.good + s.miss + s.skip;
       NRFlow.el.metrics.innerHTML =
-        `<span>Точно: <b>${s.perfect}</b></span><span>Близко: <b>${s.good}</b></span>` +
-        `<span>Мимо: <b>${s.miss}</b></span><span>Пропущено: <b>${s.skip}</b></span>` +
-        `<span>Точность: <b>${tot ? Math.round((s.perfect + s.good * 0.6) / tot * 100) + "%" : "—"}</b></span>` +
-        `<span>Подряд: <b>${s.streak}</b></span>`;
+        `<span>${t("lbl_perfect")} <b>${s.perfect}</b></span><span>${t("lbl_good")} <b>${s.good}</b></span>` +
+        `<span>${t("lbl_miss")} <b>${s.miss}</b></span><span>${t("lbl_skip")} <b>${s.skip}</b></span>` +
+        `<span>${t("lbl_accuracy")} <b>${tot ? Math.round((s.perfect + s.good * 0.6) / tot * 100) + "%" : "—"}</b></span>` +
+        `<span>${t("lbl_streak")} <b>${s.streak}</b></span>`;
     }
+    window.__i18nRefresh.push(() => { if(NRFlow && NRFlow.el && NRFlow.el.metrics) nrFlowMetrics(nrLastMetrics); });
 
     function nrFlowWidth(){
       return NR_FLOW_TRACK_W;
@@ -6461,6 +6567,7 @@
     nrBuildTsGrid();
     nrBuildTagGrid();
     nrBuildMetroDivGrid();
+    window.__i18nRefresh.push(nrBuildTagGrid, nrBuildMetroDivGrid);
 
     wireRangeField(document.getElementById("nrBpm"), document.getElementById("nrBpmVal"), 40, 200,
       () => durSettings.nrBpm, v => durSettings.nrBpm = v, () => saveDurSettings());
