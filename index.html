@@ -983,6 +983,24 @@
   .nrflow-play svg{ fill:#ffcc66; }
   .nrflow-stop svg{ fill:#d1bfae; }
 
+  /* иконка "инфо" справа от Стоп, в отступе панели — как в блоках настроек */
+  /* иконка "инфо" в панели Старт/Стоп — абсолютное позиционирование,
+     чтобы её перемещение НЕ меняло размеры/раздвижение самой панели.
+     Правь --nrflow-info-x / --nrflow-info-y ниже, чтобы подвинуть иконку. */
+  .nr-flow-wrap .nr-row{ position: relative; }
+  :root{
+    --nrflow-info-x: 100px;   /* смещение иконки от центра панели по горизонтали (px) */
+    --nrflow-info-y: 0px;     /* смещение иконки от центра панели по вертикали (px) */
+  }
+  .nr-flow-wrap .nr-row > .info-icon{
+    position: absolute;
+    left: calc(50% + var(--nrflow-info-x));
+    top: calc(50% + var(--nrflow-info-y));
+    transform: translate(-50%, -50%);
+    width: 20px; height: 20px;
+    font-size: 12px;
+  }
+
   .nr-flow-wrap .nr-metrics{
     gap:20px; font-size:13px; text-transform:uppercase; letter-spacing:.5px; color:#8a8a8e;
   }
@@ -1338,6 +1356,10 @@
         <span data-i18n="pos_right">справа</span>
       </label>
     </div>
+  </div>
+
+  <div class="settings-block">
+    <button class="small-btn midi-connect-btn" id="resetDefaultsBtn" data-i18n="btn_reset_defaults">Восстановить настройки по умолчанию</button>
   </div>
 
   </div><!-- /noteSettingsBlocks -->
@@ -2005,7 +2027,7 @@
   // ================= ПОДСКАЗКИ-ПОПАПЫ (i) =================
   // Переносим попап в <body> и позиционируем через position:fixed,
   // чтобы он не обрезался overflow панели настроек и не вылезал за экран.
-  document.querySelectorAll(".info-icon").forEach(icon => {
+  function bindInfoIcon(icon){
     const tip = icon.querySelector(".info-tooltip");
     if(!tip) return;
     const homeParent = icon;
@@ -2048,7 +2070,9 @@
     icon.addEventListener("blur", scheduleClose);
     tip.addEventListener("mouseenter", cancelClose);
     tip.addEventListener("mouseleave", scheduleClose);
-  });
+  }
+  document.querySelectorAll(".info-icon").forEach(bindInfoIcon);
+
 
   // Снимаем фокус с чекбоксов сразу после клика — иначе они остаются в фокусе,
   // показывают рамку выделения и (без фикса выше) блокируют буквенный ввод нот.
@@ -2486,6 +2510,8 @@
     btn_hide: { ru: "Скрыть", en: "Hide", zh: "隐藏" },
     h_midi: { ru: "MIDI-клавиатура", en: "MIDI keyboard", zh: "MIDI键盘" },
     btn_connect_midi: { ru: "Подключить MIDI клавиатуру", en: "Connect MIDI keyboard", zh: "连接MIDI键盘" },
+    btn_reset_defaults: { ru: "Восстановить настройки по умолчанию", en: "Restore default settings", zh: "恢复默认设置" },
+    msg_reset_confirm: { ru: "Восстановить настройки по умолчанию? Это действие нельзя отменить.", en: "Restore default settings? This cannot be undone.", zh: "恢复默认设置？此操作无法撤销。" },
     lbl_midi_in: { ru: "MIDI вход:", en: "MIDI input:", zh: "MIDI输入：" },
     lbl_midi_out: { ru: "MIDI выход:", en: "MIDI output:", zh: "MIDI输出：" },
     midi_opt_none: { ru: "—", en: "—", zh: "—" },
@@ -2571,6 +2597,7 @@
     errors_title_durations: { ru: "Ошибки — Ритм (Q / Й)", en: "Errors — Rhythm (Q)", zh: "错误 — 节奏（Q键）" },
     errors_title_flow: { ru: "Статистика — Ритм: Бесконечно (Q / Й)", en: "Stats — Rhythm: Infinite (Q)", zh: "统计 — 节奏：无限模式（Q键）" },
     page_title: { ru: "Заучивание нот и ритма", en: "Learning notes and rhythm", zh: "学习音符与节奏" },
+    nrflow_info_text: { ru: "Для ответа нажимать на нотный стан в любом месте, или пробел на клавиатуре, или любую клавишу на MIDI-клавиатуре.", en: "To answer, click anywhere on the staff, press Space, or press any key on a MIDI keyboard.", zh: "作答方式：点击五线谱任意位置、按空格键，或按下 MIDI 键盘上的任意键。" },
 
     naming_solfege: { ru: "До Ре Ми", en: "Do Re Mi", zh: "首调唱名" },
 
@@ -5338,7 +5365,7 @@
 
     // ---- настройки обоих уровней (свой ключ localStorage) ----
     let durSettings = {
-      allowed:  {},          // разрешённые длительности уровня "Длительности"
+      allowed:  { "1":true, "1/2":true, "1/4":true }, // разрешённые длительности уровня "Длительности" (по умолчанию: целая, половинная, четверть)
       rhVolume: 80,          // громкость метронома, %
       rhLatencyMs: 0,         // смещение звука относительно часов AudioContext, найденное калибровкой
       // ---- подуровень "Поток" ----
@@ -6268,7 +6295,20 @@
       stop.title = t("btn_stop");
       stop.innerHTML = '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
       stop.disabled = true;
-      row.append(start, stop);
+
+      const info = document.createElement("span");
+      info.className = "info-icon";
+      info.tabIndex = 0;
+      info.textContent = "i";
+      const infoTip = document.createElement("span");
+      infoTip.className = "info-tooltip";
+      infoTip.setAttribute("data-i18n", "nrflow_info_text");
+      infoTip.textContent = t("nrflow_info_text");
+      info.appendChild(infoTip);
+      window.__i18nRefresh.push(() => { infoTip.textContent = t("nrflow_info_text"); });
+
+      row.append(start, stop, info);
+      bindInfoIcon(info);
 
       const feed = document.createElement("div"); feed.className = "nr-count"; feed.id = "nrFlowFeed";
       const metrics = document.getElementById("nrFlowStats") || document.createElement("div");
@@ -6492,8 +6532,14 @@
 
     function nrPaint(nt, color){
       nt.el.querySelectorAll("ellipse, line, path, circle, rect").forEach(e => {
-        if(e.getAttribute("fill") && e.getAttribute("fill") !== "none") e.setAttribute("fill", color);
-        if(e.getAttribute("stroke")) e.setAttribute("stroke", color);
+        if(e.getAttribute("fill") && e.getAttribute("fill") !== "none"){
+          e.setAttribute("fill", color);
+          e.setAttribute("fill-opacity", 0.5);
+        }
+        if(e.getAttribute("stroke")){
+          e.setAttribute("stroke", color);
+          e.setAttribute("stroke-opacity", 0.5);
+        }
       });
     }
 
@@ -6871,6 +6917,44 @@
         try { localStorage.setItem(KEY, sel.value); } catch(e){}
         sels.forEach(function(other){ if(other !== sel) other.value = sel.value; });
       });
+    });
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+
+<script>
+/* ===== Кнопка "Восстановить настройки по умолчанию" (вкладка "Ноты") ===== */
+(function(){
+  var RESET_KEYS = [
+    "noteTrainer_settings_v3",
+    "noteTrainer_scaleSettings_v1",
+    "noteTrainer_durSettings_v1",
+    "ntThemeV1",
+    "ntMidiInId",
+    "ntMidiOutId"
+  ];
+  var TEXT = {
+    ru: "Восстановить настройки по умолчанию? Это действие нельзя отменить.",
+    en: "Restore default settings? This cannot be undone.",
+    zh: "恢复默认设置？此操作无法撤销。"
+  };
+  function currentLang(){
+    try{
+      var s = JSON.parse(localStorage.getItem("noteTrainer_settings_v3") || "null");
+      if(s && (s.uiLang === "en" || s.uiLang === "zh")) return s.uiLang;
+    }catch(e){}
+    return "ru";
+  }
+  function init(){
+    var btn = document.getElementById("resetDefaultsBtn");
+    if(!btn) return;
+    btn.addEventListener("click", function(){
+      var lang = currentLang();
+      if(!confirm(TEXT[lang] || TEXT.ru)) return;
+      RESET_KEYS.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
+      location.reload();
     });
   }
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
