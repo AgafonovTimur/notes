@@ -1259,7 +1259,6 @@
   </div>
 
   <div class="settings-block">
-    <h3 data-i18n="h_hint_colors">Цвета и размер подсказки (R / К, закрепить — T / е)</h3>
     <div class="segmented lang-switch-group" id="langGroupNotes" style="margin-bottom:8px">
       <div class="seg-row">
         <button data-value="ru">Русский</button>
@@ -1277,13 +1276,14 @@
         <option value="5" data-i18n="theme_light">Светлая</option>
       </select>
     </div>
-    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-bottom:8px;">
-      <input type="checkbox" id="revealShowNoteIconToggle">
-      <span data-i18n="chk_show_hint_note">Показывать ноту на стане в подсказке</span>
-    </label>
+    <h3 data-i18n="h_hint_colors" style="margin-bottom:8px">Размер подсказки (R / К, закрепить — T / е)</h3>
     <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="revealTop" min="0" max="100"><input type="number" class="range-number" id="revealTopVal" min="0" max="100"></div>
     <div class="range-field"><label style="width:50px" data-i18n="lbl_left_offset" data-i18n-title="tt_left_offset_note" title="Позиция считается автоматически (между нотой и ключом). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="revealLeft" min="0" max="100"><input type="number" class="range-number" id="revealLeftVal" min="0" max="100"></div>
     <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="revealSize" min="10" max="100"><input type="number" class="range-number" id="revealSizeVal" min="10" max="100"></div>
+    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:8px;">
+      <input type="checkbox" id="revealShowNoteIconToggle">
+      <span data-i18n="chk_show_hint_note">Показывать ноту на стане в подсказке</span>
+    </label>
   </div>
 
   <div class="settings-block">
@@ -1396,7 +1396,7 @@
       <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="scaleLabelSize" min="30" max="50"><input type="number" class="range-number" id="scaleLabelSizeVal" min="30" max="50"></div>
     </div>
     <div class="settings-block">
-      <h3 data-i18n="h_hint_colors_scales">Цвета и размер подсказки в ладах (R / К, закрепить — T / е)</h3>
+      <h3 data-i18n="h_hint_colors_scales">Расположение и размер шрифта подсказки в ладах (R / К, закрепить — T / е)</h3>
       <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="scaleHintTop" min="0" max="100"><input type="number" class="range-number" id="scaleHintTopVal" min="0" max="100"></div>
       <div class="range-field"><label style="width:50px" data-i18n="lbl_left_offset" data-i18n-title="tt_left_offset_scale" title="Позиция считается автоматически (от тоники). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="scaleHintLeft" min="0" max="100"><input type="number" class="range-number" id="scaleHintLeftVal" min="0" max="100"></div>
       <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="scaleHintSize" min="10" max="100"><input type="number" class="range-number" id="scaleHintSizeVal" min="10" max="100"></div>
@@ -1536,7 +1536,7 @@
       <div class="note-grid" id="nrTsGrid"></div>
     </div>
     <div class="settings-block">
-      <h3 data-i18n="h_can_occur">Что может встретиться</h3>
+      <h3 data-i18n="h_can_occur">Длительность ноты</h3>
       <div class="note-grid" id="nrTagGrid"></div>
     </div>
     <div class="settings-block" id="nrFlowBlock">
@@ -2477,10 +2477,10 @@
     h_ledger_lines: { ru: "Добавочные линейки", en: "Ledger lines", zh: "加线" },
     h_note_names: { ru: "Названия нот", en: "Note names", zh: "音名" },
     h_inversions: { ru: "Обращения аккордов (можно несколько)", en: "Chord inversions (multiple allowed)", zh: "和弦转位（可多选）" },
-    inv_1: { ru: "1-я", en: "1st", zh: "第1转位" },
-    inv_2: { ru: "2-я", en: "2nd", zh: "第2转位" },
-    inv_3: { ru: "3-я", en: "3rd", zh: "第3转位" },
-    inv_4: { ru: "4-я", en: "4th", zh: "第4转位" },
+	inv_1: { ru: "основное", en: "Root position", zh: "原位" },
+	inv_2: { ru: "первое",   en: "1st inversion", zh: "第一转位" },
+	inv_3: { ru: "второе",   en: "2nd inversion", zh: "第二转位" },
+	inv_4: { ru: "третье",   en: "3rd inversion", zh: "第三转位" },
     h_answer_buttons: { ru: "Кнопки ответов", en: "Answer buttons", zh: "答案按钮" },
     btn_show: { ru: "Показывать", en: "Show", zh: "显示" },
     btn_hide: { ru: "Скрыть", en: "Hide", zh: "隐藏" },
@@ -2502,7 +2502,7 @@
     h_piano_colors: { ru: "Цвета для клавиатуры пианино (C2–C6)", en: "Piano keyboard colors (C2–C6)", zh: "钢琴键盘颜色（C2–C6）" },
     lbl_white_keys: { ru: "Белые клавиши", en: "White keys", zh: "白键" },
     lbl_black_keys: { ru: "Чёрные клавиши", en: "Black keys", zh: "黑键" },
-    h_hint_colors: { ru: "Цвета и размер подсказки (R / К, закрепить — T / е)", en: "Hint colors and size (R, pin — T)", zh: "提示颜色和大小（R键，固定—T键）" },
+    h_hint_colors: { ru: "Размер подсказки (R / К, закрепить — T / е)", en: "Hint size (R, pin — T)", zh: "提示大小（R键，固定—T键）" },
     chk_show_hint_note: { ru: "Показывать ноту на стане в подсказке", en: "Show the note on the staff in the hint", zh: "在提示中于五线谱上显示音符" },
     lbl_top: { ru: "Верх", en: "Top", zh: "上" },
     lbl_side: { ru: "Бок", en: "Side", zh: "侧" },
@@ -2540,12 +2540,12 @@
     theme_blackorange: { ru: "Чёрно-оранжевая", en: "Black-orange", zh: "黑橙色" },
     theme_light: { ru: "Светлая", en: "Light", zh: "浅色" },
     h_scale_label_pos: { ru: "Надпись названия лада (D dorian и т.д.) — позиция и размер", en: "Scale name label (D dorian, etc.) — position and size", zh: "调式名称标签（如D dorian）— 位置和大小" },
-    h_hint_colors_scales: { ru: "Цвета и размер подсказки в ладах (R / К, закрепить — T / е)", en: "Hint colors and size in scales (R, pin — T)", zh: "调式提示颜色和大小（R键，固定—T键）" },
+    h_hint_colors_scales: { ru: "Расположение и размер шрифта подсказки в ладах (R / К, закрепить — T / е)", en: "Hint position and font size in scales (R, pin — T)", zh: "调式提示位置和字体大小（R键，固定—T键）" },
     sub_one_note: { ru: "Одна нота", en: "One note", zh: "单个音符" },
     sub_infinite: { ru: "Бесконечно", en: "Infinite", zh: "无限模式" },
     h_time_signature: { ru: "Размер такта (можно несколько)", en: "Time signature (multiple allowed)", zh: "拍号（可多选）" },
     h_allowed_durations: { ru: "Разрешённые длительности (вероятность каждой = 1 / кол-во выбранных)", en: "Allowed durations (each has probability = 1 / number selected)", zh: "允许的时值（每个概率 = 1 / 已选数量）" },
-    h_can_occur: { ru: "Что может встретиться", en: "What can appear", zh: "可能出现的内容" },
+    h_can_occur: { ru: "Длительность ноты", en: "Note duration", zh: "音符时值" },
     h_scroll_speed: { ru: "Скорость прокрутки", en: "Scroll speed", zh: "滚动速度" },
     tt_scroll_speed: { ru: "Меняет только картинку на экране, а не сам ритм. Чем больше значение — тем быстрее ноты едут по экрану и тем плотнее они расположены друг к другу. Чем меньше — тем медленнее и просторнее. Момент, когда нужно сыграть ноту, при этом не меняется.", en: "Changes only the on-screen picture, not the rhythm itself. The higher the value, the faster the notes move across the screen and the closer together they are. The lower it is, the slower and more spread out. The moment you need to play the note stays the same.", zh: "仅改变屏幕上的画面，不改变节奏本身。数值越大，音符在屏幕上移动越快、排列越密；数值越小，则越慢越疏。演奏音符的时刻本身不会改变。" },
     lbl_px_per_beat: { ru: "Пикс./долю", en: "Px/beat", zh: "像素/拍" },
