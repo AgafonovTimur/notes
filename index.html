@@ -1155,9 +1155,28 @@
     <h3 class="h3-with-info"><span data-i18n="h_complexity">Сложность</span>
       <span class="info-icon" tabindex="0">i
         <span class="info-tooltip" id="chordComplexityInfo" data-i18n-html="info_chord_complexity">
-          <b>Простые:</b> мажорное трезвучие (maj), минорное трезвучие (min)<br><br>
-          <b>Средние:</b> большой мажорный септаккорд (maj7), доминантсептаккорд (7), малый минорный септаккорд (min7), sus2, sus4<br><br>
-          <b>Сложные:</b> уменьшённое трезвучие (dim), увеличенное трезвучие (aug), секстаккорд (6), минорный секстаккорд (min6), нонаккорд add9, полууменьшённый септаккорд (m7&#x266D;5)
+          <b>Простые:</b><br>
+          maj (мажорное трезвучие)<br>
+          min (минорное трезвучие)<br>
+          sus2 (трезвучие с секундой вместо терции)<br>
+          sus4 (трезвучие с квартой вместо терции)<br><br>
+          <b>Средние:</b><br>
+          maj7 (большой мажорный септаккорд)<br>
+          7 (доминантсептаккорд)<br>
+          m7 (малый минорный септаккорд)<br>
+          m(Maj7) (минорный септаккорд с большой септимой)<br>
+          9 (доминантнонаккорд)<br>
+          maj9 (большой мажорный нонаккорд)<br>
+          m9 (минорный нонаккорд)<br>
+          m(Maj9) (минорный нонаккорд с большой септимой)<br>
+          add9 (трезвучие с добавленной ноной)<br><br>
+          <b>Сложные:</b><br>
+          11 (доминантовый ундецимаккорд)<br>
+          maj11 (большой мажорный ундецимаккорд)<br>
+          m11 (минорный ундецимаккорд)<br>
+          13 (доминантовый терцдецимаккорд)<br>
+          maj13 (большой мажорный терцдецимаккорд)<br>
+          m13 (минорный терцдецимаккорд)
         </span>
       </span>
     </h3>
@@ -1218,6 +1237,7 @@
     <h3 data-i18n="h_inversions">Обращения аккордов (можно несколько)</h3>
     <div class="segmented" data-multigroup="inversions">
       <div class="seg-row">
+        <button data-value="0" data-i18n="inv_0">основное</button>
         <button data-value="1" data-i18n="inv_1">1-я</button>
         <button data-value="2" data-i18n="inv_2">2-я</button>
         <button data-value="3" data-i18n="inv_3">3-я</button>
@@ -1789,7 +1809,7 @@
     naming: "letters",
     hideButtons: "show",
     allowedTokens: null, // заполняется ниже (см. TOKENS) значением "все включены"
-    allowedInversions: { 1:false, 2:false, 3:false, 4:false },
+    allowedInversions: { 0:true, 1:false, 2:false, 3:false, 4:false },
     revealTop: 7,
     revealLeft: 23,
     revealSize: 42,
@@ -1833,9 +1853,12 @@
     if(saved) settings = Object.assign(settings, saved);
     delete settings.accidentals;
     delete settings.allowedNotes;
-    if(!settings.allowedInversions || typeof settings.allowedInversions !== "object"){
-      settings.allowedInversions = { 1:false, 2:false, 3:false, 4:false };
+    if(!settings.allowedInversions || typeof settings.allowedInversions !== "object" || !("0" in settings.allowedInversions)){
+      // старый формат (без "основное" как отдельной кнопки) — сбрасываем на новый по умолчанию
+      settings.allowedInversions = { 0:true, 1:false, 2:false, 3:false, 4:false };
     }
+    // 4-е обращение появилось позже — добавляем ключ, не трогая сохранённый выбор
+    if(typeof settings.allowedInversions[4] !== "boolean") settings.allowedInversions[4] = false;
     if(!settings.bgColor) settings.bgColor = "#161618";
     if(!settings.clefColor) settings.clefColor = "#d1bfae";
     if(!settings.lineColor) settings.lineColor = "#d1bfae";
@@ -1940,23 +1963,29 @@
 
   const CHORD_DEFS = {
     simple: [
-      { name:"maj", degrees:[0,2,4], semis:[0,4,7] },
-      { name:"min", degrees:[0,2,4], semis:[0,3,7] }
+      { name:"maj",  degrees:[0,2,4], semis:[0,4,7] },
+      { name:"min",  degrees:[0,2,4], semis:[0,3,7] },
+      { name:"sus2", degrees:[0,1,4], semis:[0,2,7] },
+      { name:"sus4", degrees:[0,3,4], semis:[0,5,7] }
     ],
     medium: [
-      { name:"maj7", degrees:[0,2,4,6], semis:[0,4,7,11] },
-      { name:"7",    degrees:[0,2,4,6], semis:[0,4,7,10] },
-      { name:"min7", degrees:[0,2,4,6], semis:[0,3,7,10] },
-      { name:"sus2", degrees:[0,1,4],   semis:[0,2,7] },
-      { name:"sus4", degrees:[0,3,4],   semis:[0,5,7] }
+      { name:"maj7",    degrees:[0,2,4,6],   semis:[0,4,7,11] },
+      { name:"7",       degrees:[0,2,4,6],   semis:[0,4,7,10] },
+      { name:"m7",      degrees:[0,2,4,6],   semis:[0,3,7,10] },
+      { name:"m(Maj7)", degrees:[0,2,4,6],   semis:[0,3,7,11] },
+      { name:"9",       degrees:[0,2,4,6,8], semis:[0,4,7,10,14] },
+      { name:"maj9",    degrees:[0,2,4,6,8], semis:[0,4,7,11,14] },
+      { name:"m9",      degrees:[0,2,4,6,8], semis:[0,3,7,10,14] },
+      { name:"m(Maj9)", degrees:[0,2,4,6,8], semis:[0,3,7,11,14] },
+      { name:"add9",    degrees:[0,2,4,8],   semis:[0,4,7,14] }
     ],
     complex: [
-      { name:"dim",  degrees:[0,2,4],   semis:[0,3,6] },
-      { name:"aug",  degrees:[0,2,4],   semis:[0,4,8] },
-      { name:"6",    degrees:[0,2,4,5], semis:[0,4,7,9] },
-      { name:"min6", degrees:[0,2,4,5], semis:[0,3,7,9] },
-      { name:"add9", degrees:[0,2,4,8], semis:[0,4,7,14] },
-      { name:"m7b5", degrees:[0,2,4,6], semis:[0,3,6,10] }
+      { name:"11",    degrees:[0,2,4,6,8,10],    semis:[0,4,7,10,14,17] },
+      { name:"maj11", degrees:[0,2,4,6,8,10],    semis:[0,4,7,11,14,17] },
+      { name:"m11",   degrees:[0,2,4,6,8,10],    semis:[0,3,7,10,14,17] },
+      { name:"13",    degrees:[0,2,4,6,8,10,12], semis:[0,4,7,10,14,17,21] },
+      { name:"maj13", degrees:[0,2,4,6,8,10,12], semis:[0,4,7,11,14,17,21] },
+      { name:"m13",   degrees:[0,2,4,6,8,10,12], semis:[0,3,7,10,14,17,21] }
     ]
   };
 
@@ -2160,7 +2189,11 @@
   document.querySelectorAll('.segmented[data-multigroup="inversions"] button').forEach(btn => {
     btn.addEventListener("click", () => {
       const v = btn.dataset.value;
-      settings.allowedInversions[v] = !settings.allowedInversions[v];
+      const willBeOn = !settings.allowedInversions[v];
+      const activeCount = Object.values(settings.allowedInversions).filter(Boolean).length;
+      // нельзя выключить последнюю оставшуюся включённую кнопку
+      if(!willBeOn && activeCount <= 1) return;
+      settings.allowedInversions[v] = willBeOn;
       applyInversionUI();
       saveSettings();
       updateViewBox();
@@ -2501,10 +2534,11 @@
     h_ledger_lines: { ru: "Добавочные линейки", en: "Ledger lines", zh: "加线" },
     h_note_names: { ru: "Названия нот", en: "Note names", zh: "音名" },
     h_inversions: { ru: "Обращения аккордов (можно несколько)", en: "Chord inversions (multiple allowed)", zh: "和弦转位（可多选）" },
-	inv_1: { ru: "основное", en: "Root position", zh: "原位" },
-	inv_2: { ru: "первое",   en: "1st inversion", zh: "第一转位" },
-	inv_3: { ru: "второе",   en: "2nd inversion", zh: "第二转位" },
-	inv_4: { ru: "третье",   en: "3rd inversion", zh: "第三转位" },
+	inv_0: { ru: "основное", en: "Root position", zh: "原位" },
+	inv_1: { ru: "первое",   en: "1st inversion", zh: "第一转位" },
+	inv_2: { ru: "второе",   en: "2nd inversion", zh: "第二转位" },
+	inv_3: { ru: "третье",   en: "3rd inversion", zh: "第三转位" },
+	inv_4: { ru: "четвёртое", en: "4th inversion", zh: "第四转位" },
     h_answer_buttons: { ru: "Кнопки ответов", en: "Answer buttons", zh: "答案按钮" },
     btn_show: { ru: "Показывать", en: "Show", zh: "显示" },
     btn_hide: { ru: "Скрыть", en: "Hide", zh: "隐藏" },
@@ -2660,9 +2694,9 @@
     btn_stop:  { ru: "Стоп",  en: "Stop",  zh: "停止" },
 
     info_chord_complexity: {
-      ru: "<b>Простые:</b> мажорное трезвучие (maj), минорное трезвучие (min)<br><br><b>Средние:</b> большой мажорный септаккорд (maj7), доминантсептаккорд (7), малый минорный септаккорд (min7), sus2, sus4<br><br><b>Сложные:</b> уменьшённое трезвучие (dim), увеличенное трезвучие (aug), секстаккорд (6), минорный секстаккорд (min6), нонаккорд add9, полууменьшённый септаккорд (m7&#x266D;5)",
-      en: "<b>Simple:</b> major triad (maj), minor triad (min)<br><br><b>Medium:</b> major seventh (maj7), dominant seventh (7), minor seventh (min7), sus2, sus4<br><br><b>Complex:</b> diminished triad (dim), augmented triad (aug), sixth chord (6), minor sixth (min6), add9, half-diminished seventh (m7&#x266D;5)",
-      zh: "<b>简单：</b>大三和弦（maj）、小三和弦（min）<br><br><b>中等：</b>大七和弦（maj7）、属七和弦（7）、小七和弦（min7）、sus2、sus4<br><br><b>复杂：</b>减三和弦（dim）、增三和弦（aug）、六和弦（6）、小六和弦（min6）、add9、半减七和弦（m7&#x266D;5）"
+      ru: "<b>Простые:</b><br>maj (мажорное трезвучие)<br>min (минорное трезвучие)<br>sus2 (трезвучие с секундой вместо терции)<br>sus4 (трезвучие с квартой вместо терции)<br><br><b>Средние:</b><br>maj7 (большой мажорный септаккорд)<br>7 (доминантсептаккорд)<br>m7 (малый минорный септаккорд)<br>m(Maj7) (минорный септаккорд с большой септимой)<br>9 (доминантнонаккорд)<br>maj9 (большой мажорный нонаккорд)<br>m9 (минорный нонаккорд)<br>m(Maj9) (минорный нонаккорд с большой септимой)<br>add9 (трезвучие с добавленной ноной)<br><br><b>Сложные:</b><br>11 (доминантовый ундецимаккорд)<br>maj11 (большой мажорный ундецимаккорд)<br>m11 (минорный ундецимаккорд)<br>13 (доминантовый терцдецимаккорд)<br>maj13 (большой мажорный терцдецимаккорд)<br>m13 (минорный терцдецимаккорд)",
+      en: "<b>Simple:</b><br>maj (major triad)<br>min (minor triad)<br>sus2 (suspended second)<br>sus4 (suspended fourth)<br><br><b>Medium:</b><br>maj7 (major seventh)<br>7 (dominant seventh)<br>m7 (minor seventh)<br>m(Maj7) (minor-major seventh)<br>9 (dominant ninth)<br>maj9 (major ninth)<br>m9 (minor ninth)<br>m(Maj9) (minor-major ninth)<br>add9 (added ninth triad)<br><br><b>Complex:</b><br>11 (dominant eleventh)<br>maj11 (major eleventh)<br>m11 (minor eleventh)<br>13 (dominant thirteenth)<br>maj13 (major thirteenth)<br>m13 (minor thirteenth)",
+      zh: "<b>简单：</b><br>maj（大三和弦）<br>min（小三和弦）<br>sus2（挂二和弦）<br>sus4（挂四和弦）<br><br><b>中等：</b><br>maj7（大七和弦）<br>7（属七和弦）<br>m7（小七和弦）<br>m(Maj7)（小大七和弦）<br>9（属九和弦）<br>maj9（大九和弦）<br>m9（小九和弦）<br>m(Maj9)（小大九和弦）<br>add9（加九和弦）<br><br><b>复杂：</b><br>11（属十一和弦）<br>maj11（大十一和弦）<br>m11（小十一和弦）<br>13（属十三和弦）<br>maj13（大十三和弦）<br>m13（小十三和弦）"
     }
   };
 
@@ -3157,10 +3191,11 @@
   // ---- инверсии аккордов ----
   function pickInversion(noteCount){
     const maxLevel = noteCount - 1;
-    const options = [0];
-    for(let lvl = 1; lvl <= Math.min(4, maxLevel); lvl++){
+    const options = [];
+    for(let lvl = 0; lvl <= Math.min(4, maxLevel); lvl++){
       if(settings.allowedInversions[lvl]) options.push(lvl);
     }
+    if(options.length === 0) options.push(0);
     return options[Math.floor(Math.random() * options.length)];
   }
   function applyInversion(notes, level){
@@ -3173,16 +3208,29 @@
   // линейки сильнее, чем задано уровнем диапазона) ----
   function pickInversionInRange(notes, range){
     const maxLevel = notes.length - 1;
-    const options = [0];
-    for(let lvl = 1; lvl <= Math.min(4, maxLevel); lvl++){
+    const options = [];
+    for(let lvl = 0; lvl <= Math.min(4, maxLevel); lvl++){
       if(settings.allowedInversions[lvl]) options.push(lvl);
     }
+    if(options.length === 0) options.push(0);
     const shuffled = options.slice().sort(() => Math.random() - 0.5);
     for(const lvl of shuffled){
       const applied = applyInversion(notes, lvl);
       if(applied.every(n => n.step >= range.min && n.step <= range.max)) return applied;
     }
     return null;
+  }
+
+  // Широкие аккорды (ундецим- и терцдецимаккорды) занимают почти три октавы и просто
+  // не помещаются в узкий диапазон добавочных линеек — тогда аккорд не строился совсем.
+  // Для таких аккордов диапазон расширяется симметрично вверх и вниз ровно настолько,
+  // чтобы аккорд поместился (+ небольшой запас, чтобы тоника могла быть разной).
+  function rangeForDef(range, maxDegree){
+    const need = maxDegree + 4;
+    const span = range.max - range.min;
+    if(span >= need) return range;
+    const deficit = need - span;
+    return { min: range.min - Math.floor(deficit / 2), max: range.max + Math.ceil(deficit / 2) };
   }
 
   // Поиск аккорда. blockedRoots — множество ключей токенов-тоник, которые сейчас
@@ -3192,7 +3240,8 @@
     for(let attempt = 0; attempt < 150; attempt++){
       const def = defsList[Math.floor(Math.random() * defsList.length)];
       const maxDegree = Math.max.apply(null, def.degrees);
-      const minRoot = range.min, maxRoot = range.max - maxDegree;
+      const defRange = rangeForDef(range, maxDegree);
+      const minRoot = defRange.min, maxRoot = defRange.max - maxDegree;
       if(maxRoot < minRoot) continue;
       const rootStep = minRoot + Math.floor(Math.random() * (maxRoot - minRoot + 1));
       const { letter: rootLetter } = noteFromStep(rootStep, clef);
@@ -3200,7 +3249,7 @@
       if(blockedRoots.has(tokenKeyFor(rootLetter, null))) continue;
       const notes = tryBuildChord(def, rootStep, clef);
       if(notes){
-        const inverted = pickInversionInRange(notes, range);
+        const inverted = pickInversionInRange(notes, defRange);
         if(!inverted) continue;
         const rootNote = notes[0];
         inverted.chordName = def.name;
@@ -3214,13 +3263,15 @@
     for(let attempt = 0; attempt < 200; attempt++){
       const def = defsList[Math.floor(Math.random() * defsList.length)];
       const maxDegree = Math.max.apply(null, def.degrees);
-      const wideMin = -8, wideMax = 16 - maxDegree;
+      const defRange = rangeForDef(range, maxDegree);
+      const wideMin = Math.min(-8, defRange.min), wideMax = Math.max(16, defRange.max) - maxDegree;
+      if(wideMax < wideMin) continue;
       const rootStep = wideMin + Math.floor(Math.random() * (wideMax - wideMin + 1));
       const { letter: rootLetter } = noteFromStep(rootStep, clef);
       if(blockedRoots.has(tokenKeyFor(rootLetter, null))) continue;
       const notes = tryBuildChord(def, rootStep, clef);
       if(notes){
-        const inverted = pickInversionInRange(notes, range);
+        const inverted = pickInversionInRange(notes, defRange);
         if(!inverted) continue;
         const rootNote = notes[0];
         inverted.chordName = def.name;
