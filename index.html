@@ -1125,6 +1125,10 @@
   body.mobile-mode .answers .note-btn{ flex: 1 1 62px; }
   body.mobile-mode .answers.dur-answers .note-btn{ flex: 1 1 74px; }
   body.mobile-mode .octave-selector{ width: 44px; flex: 0 0 44px; }
+  /* когда ряд октав переносится ПОД кнопки нот, он должен занимать всю ширину —
+     иначе он остаётся сбоку и отъедает место у клавиш (в "Нотах" из-за этого
+     клавиатура была уже, чем в "Ладах", и справа оставалась пустая полоса) */
+  body.mobile-mode .octave-selector.octave-row{ flex: 1 1 100%; width: auto; }
   body.mobile-mode .level-tabs button{ padding: 12px 4px; font-size: 12px; }
 
   /* Панель Play/Stop в "Ритм → Бесконечно" на ПК прячется и показывается по наведению
@@ -1154,16 +1158,10 @@
     padding-right: 0;
     border-radius: 0;
   }
-  /* Ключ нарисован чуть левее начала линеек. Раз линейки теперь упираются в край
-     экрана, ключ выходил за него и обрезался — поэтому на телефоне он сдвигается
-     правее, внутрь стана. Сдвигать нужно и картинку-маску, иначе видимая часть
-     ключа обрежется самой маской. */
-  body.mobile-mode.m-staff-wide #clefTreble,
-  body.mobile-mode.m-staff-wide #clefTrebleImg,
-  body.mobile-mode.m-staff-wide #clefBass,
-  body.mobile-mode.m-staff-wide #clefBassImg{
-    transform: translateX(14px);
-  }
+  /* Ключ (скрипичный/басовый) на телефоне сдвигается к самому краю экрана.
+     Делается это НЕ через CSS transform, а сменой атрибута x в JS
+     (syncMobileClefX): у ключа картинка-маска, и в мобильных браузерах
+     CSS-трансформация не применялась к содержимому маски — ключ обрезался. */
 
   /* ряд ответов и большая клавиатура считают ширину от --staff-width (она теперь
      заметно больше экрана) — на телефоне ограничиваем их шириной экрана */
@@ -1839,7 +1837,7 @@
       </defs>
       <rect id="clefTreble" x="32" y="-24" width="58" height="160" fill="var(--clef-color)" mask="url(#trebleMask)"/>
       <g id="clefBass" style="display:none">
-        <rect x="34" y="62" width="47" height="55" fill="var(--clef-color)" mask="url(#bassMask)"/>
+        <rect id="clefBassRect" x="34" y="62" width="47" height="55" fill="var(--clef-color)" mask="url(#bassMask)"/>
       </g>
       <g id="ledgerLines" stroke="var(--line-color)" stroke-width="2"></g>
       <g id="staffHint" style="display:none" font-family="var(--font-ui)" font-size="12" fill="var(--clef-color)"></g>
@@ -2064,6 +2062,8 @@
     clefTreble: document.getElementById("clefTreble"),
     clefTrebleImg: document.getElementById("clefTrebleImg"),
     clefBass: document.getElementById("clefBass"),
+    clefBassRect: document.getElementById("clefBassRect"),
+    clefBassImg: document.getElementById("clefBassImg"),
     staffLinesTreble: document.getElementById("staffLinesTreble"),
     middleCLedger: document.getElementById("middleCLedger"),
     ledgerLines: document.getElementById("ledgerLines"),
@@ -3111,6 +3111,18 @@
       if(Math.hypot(t.clientX - s.x, t.clientY - s.y) > MULTI_TAP_MOVE){ multiTap.moved = true; return; }
     }
   }, { passive: true });
+  // Закрепление подсказки (на ПК — клавиша T / Е, на телефоне — тап четырьмя пальцами).
+  // На уровнях длительностей подсказки нет, поэтому там жест ничего не делает.
+  function togglePinnedHint(){
+    if(window.__durLevelActive) return;
+    if(window.__scaleLevelActive){
+      if(typeof window.__scaleToggleRevealPinned === "function") window.__scaleToggleRevealPinned();
+    } else {
+      revealPinned = !revealPinned;
+      if(revealPinned) showReveal(); else hideReveal();
+    }
+  }
+
   document.addEventListener("touchend", (e) => {
     if(!multiTap || e.touches.length > 0) return;
     const st = multiTap;
@@ -3118,6 +3130,7 @@
     if(st.moved || Date.now() - st.t0 > MULTI_TAP_TIME) return;
     if(st.max === 2) toggleSettings();
     else if(st.max === 3) toggleErrors();
+    else if(st.max >= 4) togglePinnedHint();
   }, { passive: true });
   document.addEventListener("touchcancel", () => { multiTap = null; }, { passive: true });
 
@@ -3581,6 +3594,7 @@
   // Раньше каждый уровень (Ноты / Лады / Длительности) выставлял их по-своему, поэтому
   // при переключении стан заметно менялся по ширине и по высоте на экране.
   const STAFF_VIEW_W = 470;
+  const STAFF_VIEW_MIN_X = -20; // левый край viewBox = левый край фона стана (и экрана на телефоне)
   const STAFF_LINE_X2 = 390;
   const BASE_STAFF_WIDTH = (() => {
     const raw = getComputedStyle(document.documentElement).getPropertyValue("--staff-width").trim();
@@ -4457,12 +4471,7 @@
     // Закрепление подсказки: физическая клавиша T (лат. "t" / кир. "е" — та же клавиша
     // в раскладке ЙЦУКЕН). Не путать с лат. "e" — она уже занята ответом нотой E.
     if((lower === "t" || lower === "е") && !e.repeat){
-      if(window.__scaleLevelActive){
-        if(typeof window.__scaleToggleRevealPinned === "function") window.__scaleToggleRevealPinned();
-      } else {
-        revealPinned = !revealPinned;
-        if(revealPinned) showReveal(); else hideReveal();
-      }
+      togglePinnedHint();
       return;
     }
 
@@ -4699,6 +4708,28 @@
     const w = screenW / (sc * M_LINE_FRACTION);
     root.style.setProperty("--m-staff-w", w.toFixed(1) + "px");
     document.body.classList.add("m-staff-wide");
+    // Басовый ключ нарисован на 6 единиц левее начала линеек — раз линейки теперь
+    // упираются в край экрана, левый край ключа уходил за экран и обрезался.
+    // Двигаем и сам ключ, и его картинку-маску: если сдвинуть только ключ,
+    // маска останется на месте и обрежет его (так он и обрезался на телефоне).
+    [el.clefBassRect, el.clefBassImg].forEach(node => {
+      if(node) node.setAttribute("x", 40);
+    });
+  }
+
+  // Насколько нужно подвинуть всё содержимое, чтобы стан встал ровно по центру экрана:
+  //   один ключ  — по центру средняя (третья) линейка стана, y = 92;
+  //   оба ключа  — по центру нота C между станами, y = 50.
+  // Считается по реальному положению стана на экране, поэтому масштаб "+/-",
+  // высота стана и текущий уровень значения не имеют.
+  function mobileStaffCenterDelta(){
+    const g = document.getElementById("staffContent");
+    if(!g || typeof g.getScreenCTM !== "function") return 0;
+    const ctm = g.getScreenCTM();
+    if(!ctm || !ctm.d) return 0;
+    const grand = el.staffLinesTreble && el.staffLinesTreble.style.display !== "none";
+    const targetY = grand ? 50 : 92;
+    return window.innerHeight / 2 - (ctm.d * targetY + ctm.f);
   }
 
   function updateBottomAnchor(){
@@ -4723,12 +4754,20 @@
     }
     const wsHeight = (window.__notesRefHeight != null) ? window.__notesRefHeight : currentHeight;
     const available = window.innerHeight - wsHeight - BODY_EDGE_GAP * 2;
-    // На ПК блок прижат к низу экрана (как было). На телефоне он ставится по центру
-    // по вертикали — так стан оказывается примерно посередине, а клавиатура поднимается
-    // выше от нижнего края.
-    const topPad = document.body.classList.contains("mobile-mode")
-      ? Math.max(BODY_EDGE_GAP, (window.innerHeight - wsHeight) / 2)
-      : Math.max(BODY_EDGE_GAP, BODY_EDGE_GAP + available);
+    // На ПК блок прижат к низу экрана (как было).
+    // На телефоне отступ подбирается так, чтобы стан встал ровно по центру экрана:
+    // сначала ставим предварительное значение, затем измеряем реальное положение
+    // стана и доводим отступ на нужную разницу. Итог ограничиваем, чтобы клавиатура
+    // не ушла за нижний край экрана.
+    let topPad;
+    if(document.body.classList.contains("mobile-mode")){
+      const rough = Math.max(0, (window.innerHeight - wsHeight) / 2);
+      docEl.style.setProperty("--body-top-pad", rough + "px");
+      const limit = Math.max(0, window.innerHeight - wsHeight - BODY_EDGE_GAP);
+      topPad = Math.min(limit, Math.max(0, rough + mobileStaffCenterDelta()));
+    } else {
+      topPad = Math.max(BODY_EDGE_GAP, BODY_EDGE_GAP + available);
+    }
 
     const prevPad = parseFloat(getComputedStyle(docEl).getPropertyValue("--body-top-pad")) || topPad;
     const prevScrollTop = scroller.scrollTop;
