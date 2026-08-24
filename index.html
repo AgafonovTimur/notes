@@ -1199,6 +1199,358 @@
     transform: translate(-50%, -50%) scale(var(--m-flow-scale, .62));
     transform-origin: center center;
   }
+
+  /* =====================================================================
+     ЕДИНЫЙ ДИЗАЙН НАСТРОЕК (общий для «Квинтовый круг» / «Ноты» / «Слух»)
+     ---------------------------------------------------------------------
+     Меняются только размеры/отступы/шрифты панели настроек. Цвета тем,
+     порядок блоков и расположение кнопок остаются прежними.
+       панель ........ 520px, padding 14/18/18, radius 8, gap 10
+       кнопка ........ высота 34px, шрифт 13.5px, padding 8/6, radius 6
+       заголовок ..... 13px приглушённый, обычным регистром
+       строка с галкой 24px, шрифт 14px, gap 8
+       чекбокс ....... 16x16, radius 3, серая заливка
+       select ........ 50% ширины, справа, 32px, 13px
+       слайдер ....... дорожка 4px, бегунок 14px (серый), поле 52x26
+       значок (i) .... 16px, 10px italic bold
+     ===================================================================== */
+
+  :root{
+    --settings-width: 520px;
+    --settings-block-gap: 10px;
+  }
+
+  #settingsPanel{
+    padding:14px 18px 18px;
+    gap:10px;
+    border-radius:8px;
+    box-shadow:0 10px 30px rgba(0,0,0,.75);
+    font-family:var(--font-ui);
+  }
+  #settingsPanel .settings-block{ gap:6px; }
+
+  /* ---- Заголовки блоков ---- */
+  #settingsPanel h3,
+  #settingsPanel .panel-card h3{
+    font-size:13px;
+    font-weight:normal;
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--text-dim);
+    line-height:1.25;
+  }
+  #settingsPanel .settings-block h3{ margin-bottom:0; }
+  #settingsPanel .h3-with-info{ gap:6px; }
+  #settingsPanel .rh-hint{ font-size:12px; }
+
+  /* ---- Кнопки: одна высота и один шрифт во всей панели ---- */
+  #settingsPanel .level-tabs button,
+  #settingsPanel .segmented button,
+  #settingsPanel .note-grid button,
+  #settingsPanel .scale-type-cell > button,
+  #settingsPanel .small-btn{
+    height:34px;
+    min-height:34px;
+    padding:8px 6px;
+    border:none;
+    border-radius:6px;
+    font-size:13.5px;
+    font-weight:normal;
+    line-height:1.1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    box-sizing:border-box;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    box-shadow:none;
+  }
+  #settingsPanel .level-tabs button.active,
+  #settingsPanel .segmented button.active,
+  #settingsPanel .note-grid button.active,
+  #settingsPanel .note-grid button.selected,
+  #settingsPanel .scale-type-cell > button.selected{
+    box-shadow:none;
+  }
+  #settingsPanel .small-btn{
+    width:100%;
+    align-self:stretch;
+  }
+  #settingsPanel .small-btn:active{
+    transform:none;
+    box-shadow:none;
+  }
+
+  /* ---- Отступы в сетках ---- */
+  #settingsPanel .level-tabs{ gap:4px; margin-bottom:0; }
+  #settingsPanel .segmented{
+    background:transparent;
+    padding:0;
+    gap:4px;
+    border-radius:0;
+  }
+  #settingsPanel .seg-row{ gap:4px; }
+  #settingsPanel .segmented button{ background:var(--ui-bg); }
+  #settingsPanel .segmented button.active{ background:var(--sel-bg); }
+
+  /* Цвет текста на нажатой кнопке не меняется — как у обычной кнопки
+     (в светлой теме №5 остаётся свой, иначе тёмное на тёмном). */
+  #settingsPanel .segmented button.active,
+  #settingsPanel .note-grid button.active,
+  #settingsPanel .note-grid button.selected,
+  #settingsPanel .scale-type-cell > button.selected,
+  #settingsPanel .level-tabs button.active{
+    color:var(--text-dim);
+  }
+  [data-theme="5"] #settingsPanel .segmented button.active,
+  [data-theme="5"] #settingsPanel .note-grid button.active,
+  [data-theme="5"] #settingsPanel .note-grid button.selected,
+  [data-theme="5"] #settingsPanel .scale-type-cell > button.selected,
+  [data-theme="5"] #settingsPanel .level-tabs button.active{
+    color:var(--sel-text);
+  }
+  #settingsPanel .note-grid{ gap:4px; }
+  #settingsPanel .note-grid button{
+    padding:8px 3px;
+    font-size:12.5px;
+  }
+  #settingsPanel .scale-types{
+    grid-template-columns:repeat(3, 1fr);
+    gap:4px;
+  }
+  #settingsPanel .scale-type-cell{ gap:4px; }
+  #settingsPanel .scale-type-cell > button{
+    padding:8px 3px;
+    font-size:11.5px;
+  }
+
+  /* ---- Количество колонок в сетках (по реальным спискам файла) ---- */
+  #settingsPanel #noteGrid{ grid-template-columns:repeat(7, 1fr); }
+  #settingsPanel #scaleTonicGrid{ grid-template-columns:repeat(6, 1fr); }
+  #settingsPanel #durGrid{ grid-template-columns:repeat(6, 1fr); }
+  #settingsPanel #nrTsGrid{ grid-template-columns:repeat(4, 1fr); }
+  #settingsPanel #nrTagGrid{ grid-template-columns:repeat(5, 1fr); }
+  #settingsPanel #nrMetroDivGrid{ grid-template-columns:repeat(5, 1fr); }
+
+  /* ---- Строки с галками ---- */
+  #settingsPanel .settings-block > label,
+  #settingsPanel .rh-check,
+  #settingsPanel .settings-position-option{
+    min-height:24px;
+    font-size:14px;
+    gap:8px;
+    margin-top:0;
+  }
+  #settingsPanel .settings-position-row{ gap:6px 12px; min-height:24px; }
+  #settingsPanel .settings-position-title{ font-size:14px; }
+
+  /* ---- Чекбокс: 16x16, серая заливка ---- */
+  #settingsPanel input[type="checkbox"]{
+    width:16px;
+    height:16px;
+    border-radius:3px;
+  }
+  #settingsPanel input[type="checkbox"]:checked{
+    background:#5a5a5a;
+    border-color:#5a5a5a;
+  }
+  #settingsPanel input[type="checkbox"]:checked::after{
+    left:4px;
+    top:1px;
+    width:4px;
+    height:8px;
+    border-color:#fff;
+    border-width:0 2px 2px 0;
+  }
+  [data-theme="5"] #settingsPanel input[type="checkbox"]:checked{
+    background:#2f2f2f;
+    border-color:#2f2f2f;
+  }
+
+  /* ---- Слайдеры: дорожка 4px, бегунок 14px серый ---- */
+  #settingsPanel input[type="range"]{
+    -webkit-appearance:none;
+    appearance:none;
+    height:4px;
+    border-radius:2px;
+    background:var(--ui-bg);
+    outline:none;
+    min-width:0;
+  }
+  #settingsPanel input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--btn-bg);
+    border:none;
+    cursor:pointer;
+  }
+  #settingsPanel input[type="range"]::-moz-range-thumb{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--btn-bg);
+    border:none;
+    cursor:pointer;
+  }
+
+  /* ---- Числовые поля и цветовые пикеры ---- */
+  #settingsPanel .range-field{
+    font-size:13px;
+    gap:8px;
+    min-height:26px;
+  }
+  #settingsPanel .range-field input[type="number"].range-number{
+    width:52px;
+    height:26px;
+    padding:2px 6px;
+    border-radius:6px;
+    font-size:13px;
+    text-align:right;
+    box-sizing:border-box;
+  }
+  #settingsPanel #errorsPosXVal,
+  #settingsPanel #errorsPosYVal,
+  #settingsPanel #errorsScalePosXVal,
+  #settingsPanel #errorsScalePosYVal,
+  #settingsPanel #errorsDurPosXVal,
+  #settingsPanel #errorsDurPosYVal,
+  #settingsPanel #errorsMeasurePosXVal,
+  #settingsPanel #errorsMeasurePosYVal{
+    width:64px;
+  }
+  #settingsPanel .range-field input[type="color"]{
+    width:30px;
+    height:26px;
+    border-radius:6px;
+  }
+
+  /* ---- Выпадающие списки: 50% ширины, справа, 32px ---- */
+  #settingsPanel .theme-row{
+    gap:8px;
+    margin-top:0;
+    min-height:24px;
+  }
+  #settingsPanel .theme-row span{ font-size:14px; }
+  #settingsPanel .midi-select-line{ gap:8px; min-height:24px; }
+  #settingsPanel .midi-select-line span{ font-size:14px; }
+  #settingsPanel .theme-row select,
+  #settingsPanel .midi-select{
+    flex:0 0 50%;
+    width:50%;
+    margin-left:auto;
+    height:32px;
+    padding:0 8px;
+    border:none;
+    border-radius:6px;
+    font-size:13px;
+    box-sizing:border-box;
+  }
+  #settingsPanel .midi-status{ font-size:13px; }
+  #settingsPanel .midi-row{ gap:8px; }
+
+  /* ---- Значок подсказки (i) ---- */
+  #settingsPanel .info-icon,
+  #settingsPanel .scale-type-cell > .info-icon{
+    width:16px;
+    height:16px;
+    font-size:10px;
+    font-style:italic;
+    font-weight:700;
+  }
+
+  /* ---- Мобильный режим ---- */
+  body.mobile-mode #settingsPanel{
+    width:min(100vw - 16px, 520px);
+    max-height:96vh;
+    padding:12px 10px 14px;
+    border-radius:8px;
+  }
+  body.mobile-mode #settingsPanel .level-tabs button,
+  body.mobile-mode #settingsPanel .segmented button,
+  body.mobile-mode #settingsPanel .note-grid button,
+  body.mobile-mode #settingsPanel .scale-type-cell > button,
+  body.mobile-mode #settingsPanel .small-btn{
+    height:40px;
+    min-height:40px;
+    font-size:13.5px;
+    padding:8px 4px;
+  }
+  body.mobile-mode #settingsPanel .settings-block > label,
+  body.mobile-mode #settingsPanel .rh-check,
+  body.mobile-mode #settingsPanel .settings-position-option{
+    min-height:30px;
+  }
+  body.mobile-mode #settingsPanel #noteGrid{ grid-template-columns:repeat(4, 1fr); }
+  body.mobile-mode #settingsPanel #scaleTonicGrid{ grid-template-columns:repeat(4, 1fr); }
+  body.mobile-mode #settingsPanel #durGrid{ grid-template-columns:repeat(3, 1fr); }
+  body.mobile-mode #settingsPanel #nrTagGrid{ grid-template-columns:repeat(3, 1fr); }
+  body.mobile-mode #settingsPanel .scale-types{ grid-template-columns:repeat(3, 1fr); }
+
+  /* =====================================================================
+     ЕДИНАЯ ПАЛИТРА НАСТРОЕК В ТЁМНОЙ ТЕМЕ (как в «Квинтовом круге»)
+     кнопка #333333 / текст #D0D0D0 / нажатая #5a5a5a, панель #1e1e1e,
+     рамка #333333. Остальные темы берут свои цвета, как раньше.
+     ===================================================================== */
+  #settingsPanel{
+    --set-btn-bg: var(--ui-bg);
+    --set-btn-text: var(--text-dim);
+    --set-btn-active-bg: var(--sel-bg);
+    --set-btn-active-text: var(--text-dim);
+  }
+  [data-theme="1"] #settingsPanel{
+    --set-btn-bg:#333333;
+    --set-btn-text:#D0D0D0;
+    --set-btn-active-bg:#5a5a5a;
+    --set-btn-active-text:#D0D0D0;
+    background:#1e1e1e;
+    border-color:#333333;
+  }
+  [data-theme="5"] #settingsPanel{
+    --set-btn-active-text: var(--sel-text);
+  }
+
+  #settingsPanel .level-tabs button,
+  #settingsPanel .segmented button,
+  #settingsPanel .note-grid button,
+  #settingsPanel .scale-type-cell > button,
+  #settingsPanel .small-btn{
+    background:var(--set-btn-bg);
+    color:var(--set-btn-text);
+  }
+  #settingsPanel .level-tabs button.active,
+  #settingsPanel .segmented button.active,
+  #settingsPanel .note-grid button.active,
+  #settingsPanel .note-grid button.selected,
+  #settingsPanel .scale-type-cell > button.selected{
+    background:var(--set-btn-active-bg);
+    color:var(--set-btn-active-text);
+  }
+  #settingsPanel .theme-row select,
+  #settingsPanel .midi-select,
+  #settingsPanel .range-field input[type="number"].range-number{
+    background:var(--set-btn-bg);
+    color:var(--set-btn-text);
+  }
+  #settingsPanel .info-icon,
+  #settingsPanel .scale-type-cell > .info-icon{
+    background:var(--set-btn-bg);
+    color:var(--set-btn-text);
+  }
+  #settingsPanel input[type="range"]{
+    background:var(--set-btn-bg);
+  }
+  #settingsPanel input[type="range"]::-webkit-slider-thumb{
+    background:var(--set-btn-active-bg);
+  }
+  #settingsPanel input[type="range"]::-moz-range-thumb{
+    background:var(--set-btn-active-bg);
+  }
 </style>
 </head>
 <body>
