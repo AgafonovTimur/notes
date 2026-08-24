@@ -3196,6 +3196,62 @@
     window.visualViewport.addEventListener("scroll", multiTapViewportCheck, { passive: true });
   }
 
+  /* ---- Слайдеры и многопальцевые жесты ----
+     Ползунки (input[type=range]) реагируют на каждое касание отдельно, поэтому
+     при тапе двумя пальцами они успевали изменить значение. Здесь ползунок
+     обслуживает только первый палец: если появляется второй (где угодно на
+     экране), значение возвращается к тому, что было до касания, и дальнейшее
+     перетаскивание игнорируется до полного отрыва пальцев. */
+  let rangeTouch = null;
+
+  function rangeSliderAt(target){
+    return (target && target.closest) ? target.closest('input[type="range"]') : null;
+  }
+  function rangeRestore(){
+    if(!rangeTouch) return;
+    const node = rangeTouch.node;
+    if(node.value !== rangeTouch.value){
+      node.value = rangeTouch.value;
+      node.dispatchEvent(new Event("input", { bubbles: true }));
+      node.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  }
+  document.addEventListener("touchstart", (e) => {
+    const node = rangeSliderAt(e.target);
+    if(node){
+      // второй палец на ползунке — не даём ему перехватить касание
+      if(e.touches.length > 1 || (rangeTouch && rangeTouch.node !== node)){
+        e.preventDefault();
+        if(rangeTouch){ rangeTouch.cancelled = true; rangeRestore(); }
+        return;
+      }
+      rangeTouch = { node, value: node.value, cancelled: false };
+      return;
+    }
+    // палец лёг в другом месте, пока удерживается ползунок — отменяем правку
+    if(rangeTouch && e.touches.length > 1){
+      rangeTouch.cancelled = true;
+      rangeRestore();
+    }
+  }, { passive: false, capture: true });
+
+  document.addEventListener("touchmove", (e) => {
+    if(!rangeTouch || !rangeTouch.cancelled) return;
+    if(e.cancelable) e.preventDefault();
+    rangeRestore();
+  }, { passive: false, capture: true });
+
+  document.addEventListener("touchend", (e) => {
+    if(!rangeTouch) return;
+    if(rangeTouch.cancelled) rangeRestore();
+    if(e.touches.length === 0) rangeTouch = null;
+  }, { capture: true });
+
+  document.addEventListener("touchcancel", () => {
+    if(rangeTouch && rangeTouch.cancelled) rangeRestore();
+    rangeTouch = null;
+  }, { capture: true });
+
   // ================= НОТНАЯ ЛОГИКА =================
   function noteFromStep(step, clef){
     const refIndex = clef === "treble" ? 2 : -10;
