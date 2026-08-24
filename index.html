@@ -3090,26 +3090,66 @@
   // нажатия работают как раньше. Жест засчитывается, только если пальцы почти не
   // сдвинулись (иначе это масштабирование/прокрутка) и касание было коротким.
   let multiTap = null;
-  const MULTI_TAP_MOVE = 25;   // px — больше этого считаем движением, а не тапом
-  const MULTI_TAP_TIME = 400;  // мс — дольше этого уже не тап
+  const MULTI_TAP_MOVE = 25;    // px — больше этого считаем движением, а не тапом
+  const MULTI_TAP_TIME = 800;   // мс — дольше этого уже не тап
+  const MULTI_TAP_PINCH = 20;   // px — изменение расстояния между пальцами: щипок, а не тап
+  const MULTI_TAP_SCALE = 0.05; // 5% — изменение масштаба страницы за время жеста: зум, а не тап
+
+  /* Текущий масштаб страницы (pinch-to-zoom браузера). Сравнивается начало
+     жеста с концом, а НЕ со 100%: если страница уже была увеличена и во
+     время тапа масштаб не менялся — тап засчитывается как обычно. */
+  function multiTapScale(){
+    return (window.visualViewport && window.visualViewport.scale) || 1;
+  }
+
   function multiTapTrack(touches){
     for(const t of touches){
       if(!(t.identifier in multiTap.start)) multiTap.start[t.identifier] = { x: t.clientX, y: t.clientY };
+      multiTap.last[t.identifier] = { x: t.clientX, y: t.clientY };
+    }
+  }
+
+  /* Максимальное расстояние между парой пальцев — «размах». Если размах в
+     начале и в конце жеста заметно разный, пальцы сводили или разводили. */
+  function multiTapSpread(map){
+    const pts = Object.values(map);
+    let max = 0;
+    for(let i = 0; i < pts.length; i++){
+      for(let j = i + 1; j < pts.length; j++){
+        max = Math.max(max, Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y));
+      }
+    }
+    return max;
+  }
+
+  /* Проверка «жест сдвинулся». Вызывается и на touchmove, и на touchend по
+     changedTouches: во время системного зума браузер может вообще перестать
+     присылать touchmove, и тогда единственные достоверные координаты
+     приходят в момент отрыва пальцев. */
+  function multiTapCheckMoved(touches){
+    if(!multiTap) return;
+    for(const t of touches){
+      multiTap.last[t.identifier] = { x: t.clientX, y: t.clientY };
+      const s = multiTap.start[t.identifier];
+      if(!s) continue;
+      if(Math.hypot(t.clientX - s.x, t.clientY - s.y) > MULTI_TAP_MOVE) multiTap.moved = true;
+    }
+    if(Object.keys(multiTap.start).length >= 2 && Object.keys(multiTap.last).length >= 2){
+      if(Math.abs(multiTapSpread(multiTap.last) - multiTapSpread(multiTap.start)) > MULTI_TAP_PINCH){
+        multiTap.moved = true;
+      }
     }
   }
   document.addEventListener("touchstart", (e) => {
     if(e.touches.length < 2) return;
-    if(!multiTap) multiTap = { t0: Date.now(), max: 0, moved: false, start: {} };
+    if(!multiTap) multiTap = { t0: Date.now(), max: 0, moved: false, start: {}, last: {}, scale0: multiTapScale() };
     multiTap.max = Math.max(multiTap.max, e.touches.length);
     multiTapTrack(e.touches);
   }, { passive: true });
   document.addEventListener("touchmove", (e) => {
     if(!multiTap) return;
-    for(const t of e.touches){
-      const s = multiTap.start[t.identifier];
-      if(!s) continue;
-      if(Math.hypot(t.clientX - s.x, t.clientY - s.y) > MULTI_TAP_MOVE){ multiTap.moved = true; return; }
-    }
+    multiTapTrack(e.touches);
+    multiTapCheckMoved(e.touches);
   }, { passive: true });
   // Закрепление подсказки (на ПК — клавиша T / Е, на телефоне — тап четырьмя пальцами).
   // На уровнях длительностей подсказки нет, поэтому там жест ничего не делает.
@@ -3124,7 +3164,12 @@
   }
 
   document.addEventListener("touchend", (e) => {
-    if(!multiTap || e.touches.length > 0) return;
+    if(!multiTap) return;
+    // последний достоверный замер координат отрывающихся пальцев
+    multiTapCheckMoved(e.changedTouches);
+    if(e.touches.length > 0) return;
+    // масштаб страницы изменился за время жеста — это зум, а не тап
+    if(Math.abs(multiTapScale() - multiTap.scale0) > MULTI_TAP_SCALE) multiTap.moved = true;
     const st = multiTap;
     multiTap = null;
     if(st.moved || Date.now() - st.t0 > MULTI_TAP_TIME) return;
@@ -3133,6 +3178,23 @@
     else if(st.max >= 4) togglePinnedHint();
   }, { passive: true });
   document.addEventListener("touchcancel", () => { multiTap = null; }, { passive: true });
+
+  /* Safari/iOS присылает собственные события масштабирования двумя пальцами.
+     Если они пришли — это точно щипок, а не тап. */
+  ["gesturestart","gesturechange","gestureend"].forEach(evt => {
+    document.addEventListener(evt, () => { if(multiTap) multiTap.moved = true; }, { passive: true });
+  });
+
+  /* Android/Chrome таких событий не присылает, а масштаб может «доехать» уже
+     после отрыва пальцев — поэтому следим ещё и за visual viewport. */
+  if(window.visualViewport){
+    const multiTapViewportCheck = () => {
+      if(!multiTap) return;
+      if(Math.abs(multiTapScale() - multiTap.scale0) > MULTI_TAP_SCALE) multiTap.moved = true;
+    };
+    window.visualViewport.addEventListener("resize", multiTapViewportCheck, { passive: true });
+    window.visualViewport.addEventListener("scroll", multiTapViewportCheck, { passive: true });
+  }
 
   // ================= НОТНАЯ ЛОГИКА =================
   function noteFromStep(step, clef){
