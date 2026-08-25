@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Заучивание нот и ритма</title>
+<title>Ноты и ритм</title>
 <style>
   :root{
     --bg: #161618;
@@ -1201,18 +1201,18 @@
   }
 
   /* =====================================================================
-     ЕДИНЫЙ ДИЗАЙН НАСТРОЕК (общий для «Квинтовый круг» / «Ноты» / «Слух»)
-     ---------------------------------------------------------------------
-     Меняются только размеры/отступы/шрифты панели настроек. Цвета тем,
-     порядок блоков и расположение кнопок остаются прежними.
+     ЕДИНЫЙ ДИЗАЙН НАСТРОЕК — всё взято из «Квинтового круга» (эталон):
        панель ........ 520px, padding 14/18/18, radius 8, gap 10
-       кнопка ........ высота 34px, шрифт 13.5px, padding 8/6, radius 6
-       заголовок ..... 13px приглушённый, обычным регистром
-       строка с галкой 24px, шрифт 14px, gap 8
+       кнопка ........ padding 9/4, шрифт 14px, radius 6, без рамки
+       кнопка в сетке  padding 9/2, шрифт 13px
+       верхние вкладки padding 10/4, шрифт 13px
+       заголовок ..... 16px жирный
+       строка с галкой шрифт 16px
        чекбокс ....... 16x16, radius 3, серая заливка
-       select ........ 50% ширины, справа, 32px, 13px
-       слайдер ....... дорожка 4px, бегунок 14px (серый), поле 52x26
-       значок (i) .... 16px, 10px italic bold
+       select ........ 50% ширины, справа, padding 8/6, 13px
+       значок (i) .... 22px (в сетках 20px)
+       отступы ....... 8px в рядах, 10/8px в сетках
+     Цвета кнопок в тёмной теме — как в круге: #333333 / #D0D0D0 / #5a5a5a.
      ===================================================================== */
 
   :root{
@@ -1226,54 +1226,108 @@
     border-radius:8px;
     box-shadow:0 10px 30px rgba(0,0,0,.75);
     font-family:var(--font-ui);
+    --set-btn-bg: var(--ui-bg);
+    --set-btn-text: var(--text-dim);
+    --set-btn-active-bg: var(--sel-bg);
+    --set-btn-active-text: var(--text-dim);
+    --set-title: var(--text-main);
   }
-  #settingsPanel .settings-block{ gap:6px; }
+  [data-theme="1"] #settingsPanel{
+    --set-btn-bg:#333333;
+    --set-btn-text:#D0D0D0;
+    --set-btn-active-bg:#5a5a5a;
+    --set-btn-active-text:#D0D0D0;
+    --set-title:#D0D0D0;
+    background:#1e1e1e;
+    border-color:#333333;
+  }
+  [data-theme="5"] #settingsPanel{
+    --set-btn-active-text: var(--sel-text);
+  }
+  #settingsPanel .settings-block{ gap:10px; }
+
+  /* Одинаковое расстояние (10px) между ВСЕМИ блоками настроек, включая
+     первый блок подуровня после кнопок «Одна нота / Бесконечно».
+     Раньше между контейнером подуровня и его первым блоком отступа не было
+     вовсе, а между остальными он складывался из двух разных правил. */
+  #settingsPanel #noteSettingsBlocks,
+  #settingsPanel #scaleSettingsBlocks,
+  #settingsPanel #durationsRoot,
+  #settingsPanel #durSettingsBlocks,
+  #settingsPanel #nrSettingsBlocks{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  #settingsPanel .settings-block + .settings-block,
+  #settingsPanel .settings-position-row,
+  #settingsPanel .settings-position-row + .settings-block,
+  #settingsPanel .tight-gap-block{
+    margin-top:0;
+  }
+  #settingsPanel .tight-gap-block{ gap:10px; }
+  #settingsPanel .rh-hint{ margin-top:0; }
+  #settingsPanel .rh-check{ margin-top:0; }
 
   /* ---- Заголовки блоков ---- */
+  /* как надпись «Вариант 1» в круге: 13px, жирный, основной цвет текста */
   #settingsPanel h3,
   #settingsPanel .panel-card h3{
     font-size:13px;
-    font-weight:normal;
+    font-weight:bold;
     text-transform:none;
     letter-spacing:0;
-    color:var(--text-dim);
+    color:var(--set-title);
     line-height:1.25;
   }
   #settingsPanel .settings-block h3{ margin-bottom:0; }
   #settingsPanel .h3-with-info{ gap:6px; }
   #settingsPanel .rh-hint{ font-size:12px; }
 
-  /* ---- Кнопки: одна высота и один шрифт во всей панели ---- */
+  /* ---- Кнопки ---- */
   #settingsPanel .level-tabs button,
   #settingsPanel .segmented button,
   #settingsPanel .note-grid button,
   #settingsPanel .scale-type-cell > button,
   #settingsPanel .small-btn{
-    height:34px;
-    min-height:34px;
-    padding:8px 6px;
     border:none;
     border-radius:6px;
-    font-size:13.5px;
+    padding:9px 4px;
+    font-size:14px;
     font-weight:normal;
-    line-height:1.1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
+    line-height:1.2;
+    background:var(--set-btn-bg);
+    color:var(--set-btn-text);
+    box-shadow:none;
     box-sizing:border-box;
     min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    box-shadow:none;
+    white-space:normal;
+    text-align:center;
   }
   #settingsPanel .level-tabs button.active,
   #settingsPanel .segmented button.active,
   #settingsPanel .note-grid button.active,
   #settingsPanel .note-grid button.selected,
   #settingsPanel .scale-type-cell > button.selected{
+    background:var(--set-btn-active-bg);
+    color:var(--set-btn-active-text);
     box-shadow:none;
+  }
+  #settingsPanel .level-tabs button{
+    padding:10px 4px;
+    font-size:13px;
+    font-weight:500;
+  }
+  #settingsPanel .note-grid button{
+    padding:9px 2px;
+    font-size:13px;
+  }
+  #settingsPanel .scale-type-cell > button{
+    padding:9px 2px;
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
   #settingsPanel .small-btn{
     width:100%;
@@ -1284,48 +1338,22 @@
     box-shadow:none;
   }
 
-  /* ---- Отступы в сетках ---- */
+  /* ---- Отступы ---- */
+  /* Расстояние между кнопками уменьшено вдвое: по ширине и по высоте */
   #settingsPanel .level-tabs{ gap:4px; margin-bottom:0; }
   #settingsPanel .segmented{
     background:transparent;
     padding:0;
-    gap:4px;
+    gap:5px;
     border-radius:0;
   }
   #settingsPanel .seg-row{ gap:4px; }
-  #settingsPanel .segmented button{ background:var(--ui-bg); }
-  #settingsPanel .segmented button.active{ background:var(--sel-bg); }
-
-  /* Цвет текста на нажатой кнопке не меняется — как у обычной кнопки
-     (в светлой теме №5 остаётся свой, иначе тёмное на тёмном). */
-  #settingsPanel .segmented button.active,
-  #settingsPanel .note-grid button.active,
-  #settingsPanel .note-grid button.selected,
-  #settingsPanel .scale-type-cell > button.selected,
-  #settingsPanel .level-tabs button.active{
-    color:var(--text-dim);
-  }
-  [data-theme="5"] #settingsPanel .segmented button.active,
-  [data-theme="5"] #settingsPanel .note-grid button.active,
-  [data-theme="5"] #settingsPanel .note-grid button.selected,
-  [data-theme="5"] #settingsPanel .scale-type-cell > button.selected,
-  [data-theme="5"] #settingsPanel .level-tabs button.active{
-    color:var(--sel-text);
-  }
-  #settingsPanel .note-grid{ gap:4px; }
-  #settingsPanel .note-grid button{
-    padding:8px 3px;
-    font-size:12.5px;
-  }
+  #settingsPanel .note-grid{ gap:5px 4px; }
   #settingsPanel .scale-types{
     grid-template-columns:repeat(3, 1fr);
-    gap:4px;
+    gap:5px 4px;
   }
-  #settingsPanel .scale-type-cell{ gap:4px; }
-  #settingsPanel .scale-type-cell > button{
-    padding:8px 3px;
-    font-size:11.5px;
-  }
+  #settingsPanel .scale-type-cell{ gap:2px; }
 
   /* ---- Количество колонок в сетках (по реальным спискам файла) ---- */
   #settingsPanel #noteGrid{ grid-template-columns:repeat(7, 1fr); }
@@ -1339,15 +1367,14 @@
   #settingsPanel .settings-block > label,
   #settingsPanel .rh-check,
   #settingsPanel .settings-position-option{
-    min-height:24px;
-    font-size:14px;
+    font-size:16px;
     gap:8px;
     margin-top:0;
   }
-  #settingsPanel .settings-position-row{ gap:6px 12px; min-height:24px; }
-  #settingsPanel .settings-position-title{ font-size:14px; }
+  #settingsPanel .settings-position-row{ gap:10px 12px; }
+  #settingsPanel .settings-position-title{ font-size:16px; color:var(--text-main); }
 
-  /* ---- Чекбокс: 16x16, серая заливка ---- */
+  /* ---- Чекбокс ---- */
   #settingsPanel input[type="checkbox"]{
     width:16px;
     height:16px;
@@ -1370,13 +1397,13 @@
     border-color:#2f2f2f;
   }
 
-  /* ---- Слайдеры: дорожка 4px, бегунок 14px серый ---- */
+  /* ---- Слайдеры ---- */
   #settingsPanel input[type="range"]{
     -webkit-appearance:none;
     appearance:none;
     height:4px;
     border-radius:2px;
-    background:var(--ui-bg);
+    background:var(--set-btn-bg);
     outline:none;
     min-width:0;
   }
@@ -1386,7 +1413,7 @@
     width:14px;
     height:14px;
     border-radius:50%;
-    background:var(--btn-bg);
+    background:var(--set-btn-active-bg);
     border:none;
     cursor:pointer;
   }
@@ -1394,16 +1421,15 @@
     width:14px;
     height:14px;
     border-radius:50%;
-    background:var(--btn-bg);
+    background:var(--set-btn-active-bg);
     border:none;
     cursor:pointer;
   }
 
   /* ---- Числовые поля и цветовые пикеры ---- */
   #settingsPanel .range-field{
-    font-size:13px;
+    font-size:14px;
     gap:8px;
-    min-height:26px;
   }
   #settingsPanel .range-field input[type="number"].range-number{
     width:52px;
@@ -1413,6 +1439,8 @@
     font-size:13px;
     text-align:right;
     box-sizing:border-box;
+    background:var(--set-btn-bg);
+    color:var(--set-btn-text);
   }
   #settingsPanel #errorsPosXVal,
   #settingsPanel #errorsPosYVal,
@@ -1430,38 +1458,47 @@
     border-radius:6px;
   }
 
-  /* ---- Выпадающие списки: 50% ширины, справа, 32px ---- */
+  /* ---- Выпадающие списки ---- */
   #settingsPanel .theme-row{
     gap:8px;
     margin-top:0;
-    min-height:24px;
   }
-  #settingsPanel .theme-row span{ font-size:14px; }
-  #settingsPanel .midi-select-line{ gap:8px; min-height:24px; }
-  #settingsPanel .midi-select-line span{ font-size:14px; }
+  #settingsPanel .theme-row span{ font-size:16px; color:var(--text-main); }
+  #settingsPanel .midi-select-line{ gap:8px; }
+  #settingsPanel .midi-select-line span{ font-size:16px; color:var(--text-main); }
   #settingsPanel .theme-row select,
   #settingsPanel .midi-select{
     flex:0 0 50%;
     width:50%;
+    max-width:50%;
     margin-left:auto;
-    height:32px;
-    padding:0 8px;
+    padding:8px 6px;
     border:none;
     border-radius:6px;
     font-size:13px;
     box-sizing:border-box;
+    background:var(--set-btn-bg);
+    color:var(--set-btn-text);
   }
-  #settingsPanel .midi-status{ font-size:13px; }
-  #settingsPanel .midi-row{ gap:8px; }
+  #settingsPanel .midi-status{ font-size:14px; }
+  #settingsPanel .midi-row{ gap:10px; }
 
   /* ---- Значок подсказки (i) ---- */
-  #settingsPanel .info-icon,
-  #settingsPanel .scale-type-cell > .info-icon{
-    width:16px;
-    height:16px;
-    font-size:10px;
+  #settingsPanel .info-icon{
+    width:22px;
+    height:22px;
+    font-size:13px;
     font-style:italic;
     font-weight:700;
+    background:var(--set-btn-bg);
+    color:var(--set-btn-text);
+  }
+  #settingsPanel .scale-type-cell > .info-icon{
+    width:20px;
+    height:20px;
+    font-size:11px;
+    background:var(--set-btn-bg);
+    color:var(--set-btn-text);
   }
 
   /* ---- Мобильный режим ---- */
@@ -1471,86 +1508,11 @@
     padding:12px 10px 14px;
     border-radius:8px;
   }
-  body.mobile-mode #settingsPanel .level-tabs button,
-  body.mobile-mode #settingsPanel .segmented button,
-  body.mobile-mode #settingsPanel .note-grid button,
-  body.mobile-mode #settingsPanel .scale-type-cell > button,
-  body.mobile-mode #settingsPanel .small-btn{
-    height:40px;
-    min-height:40px;
-    font-size:13.5px;
-    padding:8px 4px;
-  }
-  body.mobile-mode #settingsPanel .settings-block > label,
-  body.mobile-mode #settingsPanel .rh-check,
-  body.mobile-mode #settingsPanel .settings-position-option{
-    min-height:30px;
-  }
   body.mobile-mode #settingsPanel #noteGrid{ grid-template-columns:repeat(4, 1fr); }
   body.mobile-mode #settingsPanel #scaleTonicGrid{ grid-template-columns:repeat(4, 1fr); }
   body.mobile-mode #settingsPanel #durGrid{ grid-template-columns:repeat(3, 1fr); }
   body.mobile-mode #settingsPanel #nrTagGrid{ grid-template-columns:repeat(3, 1fr); }
   body.mobile-mode #settingsPanel .scale-types{ grid-template-columns:repeat(3, 1fr); }
-
-  /* =====================================================================
-     ЕДИНАЯ ПАЛИТРА НАСТРОЕК В ТЁМНОЙ ТЕМЕ (как в «Квинтовом круге»)
-     кнопка #333333 / текст #D0D0D0 / нажатая #5a5a5a, панель #1e1e1e,
-     рамка #333333. Остальные темы берут свои цвета, как раньше.
-     ===================================================================== */
-  #settingsPanel{
-    --set-btn-bg: var(--ui-bg);
-    --set-btn-text: var(--text-dim);
-    --set-btn-active-bg: var(--sel-bg);
-    --set-btn-active-text: var(--text-dim);
-  }
-  [data-theme="1"] #settingsPanel{
-    --set-btn-bg:#333333;
-    --set-btn-text:#D0D0D0;
-    --set-btn-active-bg:#5a5a5a;
-    --set-btn-active-text:#D0D0D0;
-    background:#1e1e1e;
-    border-color:#333333;
-  }
-  [data-theme="5"] #settingsPanel{
-    --set-btn-active-text: var(--sel-text);
-  }
-
-  #settingsPanel .level-tabs button,
-  #settingsPanel .segmented button,
-  #settingsPanel .note-grid button,
-  #settingsPanel .scale-type-cell > button,
-  #settingsPanel .small-btn{
-    background:var(--set-btn-bg);
-    color:var(--set-btn-text);
-  }
-  #settingsPanel .level-tabs button.active,
-  #settingsPanel .segmented button.active,
-  #settingsPanel .note-grid button.active,
-  #settingsPanel .note-grid button.selected,
-  #settingsPanel .scale-type-cell > button.selected{
-    background:var(--set-btn-active-bg);
-    color:var(--set-btn-active-text);
-  }
-  #settingsPanel .theme-row select,
-  #settingsPanel .midi-select,
-  #settingsPanel .range-field input[type="number"].range-number{
-    background:var(--set-btn-bg);
-    color:var(--set-btn-text);
-  }
-  #settingsPanel .info-icon,
-  #settingsPanel .scale-type-cell > .info-icon{
-    background:var(--set-btn-bg);
-    color:var(--set-btn-text);
-  }
-  #settingsPanel input[type="range"]{
-    background:var(--set-btn-bg);
-  }
-  #settingsPanel input[type="range"]::-webkit-slider-thumb{
-    background:var(--set-btn-active-bg);
-  }
-  #settingsPanel input[type="range"]::-moz-range-thumb{
-    background:var(--set-btn-active-bg);
-  }
 </style>
 </head>
 <body>
@@ -2024,7 +1986,7 @@
         <input type="range" id="nrMetroVolume"><input type="number" class="range-number" id="nrMetroVolumeVal">
       </div>
       <label class="rh-check"><input type="checkbox" id="nrMetroPlay"> <span data-i18n="chk_metro_during">Метроном во время ритма</span></label>
-      <div class="rh-hint" style="margin-top:10px" data-i18n="lbl_metro_division">Дробление метронома</div>
+      <div class="rh-hint" data-i18n="lbl_metro_division">Дробление метронома</div>
       <div class="note-grid" id="nrMetroDivGrid"></div>
     </div>
     <div class="settings-block">
@@ -3051,7 +3013,7 @@
     errors_title_scales: { ru: "Ошибки — Тональности / Лады (Q / Й)", en: "Errors — Keys / Scales (Q)", zh: "错误 — 调式（Q键）" },
     errors_title_durations: { ru: "Ошибки — Ритм (Q / Й)", en: "Errors — Rhythm (Q)", zh: "错误 — 节奏（Q键）" },
     errors_title_flow: { ru: "Статистика — Ритм: Бесконечно (Q / Й)", en: "Stats — Rhythm: Infinite (Q)", zh: "统计 — 节奏：无限模式（Q键）" },
-    page_title: { ru: "Заучивание нот и ритма", en: "Learning notes and rhythm", zh: "学习音符与节奏" },
+    page_title: { ru: "Ноты и ритм", en: "Notes and rhythm", zh: "音符与节奏" },
     nrflow_info_text: { ru: "Для ответа нажимать на нотный стан в любом месте, или пробел на клавиатуре, или любую клавишу на MIDI-клавиатуре.", en: "To answer, click anywhere on the staff, press Space, or press any key on a MIDI keyboard.", zh: "作答方式：点击五线谱任意位置、按空格键，或按下 MIDI 键盘上的任意键。" },
 
     naming_solfege: { ru: "До Ре Ми", en: "Do Re Mi", zh: "首调唱名" },
