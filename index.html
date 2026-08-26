@@ -395,15 +395,19 @@
     visibility: visible;
   }
 
+  /* Надпись "Отображать настройки:" и 3 галки — в две строки: сверху
+     надпись, снизу галки со сдвигом вправо на 24px (как подпункты под
+     галкой в квинтовом круге). */
   .settings-position-row{
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px 14px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 6px;
     margin-top: var(--settings-block-gap);
   }
   .settings-position-title{ white-space: nowrap; font-size: 12.5px; color: var(--text-dim); }
-  .settings-position-options{ display: flex; flex-wrap: wrap; gap: 8px 14px; }
+  .settings-position-options{ display: flex; flex-wrap: wrap; gap: 8px 14px; margin-left: 24px; }
   .settings-position-option{ display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
   #settingsPanel input, #settingsPanel select, #settingsPanel textarea{ user-select: text; }
 
@@ -1371,7 +1375,7 @@
     gap:8px;
     margin-top:0;
   }
-  #settingsPanel .settings-position-row{ gap:10px 12px; }
+  #settingsPanel .settings-position-row{ gap:6px; }
   #settingsPanel .settings-position-title{ font-size:16px; color:var(--text-main); }
 
   /* ---- Чекбокс ---- */
