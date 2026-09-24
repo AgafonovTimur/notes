@@ -20,6 +20,10 @@
 
     --accent: #c9a04a;
 
+    /* Красный цвет формул в подсказках к ладам (i) в "Ладах" — как --tip-formula-red
+       в circle of fifths. Меняй цвет/прозрачность здесь. */
+    --tip-formula-red: rgba(250, 82, 86, 1);
+
     /* Выделенная (выбранная) кнопка — фон, текст, рамка. Значения ниже = как было до тем. */
     --sel-bg: #55555c;
     --sel-text: #e4e4e7;
@@ -161,18 +165,19 @@
     --sel-border: #e58e38;
     --sel-border-soft: #e58e38;
   }
+  /* №4 — чёрно-оранжевая, цвета как в Circle of Fifths (theme-t4) */
   [data-theme="4"]{
     --panel-bg: #1e1e1e;
     --panel-border: #2a2a2a;
-    --ui-bg: #2b2b2b;
+    --ui-bg: #2d2d2d;
     --btn-bg: #2d2d2d;
     --btn-bg-bottom: #191919;
-    --btn-text: #a0a0a0;
+    --btn-text: #e4e4e7;
     --btn-hover: #383838;
     --accent: #f59e0b;
-    --text-main: #cfcfcf;
+    --text-main: #e4e4e7;
     --text-dim: #888888;
-    --sel-bg: #25221e;
+    --sel-bg: #28241e;
     --sel-text: #f59e0b;
     --sel-border: #e58e38;
     --sel-border-soft: #e58e38;
@@ -476,6 +481,41 @@
     box-shadow: 0 4px 14px rgba(0,0,0,0.4);
   }
   .info-tooltip.tooltip-visible{ display:block; }
+
+  /* Подсказка к ладу в "Ладах" (значок i у кнопки лада): формула тонами,
+     формула в полутонах, формула на кварто-квинтовом круге. Размеры/шрифт/черта
+     взяты из подсказок circle of fifths. Лежит прямо в <body> поверх всех окон
+     (z-index выше панели настроек и окна ошибок), мышь не перехватывает. */
+  #scaleModeTooltip{
+    display:none;
+    position:fixed;
+    max-width:min(320px, 90vw);
+    width:max-content;
+    background: var(--panel-bg);
+    color: var(--text-main);
+    border: 1px solid var(--panel-border);
+    font-style:normal;
+    font-weight:normal;
+    font-size:18px;
+    line-height:1.4;
+    padding:8px 10px;
+    border-radius:8px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.45);
+    z-index:100000;
+    pointer-events:none;
+    white-space:pre-line;
+    text-transform:none;
+    letter-spacing:0;
+  }
+  #scaleModeTooltip.tooltip-visible{ display:block; }
+  /* красная часть текста (формулы) */
+  #scaleModeTooltip .tipFormulaHighlight{ color: var(--tip-formula-red); }
+  /* разделительная черта между строками подсказки */
+  #scaleModeTooltip .tipDivider{
+    border-top:1px solid currentColor;
+    opacity:0.35;
+    margin:6px 0;
+  }
 
   .segmented{
     display:flex;
@@ -1099,6 +1139,8 @@
   .rh-hint{ font-size:11px; opacity:.6; margin-top:6px; line-height:1.35; }
   .rh-check{ display:flex; align-items:center; gap:8px; font-size:13px; margin-top:8px; cursor:pointer; }
   .rh-check input{ width:16px; height:16px; accent-color: var(--accent); cursor:pointer; }
+  #settingsPanel .range-field input[type="number"]#rhCalibrateVal{ width:64px; }
+  .range-field span.rh-calib-unit{ width:auto; text-align:left; }
   .rh-calib-val{ font-family: var(--font-ui); font-size:14px; font-weight:600; color: var(--accent); }
 
   /* ================= МОБИЛЬНАЯ ВЕРСИЯ =================
@@ -1328,7 +1370,7 @@
   }
   #settingsPanel .scale-type-cell > button{
     padding:9px 2px;
-    font-size:12px;
+    font-size:14px;   /* как у остальных кнопок настроек (названия ладов укорочены и влезают) */
     display:flex;
     align-items:center;
     justify-content:center;
@@ -1369,6 +1411,7 @@
 
   /* ---- Строки с галками ---- */
   #settingsPanel .settings-block > label,
+  #settingsPanel .settings-box > label,
   #settingsPanel .rh-check,
   #settingsPanel .settings-position-option{
     font-size:16px;
@@ -1487,6 +1530,79 @@
   #settingsPanel .midi-status{ font-size:14px; }
   #settingsPanel .midi-row{ gap:10px; }
 
+  /* ---- Рамка вокруг меню настроек (как .settings-box в Ear Trainer):
+     заголовок блока — над рамкой, содержимое — внутри рамки ---- */
+  .settings-box{ display:flex; flex-direction:column; gap:10px; }
+  #settingsPanel{ --set-box-bg:#232326; --set-box-border:#2f2f33; }
+  [data-theme="1"] #settingsPanel{ --set-box-bg:#1e1e1e; --set-box-border:#333333; }
+  [data-theme="3"] #settingsPanel{ --set-box-bg:#10141d; --set-box-border:#1f2738; }
+  [data-theme="4"] #settingsPanel{ --set-box-bg:#1e1e1e; --set-box-border:#2a2a2a; } /* подложки групп — цвета самой панели */
+  [data-theme="5"] #settingsPanel{ --set-box-bg:#eceae5; --set-box-border:#d3d2cc; }
+  #settingsPanel .settings-box{
+    background:var(--set-box-bg);
+    border:1px solid var(--set-box-border);
+    border-radius:8px;
+    padding:14px;
+    gap:10px;
+    box-sizing:border-box;
+  }
+  #settingsPanel .settings-position-row.settings-box{ gap:6px; }
+  /* Чёрно-оранжевая тема — как в Circle of Fifths (theme-t4):
+     светлый текст на кнопках, тонкая серая рамка; у выбранной кнопки —
+     тёмно-коричневый фон, оранжевый текст и оранжевая рамка.
+     Рамка нарисована через inset-тень, чтобы размер кнопок не менялся. */
+  [data-theme="4"] #settingsPanel{
+    --set-btn-bg:#2d2d2d;
+    --set-btn-text:#e4e4e7;
+    --set-btn-active-bg:#28241e;
+    --set-btn-active-text:#f59e0b;
+    --set-title:#e4e4e7;
+    background:#1e1e1e;
+    border-color:#2a2a2a;
+  }
+  [data-theme="4"] #settingsPanel .level-tabs button,
+  [data-theme="4"] #settingsPanel .segmented button,
+  [data-theme="4"] #settingsPanel .note-grid button,
+  [data-theme="4"] #settingsPanel .scale-type-cell > button,
+  [data-theme="4"] #settingsPanel .small-btn{
+    font-weight:500;
+    box-shadow:inset 0 0 0 1px #3d3d3d;
+  }
+  [data-theme="4"] #settingsPanel .level-tabs button:hover,
+  [data-theme="4"] #settingsPanel .segmented button:hover,
+  [data-theme="4"] #settingsPanel .note-grid button:hover,
+  [data-theme="4"] #settingsPanel .scale-type-cell > button:hover,
+  [data-theme="4"] #settingsPanel .small-btn:hover{
+    background:#383838;
+    color:#e4e4e7;
+  }
+  [data-theme="4"] #settingsPanel .level-tabs button.active,
+  [data-theme="4"] #settingsPanel .segmented button.active,
+  [data-theme="4"] #settingsPanel .note-grid button.active,
+  [data-theme="4"] #settingsPanel .note-grid button.selected,
+  [data-theme="4"] #settingsPanel .scale-type-cell > button.selected{
+    background:#28241e;
+    color:#f59e0b;
+    font-weight:500;
+    box-shadow:inset 0 0 0 1px #e58e38;
+  }
+  [data-theme="4"] #settingsPanel .level-tabs button.active:hover,
+  [data-theme="4"] #settingsPanel .segmented button.active:hover,
+  [data-theme="4"] #settingsPanel .note-grid button.active:hover,
+  [data-theme="4"] #settingsPanel .note-grid button.selected:hover,
+  [data-theme="4"] #settingsPanel .scale-type-cell > button.selected:hover{
+    background:#332d24;
+  }
+  [data-theme="4"] #settingsPanel input[type="range"]::-webkit-slider-thumb{ background:#5a5a5a; }
+  [data-theme="4"] #settingsPanel input[type="range"]::-moz-range-thumb{ background:#5a5a5a; }
+  /* Кнопки внутри рамок — того же цвета, что в Ear Trainer, чтобы не
+     сливались с фоном рамки */
+  [data-theme="2"] #settingsPanel{ --set-btn-bg:#3a3a40; }
+  [data-theme="3"] #settingsPanel{ --set-btn-bg:#1c2230; }
+  [data-theme="5"] #settingsPanel{ --set-btn-bg:#c7c7c7; }
+  /* Строка статуса MIDI видна только при ошибке */
+  #settingsPanel .midi-status:empty{ display:none; }
+
   /* ---- Значок подсказки (i) ---- */
   #settingsPanel .info-icon{
     width:22px;
@@ -1517,6 +1633,8 @@
   body.mobile-mode #settingsPanel #durGrid{ grid-template-columns:repeat(3, 1fr); }
   body.mobile-mode #settingsPanel #nrTagGrid{ grid-template-columns:repeat(3, 1fr); }
   body.mobile-mode #settingsPanel .scale-types{ grid-template-columns:repeat(3, 1fr); }
+  /* на телефоне панель уже — оставляем прежний размер шрифта кнопок ладов */
+  body.mobile-mode #settingsPanel .scale-type-cell > button{ font-size:12px; }
 </style>
 </head>
 <body>
@@ -1565,187 +1683,219 @@
         </span>
       </span>
     </h3>
-    <div class="segmented" data-group="mode">
-      <div class="seg-row">
-        <button data-value="single" class="active" data-i18n="mode_1note">1 нота</button>
-        <button data-value="double" data-i18n="mode_2notes">2 ноты</button>
-        <button data-value="simple" data-i18n="mode_simple">Простые аккорды</button>
-      </div>
-      <div class="seg-row">
-        <button data-value="medium" data-i18n="mode_medium">Средние аккорды</button>
-        <button data-value="complex" data-i18n="mode_complex">Сложные аккорды</button>
+    <div class="settings-box">
+      <div class="segmented" data-group="mode">
+        <div class="seg-row">
+          <button data-value="single" class="active" data-i18n="mode_1note">1 нота</button>
+          <button data-value="double" data-i18n="mode_2notes">2 ноты</button>
+          <button data-value="simple" data-i18n="mode_simple">Простые аккорды</button>
+        </div>
+        <div class="seg-row">
+          <button data-value="medium" data-i18n="mode_medium">Средние аккорды</button>
+          <button data-value="complex" data-i18n="mode_complex">Сложные аккорды</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_clef">Ключ</h3>
-    <div class="segmented" data-group="clef">
-      <div class="seg-row">
-        <button data-value="treble" data-i18n="clef_treble">Скрипичный</button>
-        <button data-value="bass" data-i18n="clef_bass">Басовый</button>
-      </div>
-      <div class="seg-row">
-        <button data-value="both" class="active" data-i18n="clef_both">Оба ключа одновременно</button>
+    <div class="settings-box">
+      <div class="segmented" data-group="clef">
+        <div class="seg-row">
+          <button data-value="treble" data-i18n="clef_treble">Скрипичный</button>
+          <button data-value="bass" data-i18n="clef_bass">Басовый</button>
+        </div>
+        <div class="seg-row">
+          <button data-value="both" class="active" data-i18n="clef_both">Оба ключа одновременно</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_allowed_notes">Разрешённые ноты (вероятность каждой = 1 / кол-во выбранных)</h3>
-    <div class="note-grid" id="noteGrid"></div>
+    <div class="settings-box">
+      <div class="note-grid" id="noteGrid"></div>
+    </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_ledger_lines">Добавочные линейки</h3>
-    <div class="segmented" data-group="range">
-      <div class="seg-row">
-        <button data-value="0" class="active">0</button>
-        <button data-value="1">+1</button>
-        <button data-value="2">+2</button>
-        <button data-value="3">+3</button>
+    <div class="settings-box">
+      <div class="segmented" data-group="range">
+        <div class="seg-row">
+          <button data-value="0" class="active">0</button>
+          <button data-value="1">+1</button>
+          <button data-value="2">+2</button>
+          <button data-value="3">+3</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_note_names">Названия нот</h3>
-    <div class="segmented" data-group="naming">
-      <div class="seg-row">
-        <button data-value="letters" class="active">A B C</button>
-        <button data-value="solfege" data-i18n="naming_solfege">До Ре Ми</button>
+    <div class="settings-box">
+      <div class="segmented" data-group="naming">
+        <div class="seg-row">
+          <button data-value="letters" class="active">A B C</button>
+          <button data-value="solfege" data-i18n="naming_solfege">До Ре Ми</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_inversions">Обращения аккордов (можно несколько)</h3>
-    <div class="segmented" data-multigroup="inversions">
-      <div class="seg-row">
-        <button data-value="0" data-i18n="inv_0">основное</button>
-        <button data-value="1" data-i18n="inv_1">1-я</button>
-        <button data-value="2" data-i18n="inv_2">2-я</button>
-        <button data-value="3" data-i18n="inv_3">3-я</button>
-        <button data-value="4" data-i18n="inv_4">4-я</button>
+    <div class="settings-box">
+      <div class="segmented" data-multigroup="inversions">
+        <div class="seg-row">
+          <button data-value="0" data-i18n="inv_0">основное</button>
+          <button data-value="1" data-i18n="inv_1">1-я</button>
+          <button data-value="2" data-i18n="inv_2">2-я</button>
+          <button data-value="3" data-i18n="inv_3">3-я</button>
+          <button data-value="4" data-i18n="inv_4">4-я</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_answer_buttons">Кнопки ответов</h3>
-    <div class="segmented" data-group="hideButtons">
-      <div class="seg-row">
-        <button data-value="show" class="active" data-i18n="btn_show">Показывать</button>
-        <button data-value="hide" data-i18n="btn_hide">Скрыть</button>
+    <div class="settings-box">
+      <div class="segmented" data-group="hideButtons">
+        <div class="seg-row">
+          <button data-value="show" class="active" data-i18n="btn_show">Показывать</button>
+          <button data-value="hide" data-i18n="btn_hide">Скрыть</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="settings-block midi-row">
-    <h3 data-i18n="h_midi">MIDI-клавиатура</h3>
-    <div class="midi-select-line">
-      <span data-i18n="lbl_midi_in">MIDI вход:</span>
-      <select class="midi-select" id="midiInSelect" data-midi-scope="notes"><option value="" data-i18n="midi_opt_none">—</option></select>
+    <h3 data-i18n="h_midi">MIDI</h3>
+    <div class="settings-box">
+      <div class="midi-select-line">
+        <span data-i18n="lbl_midi_in">MIDI-вход</span>
+        <select class="midi-select" id="midiInSelect" data-midi-scope="notes"><option value="" data-i18n="midi_press_connect">нажмите «Подключить MIDI»</option></select>
+      </div>
+      <div class="midi-select-line">
+        <span data-i18n="lbl_midi_out">MIDI-выход</span>
+        <select class="midi-select" id="midiOutSelect" data-midi-scope="notes"><option value="" data-i18n="midi_press_connect">нажмите «Подключить MIDI»</option></select>
+      </div>
+      <button class="small-btn midi-connect-btn" id="midiConnectBtn" data-i18n="btn_connect_midi">Подключить MIDI</button>
+      <span class="midi-status" id="midiStatus"></span>
     </div>
-    <div class="midi-select-line">
-      <span data-i18n="lbl_midi_out">MIDI выход:</span>
-      <select class="midi-select" id="midiOutSelect" data-midi-scope="notes"><option value="" data-i18n="midi_opt_none">—</option></select>
-    </div>
-    <span class="midi-status" id="midiStatus" data-i18n="midi_not_connected">MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.</span>
-    <button class="small-btn midi-connect-btn" id="midiConnectBtn" data-i18n="btn_connect_midi">Подключить MIDI клавиатуру</button>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_accuracy">Точность ответа</h3>
-    <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-      <input type="checkbox" id="showOctaveToggle">
-      <span data-i18n="chk_show_octave">Указывать октаву в ответе (C2–C6)</span>
-    </label>
-    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:8px;">
-      <input type="checkbox" id="showPianoToggle">
-      <span data-i18n="chk_show_piano">Отображать клавиатуру пианино (C2–C6)</span>
-    </label>
+    <div class="settings-box">
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+        <input type="checkbox" id="showOctaveToggle">
+        <span data-i18n="chk_show_octave">Указывать октаву в ответе (C2–C6)</span>
+      </label>
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:8px;">
+        <input type="checkbox" id="showPianoToggle">
+        <span data-i18n="chk_show_piano">Отображать клавиатуру пианино (C2–C6)</span>
+      </label>
+    </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_durations_appearance">Длительности (внешний вид ноты)</h3>
-    <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-      <input type="checkbox" id="showDurationsToggle">
-      <span data-i18n="chk_draw_durations">Рисовать ноты разными длительностями</span>
-    </label>
+    <div class="settings-box">
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+        <input type="checkbox" id="showDurationsToggle">
+        <span data-i18n="chk_draw_durations">Рисовать ноты разными длительностями</span>
+      </label>
+    </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_piano_colors">Цвета для клавиатуры пианино (C2–C6)</h3>
-    <div class="range-field"><label style="width:110px" data-i18n="lbl_white_keys">Белые клавиши</label><input type="color" id="pianoWhiteColorInput"></div>
-    <div class="range-field"><label style="width:110px" data-i18n="lbl_black_keys">Чёрные клавиши</label><input type="color" id="pianoBlackColorInput"></div>
+    <div class="settings-box">
+      <div class="range-field"><label style="width:110px" data-i18n="lbl_white_keys">Белые клавиши</label><input type="color" id="pianoWhiteColorInput"></div>
+      <div class="range-field"><label style="width:110px" data-i18n="lbl_black_keys">Чёрные клавиши</label><input type="color" id="pianoBlackColorInput"></div>
+    </div>
   </div>
 
   <div class="settings-block">
-    <div class="segmented lang-switch-group" id="langGroupNotes" style="margin-bottom:8px">
-      <div class="seg-row">
-        <button data-value="ru">Русский</button>
-        <button data-value="en">English</button>
-        <button data-value="zh">简体中文</button>
+    <div class="settings-box">
+      <div class="segmented lang-switch-group" id="langGroupNotes">
+        <div class="seg-row">
+          <button data-value="ru">Русский</button>
+          <button data-value="en">English</button>
+          <button data-value="zh">简体中文</button>
+        </div>
+      </div>
+      <div class="theme-row">
+        <span data-i18n="lbl_theme">Тема:</span>
+        <select class="theme-select-shared" id="themeSelectNotes">
+          <option value="1" data-i18n="theme_dark">Тёмная</option>
+          <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
+          <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
+          <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
+          <option value="5" data-i18n="theme_light">Светлая</option>
+        </select>
       </div>
     </div>
-    <div class="theme-row" style="margin-bottom:8px">
-      <span data-i18n="lbl_theme">Тема:</span>
-      <select class="theme-select-shared" id="themeSelectNotes">
-        <option value="1" data-i18n="theme_dark">Тёмная</option>
-        <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
-        <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
-        <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
-        <option value="5" data-i18n="theme_light">Светлая</option>
-      </select>
+    <h3 data-i18n="h_hint_colors">Размер подсказки (R / К, закрепить — T / е)</h3>
+    <div class="settings-box">
+      <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="revealTop" min="0" max="100"><input type="number" class="range-number" id="revealTopVal" min="0" max="100"></div>
+      <div class="range-field"><label style="width:50px" data-i18n="lbl_left_offset" data-i18n-title="tt_left_offset_note" title="Позиция считается автоматически (между нотой и ключом). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="revealLeft" min="0" max="100"><input type="number" class="range-number" id="revealLeftVal" min="0" max="100"></div>
+      <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="revealSize" min="10" max="100"><input type="number" class="range-number" id="revealSizeVal" min="10" max="100"></div>
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:8px;">
+        <input type="checkbox" id="revealShowNoteIconToggle">
+        <span data-i18n="chk_show_hint_note">Показывать ноту на стане в подсказке</span>
+      </label>
     </div>
-    <h3 data-i18n="h_hint_colors" style="margin-bottom:8px">Размер подсказки (R / К, закрепить — T / е)</h3>
-    <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="revealTop" min="0" max="100"><input type="number" class="range-number" id="revealTopVal" min="0" max="100"></div>
-    <div class="range-field"><label style="width:50px" data-i18n="lbl_left_offset" data-i18n-title="tt_left_offset_note" title="Позиция считается автоматически (между нотой и ключом). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="revealLeft" min="0" max="100"><input type="number" class="range-number" id="revealLeftVal" min="0" max="100"></div>
-    <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="revealSize" min="10" max="100"><input type="number" class="range-number" id="revealSizeVal" min="10" max="100"></div>
-    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:8px;">
-      <input type="checkbox" id="revealShowNoteIconToggle">
-      <span data-i18n="chk_show_hint_note">Показывать ноту на стане в подсказке</span>
-    </label>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_key_opacity">Прозрачность цвета на клавишах</h3>
-    <div class="range-field">
-      <label style="width:50px" data-i18n="lbl_correct">Верно</label>
-      <input type="color" id="correctColor">
-      <input type="range" id="correctOpacity" min="0" max="100">
-      <input type="number" class="range-number" id="correctOpacityVal" min="0" max="100">
-    </div>
-    <div class="range-field">
-      <label style="width:50px" data-i18n="lbl_wrong">Неверно</label>
-      <input type="color" id="wrongColor">
-      <input type="range" id="wrongOpacity" min="0" max="100">
-      <input type="number" class="range-number" id="wrongOpacityVal" min="0" max="100">
+    <div class="settings-box">
+      <div class="range-field">
+        <label style="width:50px" data-i18n="lbl_correct">Верно</label>
+        <input type="color" id="correctColor">
+        <input type="range" id="correctOpacity" min="0" max="100">
+        <input type="number" class="range-number" id="correctOpacityVal" min="0" max="100">
+      </div>
+      <div class="range-field">
+        <label style="width:50px" data-i18n="lbl_wrong">Неверно</label>
+        <input type="color" id="wrongColor">
+        <input type="range" id="wrongOpacity" min="0" max="100">
+        <input type="number" class="range-number" id="wrongOpacityVal" min="0" max="100">
+      </div>
     </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_colors">Цвета оформления</h3>
-    <div class="range-field"><label style="width:70px" data-i18n="lbl_bg">Фон</label><input type="color" id="bgColorInput"></div>
-    <div class="range-field"><label style="width:70px" data-i18n="lbl_clef_color">Ключ</label><input type="color" id="clefColorInput"></div>
-    <div class="range-field"><label style="width:70px" data-i18n="lbl_staff_lines">Нотный стан</label><input type="color" id="lineColorInput"></div>
-    <div class="range-field"><label style="width:70px" data-i18n="lbl_staff_bg">Фон стана</label><input type="color" id="staffBgColorInput"></div>
+    <div class="settings-box">
+      <div class="range-field"><label style="width:70px" data-i18n="lbl_bg">Фон</label><input type="color" id="bgColorInput"></div>
+      <div class="range-field"><label style="width:70px" data-i18n="lbl_clef_color">Ключ</label><input type="color" id="clefColorInput"></div>
+      <div class="range-field"><label style="width:70px" data-i18n="lbl_staff_lines">Нотный стан</label><input type="color" id="lineColorInput"></div>
+      <div class="range-field"><label style="width:70px" data-i18n="lbl_staff_bg">Фон стана</label><input type="color" id="staffBgColorInput"></div>
+    </div>
   </div>
 
   <div class="settings-block">
     <h3 data-i18n="h_errpos_notes">Положение окна ошибок (Q / Й) — уровень "Ноты"</h3>
-    <div class="range-field">
-      <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее" data-i18n="lbl_leftright" data-i18n-title="tt_leftright">Влево-вправо</label>
-      <input type="range" id="errorsPosX"><input type="number" class="range-number" id="errorsPosXVal">
-    </div>
-    <div class="range-field">
-      <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже" data-i18n="lbl_updown" data-i18n-title="tt_updown">Вверх-вниз</label>
-      <input type="range" id="errorsPosY"><input type="number" class="range-number" id="errorsPosYVal">
+    <div class="settings-box">
+      <div class="range-field">
+        <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее" data-i18n="lbl_leftright" data-i18n-title="tt_leftright">Влево-вправо</label>
+        <input type="range" id="errorsPosX"><input type="number" class="range-number" id="errorsPosXVal">
+      </div>
+      <div class="range-field">
+        <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже" data-i18n="lbl_updown" data-i18n-title="tt_updown">Вверх-вниз</label>
+        <input type="range" id="errorsPosY"><input type="number" class="range-number" id="errorsPosYVal">
+      </div>
     </div>
   </div>
 
-  <div class="settings-position-row">
+  <div class="settings-position-row settings-box">
     <span class="settings-position-title" data-i18n="lbl_display_settings">Отображать настройки:</span>
     <div class="settings-position-options">
       <label class="settings-position-option">
@@ -1772,75 +1922,91 @@
   <div id="scaleSettingsBlocks" style="display:none">
     <div class="settings-block">
       <h3 data-i18n="h_clef">Ключ</h3>
-      <div class="segmented" data-sgroup="clef">
-        <div class="seg-row">
-          <button data-value="treble" class="active" data-i18n="clef_treble">Скрипичный</button>
-          <button data-value="bass" data-i18n="clef_bass">Басовый</button>
-        </div>
-        <div class="seg-row">
-          <button data-value="both" data-i18n="clef_both">Оба ключа одновременно</button>
+      <div class="settings-box">
+        <div class="segmented" data-sgroup="clef">
+          <div class="seg-row">
+            <button data-value="treble" class="active" data-i18n="clef_treble">Скрипичный</button>
+            <button data-value="bass" data-i18n="clef_bass">Басовый</button>
+          </div>
+          <div class="seg-row">
+            <button data-value="both" data-i18n="clef_both">Оба ключа одновременно</button>
+          </div>
         </div>
       </div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_tonics">Тоники (можно несколько)</h3>
-      <div class="note-grid" id="scaleTonicGrid"></div>
+      <div class="settings-box">
+        <div class="note-grid" id="scaleTonicGrid"></div>
+      </div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_scales_modes">Тональности / лады (можно несколько)</h3>
-      <div class="scale-types" id="scaleTypeGrid"></div>
+      <div class="settings-box">
+        <div class="scale-types" id="scaleTypeGrid"></div>
+      </div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_start_degree">Ступень начала</h3>
-      <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-        <input type="checkbox" id="scaleRandomStartToggle">
-        <span data-i18n="chk_random_start">Начинать со случайной ступени (не только с тоники)</span>
-      </label>
+      <div class="settings-box">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <input type="checkbox" id="scaleRandomStartToggle">
+          <span data-i18n="chk_random_start">Начинать со случайной ступени (не только с тоники)</span>
+        </label>
+      </div>
     </div>
     <div class="settings-block">
-      <div class="segmented lang-switch-group" id="scaleLangGroup">
-        <div class="seg-row">
-          <button data-value="ru" class="active">Русский</button>
-          <button data-value="en">English</button>
-          <button data-value="zh">简体中文</button>
+      <div class="settings-box">
+        <div class="segmented lang-switch-group" id="scaleLangGroup">
+          <div class="seg-row">
+            <button data-value="ru" class="active">Русский</button>
+            <button data-value="en">English</button>
+            <button data-value="zh">简体中文</button>
+          </div>
         </div>
-      </div>
-      <div class="theme-row">
-        <span data-i18n="lbl_theme">Тема:</span>
-        <select class="theme-select-shared" id="themeSelect">
-          <option value="1" data-i18n="theme_dark">Тёмная</option>
-          <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
-          <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
-          <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
-          <option value="5" data-i18n="theme_light">Светлая</option>
-        </select>
+        <div class="theme-row">
+          <span data-i18n="lbl_theme">Тема:</span>
+          <select class="theme-select-shared" id="themeSelect">
+            <option value="1" data-i18n="theme_dark">Тёмная</option>
+            <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
+            <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
+            <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
+            <option value="5" data-i18n="theme_light">Светлая</option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_scale_label_pos">Надпись названия лада (D dorian и т.д.) — позиция и размер</h3>
-      <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="scaleLabelTop" min="0" max="200"><input type="number" class="range-number" id="scaleLabelTopVal" min="0" max="200"></div>
-      <div class="range-field"><label style="width:50px" data-i18n="lbl_side">Бок</label><input type="range" id="scaleLabelLeft" min="0" max="100"><input type="number" class="range-number" id="scaleLabelLeftVal" min="0" max="100"></div>
-      <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="scaleLabelSize" min="30" max="50"><input type="number" class="range-number" id="scaleLabelSizeVal" min="30" max="50"></div>
+      <div class="settings-box">
+        <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="scaleLabelTop" min="0" max="200"><input type="number" class="range-number" id="scaleLabelTopVal" min="0" max="200"></div>
+        <div class="range-field"><label style="width:50px" data-i18n="lbl_side">Бок</label><input type="range" id="scaleLabelLeft" min="0" max="100"><input type="number" class="range-number" id="scaleLabelLeftVal" min="0" max="100"></div>
+        <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="scaleLabelSize" min="30" max="50"><input type="number" class="range-number" id="scaleLabelSizeVal" min="30" max="50"></div>
+      </div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_hint_colors_scales">Расположение и размер шрифта подсказки в ладах (R / К, закрепить — T / е)</h3>
-      <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="scaleHintTop" min="0" max="100"><input type="number" class="range-number" id="scaleHintTopVal" min="0" max="100"></div>
-      <div class="range-field"><label style="width:50px" data-i18n="lbl_left_offset" data-i18n-title="tt_left_offset_scale" title="Позиция считается автоматически (от тоники). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="scaleHintLeft" min="0" max="100"><input type="number" class="range-number" id="scaleHintLeftVal" min="0" max="100"></div>
-      <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="scaleHintSize" min="10" max="100"><input type="number" class="range-number" id="scaleHintSizeVal" min="10" max="100"></div>
+      <div class="settings-box">
+        <div class="range-field"><label style="width:50px" data-i18n="lbl_top">Верх</label><input type="range" id="scaleHintTop" min="0" max="100"><input type="number" class="range-number" id="scaleHintTopVal" min="0" max="100"></div>
+        <div class="range-field"><label style="width:50px" data-i18n="lbl_left_offset" data-i18n-title="tt_left_offset_scale" title="Позиция считается автоматически (от тоники). 50 = без поправки, меньше — левее, больше — правее">Лево±</label><input type="range" id="scaleHintLeft" min="0" max="100"><input type="number" class="range-number" id="scaleHintLeftVal" min="0" max="100"></div>
+        <div class="range-field"><label style="width:50px" data-i18n="lbl_size">Размер</label><input type="range" id="scaleHintSize" min="10" max="100"><input type="number" class="range-number" id="scaleHintSizeVal" min="10" max="100"></div>
+      </div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_errpos_scales">Положение окна ошибок (Q / Й) — уровень "Тональности / Лады"</h3>
-      <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее" data-i18n="lbl_leftright" data-i18n-title="tt_leftright">Влево-вправо</label>
-        <input type="range" id="errorsScalePosX"><input type="number" class="range-number" id="errorsScalePosXVal">
-      </div>
-      <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже" data-i18n="lbl_updown" data-i18n-title="tt_updown">Вверх-вниз</label>
-        <input type="range" id="errorsScalePosY"><input type="number" class="range-number" id="errorsScalePosYVal">
+      <div class="settings-box">
+        <div class="range-field">
+          <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее" data-i18n="lbl_leftright" data-i18n-title="tt_leftright">Влево-вправо</label>
+          <input type="range" id="errorsScalePosX"><input type="number" class="range-number" id="errorsScalePosXVal">
+        </div>
+        <div class="range-field">
+          <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже" data-i18n="lbl_updown" data-i18n-title="tt_updown">Вверх-вниз</label>
+          <input type="range" id="errorsScalePosY"><input type="number" class="range-number" id="errorsScalePosYVal">
+        </div>
       </div>
     </div>
 
-    <div class="settings-position-row">
+    <div class="settings-position-row settings-box">
       <span class="settings-position-title" data-i18n="lbl_display_settings">Отображать настройки:</span>
       <div class="settings-position-options">
         <label class="settings-position-option">
@@ -1859,17 +2025,19 @@
     </div>
 
     <div class="settings-block midi-row">
-      <h3 data-i18n="h_midi">MIDI-клавиатура</h3>
-      <div class="midi-select-line">
-        <span data-i18n="lbl_midi_in">MIDI вход:</span>
-        <select class="midi-select" id="midiInSelectScale" data-midi-scope="scale"><option value="" data-i18n="midi_opt_none">—</option></select>
+      <h3 data-i18n="h_midi">MIDI</h3>
+      <div class="settings-box">
+        <div class="midi-select-line">
+          <span data-i18n="lbl_midi_in">MIDI-вход</span>
+          <select class="midi-select" id="midiInSelectScale" data-midi-scope="scale"><option value="" data-i18n="midi_press_connect">нажмите «Подключить MIDI»</option></select>
+        </div>
+        <div class="midi-select-line">
+          <span data-i18n="lbl_midi_out">MIDI-выход</span>
+          <select class="midi-select" id="midiOutSelectScale" data-midi-scope="scale"><option value="" data-i18n="midi_press_connect">нажмите «Подключить MIDI»</option></select>
+        </div>
+        <button class="small-btn midi-connect-btn" id="midiConnectBtnScale" data-i18n="btn_connect_midi">Подключить MIDI</button>
+        <span class="midi-status" id="midiStatusScale"></span>
       </div>
-      <div class="midi-select-line">
-        <span data-i18n="lbl_midi_out">MIDI выход:</span>
-        <select class="midi-select" id="midiOutSelectScale" data-midi-scope="scale"><option value="" data-i18n="midi_opt_none">—</option></select>
-      </div>
-      <span class="midi-status" id="midiStatusScale" data-i18n="midi_not_connected">MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.</span>
-      <button class="small-btn midi-connect-btn" id="midiConnectBtnScale" data-i18n="btn_connect_midi">Подключить MIDI клавиатуру</button>
     </div>
   </div>
 
@@ -1889,41 +2057,47 @@
   <div id="durSettingsBlocks" style="display:none">
     <div class="settings-block">
       <h3 data-i18n="h_allowed_durations">Разрешённые длительности (вероятность каждой = 1 / кол-во выбранных)</h3>
-      <div class="note-grid" id="durGrid"></div>
+      <div class="settings-box">
+        <div class="note-grid" id="durGrid"></div>
+      </div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_errpos_rhythm">Положение окна ошибок (Q / Й) — уровень "Ритм"</h3>
-      <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее" data-i18n="lbl_leftright" data-i18n-title="tt_leftright">Влево-вправо</label>
-        <input type="range" id="errorsDurPosX"><input type="number" class="range-number" id="errorsDurPosXVal">
-      </div>
-      <div class="range-field">
-        <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже" data-i18n="lbl_updown" data-i18n-title="tt_updown">Вверх-вниз</label>
-        <input type="range" id="errorsDurPosY"><input type="number" class="range-number" id="errorsDurPosYVal">
+      <div class="settings-box">
+        <div class="range-field">
+          <label style="width:96px" title="Сдвиг окна ошибок по горизонтали от центра экрана: минус — левее, плюс — правее" data-i18n="lbl_leftright" data-i18n-title="tt_leftright">Влево-вправо</label>
+          <input type="range" id="errorsDurPosX"><input type="number" class="range-number" id="errorsDurPosXVal">
+        </div>
+        <div class="range-field">
+          <label style="width:96px" title="Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже" data-i18n="lbl_updown" data-i18n-title="tt_updown">Вверх-вниз</label>
+          <input type="range" id="errorsDurPosY"><input type="number" class="range-number" id="errorsDurPosYVal">
+        </div>
       </div>
     </div>
 
     <div class="settings-block">
-      <div class="segmented lang-switch-group" id="langGroupDur">
-        <div class="seg-row">
-          <button data-value="ru">Русский</button>
-          <button data-value="en">English</button>
-          <button data-value="zh">简体中文</button>
+      <div class="settings-box">
+        <div class="segmented lang-switch-group" id="langGroupDur">
+          <div class="seg-row">
+            <button data-value="ru">Русский</button>
+            <button data-value="en">English</button>
+            <button data-value="zh">简体中文</button>
+          </div>
         </div>
-      </div>
-      <div class="theme-row">
-        <span data-i18n="lbl_theme">Тема:</span>
-        <select class="theme-select-shared" id="themeSelectDur">
-          <option value="1" data-i18n="theme_dark">Тёмная</option>
-          <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
-          <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
-          <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
-          <option value="5" data-i18n="theme_light">Светлая</option>
-        </select>
+        <div class="theme-row">
+          <span data-i18n="lbl_theme">Тема:</span>
+          <select class="theme-select-shared" id="themeSelectDur">
+            <option value="1" data-i18n="theme_dark">Тёмная</option>
+            <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
+            <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
+            <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
+            <option value="5" data-i18n="theme_light">Светлая</option>
+          </select>
+        </div>
       </div>
     </div>
 
-    <div class="settings-position-row">
+    <div class="settings-position-row settings-box">
       <span class="settings-position-title" data-i18n="lbl_display_settings">Отображать настройки:</span>
       <div class="settings-position-options">
         <label class="settings-position-option">
@@ -1942,17 +2116,19 @@
     </div>
 
     <div class="settings-block midi-row">
-      <h3 data-i18n="h_midi">MIDI-клавиатура</h3>
-      <div class="midi-select-line">
-        <span data-i18n="lbl_midi_in">MIDI вход:</span>
-        <select class="midi-select" id="midiInSelectDur" data-midi-scope="dur"><option value="" data-i18n="midi_opt_none">—</option></select>
+      <h3 data-i18n="h_midi">MIDI</h3>
+      <div class="settings-box">
+        <div class="midi-select-line">
+          <span data-i18n="lbl_midi_in">MIDI-вход</span>
+          <select class="midi-select" id="midiInSelectDur" data-midi-scope="dur"><option value="" data-i18n="midi_press_connect">нажмите «Подключить MIDI»</option></select>
+        </div>
+        <div class="midi-select-line">
+          <span data-i18n="lbl_midi_out">MIDI-выход</span>
+          <select class="midi-select" id="midiOutSelectDur" data-midi-scope="dur"><option value="" data-i18n="midi_press_connect">нажмите «Подключить MIDI»</option></select>
+        </div>
+        <button class="small-btn midi-connect-btn" id="midiConnectBtnDur" data-i18n="btn_connect_midi">Подключить MIDI</button>
+        <span class="midi-status" id="midiStatusDur"></span>
       </div>
-      <div class="midi-select-line">
-        <span data-i18n="lbl_midi_out">MIDI выход:</span>
-        <select class="midi-select" id="midiOutSelectDur" data-midi-scope="dur"><option value="" data-i18n="midi_opt_none">—</option></select>
-      </div>
-      <span class="midi-status" id="midiStatusDur" data-i18n="midi_not_connected">MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.</span>
-      <button class="small-btn midi-connect-btn" id="midiConnectBtnDur" data-i18n="btn_connect_midi">Подключить MIDI клавиатуру</button>
     </div>
   </div>
 
@@ -1960,11 +2136,15 @@
   <div id="nrSettingsBlocks" style="display:none">
     <div class="settings-block tight-gap-block">
       <h3 data-i18n="h_time_signature">Размер такта (можно несколько)</h3>
-      <div class="note-grid" id="nrTsGrid"></div>
+      <div class="settings-box">
+        <div class="note-grid" id="nrTsGrid"></div>
+      </div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_can_occur">Длительность ноты</h3>
-      <div class="note-grid" id="nrTagGrid"></div>
+      <div class="settings-box">
+        <div class="note-grid" id="nrTagGrid"></div>
+      </div>
     </div>
     <div class="settings-block" id="nrFlowBlock">
       <h3 class="h3-with-info"><span data-i18n="h_scroll_speed">Скорость прокрутки</span>
@@ -1974,60 +2154,68 @@
           </span>
         </span>
       </h3>
-      <div class="range-field">
-        <label style="width:96px" data-i18n="lbl_px_per_beat">Пикс./долю</label>
-        <input type="range" id="nrFlowSpeed"><input type="number" class="range-number" id="nrFlowSpeedVal">
+      <div class="settings-box">
+        <div class="range-field">
+          <label style="width:96px" data-i18n="lbl_px_per_beat">Пикс./долю</label>
+          <input type="range" id="nrFlowSpeed"><input type="number" class="range-number" id="nrFlowSpeedVal">
+        </div>
       </div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_sound">Звук</h3>
-      <div class="range-field">
-        <label style="width:96px" title="Скорость метронома в ударах в минуту" data-i18n="lbl_tempo" data-i18n-title="tt_tempo">Темп (BPM)</label>
-        <input type="range" id="nrBpm"><input type="number" class="range-number" id="nrBpmVal">
+      <div class="settings-box">
+        <div class="range-field">
+          <label style="width:96px" title="Скорость метронома в ударах в минуту" data-i18n="lbl_tempo" data-i18n-title="tt_tempo">Темп (BPM)</label>
+          <input type="range" id="nrBpm"><input type="number" class="range-number" id="nrBpmVal">
+        </div>
+        <div class="range-field">
+          <label style="width:96px" title="Громкость звука метронома" data-i18n="lbl_metro_volume" data-i18n-title="tt_metro_volume">Громкость метронома</label>
+          <input type="range" id="nrMetroVolume"><input type="number" class="range-number" id="nrMetroVolumeVal">
+        </div>
+        <label class="rh-check"><input type="checkbox" id="nrMetroPlay"> <span data-i18n="chk_metro_during">Метроном во время ритма</span></label>
+        <div class="rh-hint" data-i18n="lbl_metro_division">Дробление метронома</div>
+        <div class="note-grid" id="nrMetroDivGrid"></div>
       </div>
-      <div class="range-field">
-        <label style="width:96px" title="Громкость звука метронома" data-i18n="lbl_metro_volume" data-i18n-title="tt_metro_volume">Громкость метронома</label>
-        <input type="range" id="nrMetroVolume"><input type="number" class="range-number" id="nrMetroVolumeVal">
-      </div>
-      <label class="rh-check"><input type="checkbox" id="nrMetroPlay"> <span data-i18n="chk_metro_during">Метроном во время ритма</span></label>
-      <div class="rh-hint" data-i18n="lbl_metro_division">Дробление метронома</div>
-      <div class="note-grid" id="nrMetroDivGrid"></div>
     </div>
     <div class="settings-block">
       <h3 data-i18n="h_calibration">Калибровка звуковой задержки</h3>
-      <div class="rh-hint" data-i18n="tt_calibration_hint">
-        Звук из динамиков/наушников доходит с небольшой задержкой, и на разных
-        устройствах она разная. Калибровка учитывает её при оценке тапов.
+      <div class="settings-box">
+        <div class="rh-hint" data-i18n="tt_calibration_hint">
+          Звук из динамиков/наушников доходит с небольшой задержкой, и на разных
+          устройствах она разная. Калибровка учитывает её при оценке тапов.
+        </div>
+        <div class="range-field">
+          <label style="width:96px" data-i18n="lbl_offset">Смещение</label>
+          <input type="number" class="range-number" id="rhCalibrateVal" min="-300" max="300" step="1" value="0"><span class="rh-calib-unit" data-i18n="unit_ms">мс</span>
+        </div>
+        <button class="small-btn" id="rhCalibrateBtn" data-i18n="btn_calibrate">Откалибровать</button>
+        <div class="rh-hint" id="rhCalibrateStatus"></div>
       </div>
-      <div class="range-field">
-        <label style="width:96px" data-i18n="lbl_offset">Смещение</label>
-        <span class="rh-calib-val" id="rhCalibrateVal">0 мс</span>
-      </div>
-      <button class="small-btn" id="rhCalibrateBtn" data-i18n="btn_calibrate">Откалибровать</button>
-      <div class="rh-hint" id="rhCalibrateStatus"></div>
     </div>
 
     <div class="settings-block">
-      <div class="segmented lang-switch-group" id="langGroupFlow">
-        <div class="seg-row">
-          <button data-value="ru">Русский</button>
-          <button data-value="en">English</button>
-          <button data-value="zh">简体中文</button>
+      <div class="settings-box">
+        <div class="segmented lang-switch-group" id="langGroupFlow">
+          <div class="seg-row">
+            <button data-value="ru">Русский</button>
+            <button data-value="en">English</button>
+            <button data-value="zh">简体中文</button>
+          </div>
         </div>
-      </div>
-      <div class="theme-row">
-        <span data-i18n="lbl_theme">Тема:</span>
-        <select class="theme-select-shared" id="themeSelectFlow">
-          <option value="1" data-i18n="theme_dark">Тёмная</option>
-          <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
-          <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
-          <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
-          <option value="5" data-i18n="theme_light">Светлая</option>
-        </select>
+        <div class="theme-row">
+          <span data-i18n="lbl_theme">Тема:</span>
+          <select class="theme-select-shared" id="themeSelectFlow">
+            <option value="1" data-i18n="theme_dark">Тёмная</option>
+            <option value="2" data-i18n="theme_grayyellow">Серо-жёлтая</option>
+            <option value="3" data-i18n="theme_darkblue">Тёмно-синяя</option>
+            <option value="4" data-i18n="theme_blackorange">Чёрно-оранжевая</option>
+            <option value="5" data-i18n="theme_light">Светлая</option>
+          </select>
+        </div>
       </div>
     </div>
 
-    <div class="settings-position-row">
+    <div class="settings-position-row settings-box">
       <span class="settings-position-title" data-i18n="lbl_display_settings">Отображать настройки:</span>
       <div class="settings-position-options">
         <label class="settings-position-option">
@@ -2046,17 +2234,19 @@
     </div>
 
     <div class="settings-block midi-row">
-      <h3 data-i18n="h_midi">MIDI-клавиатура</h3>
-      <div class="midi-select-line">
-        <span data-i18n="lbl_midi_in">MIDI вход:</span>
-        <select class="midi-select" id="midiInSelectNr" data-midi-scope="nr"><option value="" data-i18n="midi_opt_none">—</option></select>
+      <h3 data-i18n="h_midi">MIDI</h3>
+      <div class="settings-box">
+        <div class="midi-select-line">
+          <span data-i18n="lbl_midi_in">MIDI-вход</span>
+          <select class="midi-select" id="midiInSelectNr" data-midi-scope="nr"><option value="" data-i18n="midi_press_connect">нажмите «Подключить MIDI»</option></select>
+        </div>
+        <div class="midi-select-line">
+          <span data-i18n="lbl_midi_out">MIDI-выход</span>
+          <select class="midi-select" id="midiOutSelectNr" data-midi-scope="nr"><option value="" data-i18n="midi_press_connect">нажмите «Подключить MIDI»</option></select>
+        </div>
+        <button class="small-btn midi-connect-btn" id="midiConnectBtnNr" data-i18n="btn_connect_midi">Подключить MIDI</button>
+        <span class="midi-status" id="midiStatusNr"></span>
       </div>
-      <div class="midi-select-line">
-        <span data-i18n="lbl_midi_out">MIDI выход:</span>
-        <select class="midi-select" id="midiOutSelectNr" data-midi-scope="nr"><option value="" data-i18n="midi_opt_none">—</option></select>
-      </div>
-      <span class="midi-status" id="midiStatusNr" data-i18n="midi_not_connected">MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.</span>
-      <button class="small-btn midi-connect-btn" id="midiConnectBtnNr" data-i18n="btn_connect_midi">Подключить MIDI клавиатуру</button>
     </div>
   </div>
 
@@ -2929,12 +3119,13 @@
     h_answer_buttons: { ru: "Кнопки ответов", en: "Answer buttons", zh: "答案按钮" },
     btn_show: { ru: "Показывать", en: "Show", zh: "显示" },
     btn_hide: { ru: "Скрыть", en: "Hide", zh: "隐藏" },
-    h_midi: { ru: "MIDI-клавиатура", en: "MIDI keyboard", zh: "MIDI键盘" },
-    btn_connect_midi: { ru: "Подключить MIDI клавиатуру", en: "Connect MIDI keyboard", zh: "连接MIDI键盘" },
+    h_midi: { ru: "MIDI", en: "MIDI", zh: "MIDI" },
+    btn_connect_midi: { ru: "Подключить MIDI", en: "Connect MIDI", zh: "连接 MIDI" },
     btn_reset_defaults: { ru: "Восстановить настройки по умолчанию", en: "Restore default settings", zh: "恢复默认设置" },
     msg_reset_confirm: { ru: "Восстановить настройки по умолчанию? Это действие нельзя отменить.", en: "Restore default settings? This cannot be undone.", zh: "恢复默认设置？此操作无法撤销。" },
-    lbl_midi_in: { ru: "MIDI вход:", en: "MIDI input:", zh: "MIDI输入：" },
-    lbl_midi_out: { ru: "MIDI выход:", en: "MIDI output:", zh: "MIDI输出：" },
+    lbl_midi_in: { ru: "MIDI-вход", en: "MIDI input", zh: "MIDI 输入" },
+    lbl_midi_out: { ru: "MIDI-выход", en: "MIDI output", zh: "MIDI 输出" },
+    midi_press_connect: { ru: "нажмите «Подключить MIDI»", en: "press \"Connect MIDI\"", zh: "请点击\"连接 MIDI\"" },
     midi_opt_none: { ru: "—", en: "—", zh: "—" },
     midi_not_connected: { ru: "MIDI-клавиатура не подключена. Нажмите кнопку ниже, чтобы подключить.", en: "MIDI keyboard is not connected. Press the button below to connect.", zh: "MIDI键盘未连接。请点击下方按钮进行连接。" },
     midi_not_supported: { ru: "Web MIDI не поддерживается браузером", en: "Web MIDI is not supported by this browser", zh: "浏览器不支持Web MIDI" },
@@ -3023,9 +3214,9 @@
     naming_solfege: { ru: "До Ре Ми", en: "Do Re Mi", zh: "首调唱名" },
 
     lad_major:    { ru: "Мажор",                en: "Major",           zh: "大调" },
-    lad_natmin:   { ru: "Натуральный минор",    en: "Natural minor",   zh: "自然小调" },
-    lad_harmin:   { ru: "Гармонический минор",  en: "Harmonic minor",  zh: "和声小调" },
-    lad_melmin:   { ru: "Мелодический минор",   en: "Melodic minor",   zh: "旋律小调" },
+    lad_natmin:   { ru: "Минор",                en: "Natural minor",   zh: "自然小调" },
+    lad_harmin:   { ru: "Гармон минор",         en: "Harmonic minor",  zh: "和声小调" },
+    lad_melmin:   { ru: "Мелод минор",          en: "Melodic minor",   zh: "旋律小调" },
     lad_dorian:   { ru: "Дорийский",            en: "Dorian",          zh: "多利亚调式" },
     lad_phrygian: { ru: "Фригийский",           en: "Phrygian",        zh: "弗里几亚调式" },
     lad_lydian:   { ru: "Лидийский",            en: "Lydian",          zh: "利底亚调式" },
@@ -3080,6 +3271,53 @@
     btn_start: { ru: "Старт", en: "Start", zh: "开始" },
     btn_stop:  { ru: "Стоп",  en: "Stop",  zh: "停止" },
 
+    // ---- подсказки к ладам в "Ладах" (значок i): формула тонами / в полутонах / на кварто-квинтовом круге.
+    // Текст с кварто-квинтового круга взят из circle of fifths. @@...@@ — красным, пустая строка — разделительная черта.
+    tip_scale_major: {
+      ru: "@@тон тон полутон тон тон тон полутон@@\n\nв полутонах: @@221 222 1@@\n\nна кварто-квинтовом круге: @@1-5@@. 1 нота слева от выбранной ноты, 5 справа",
+      en: "@@tone tone semitone tone tone tone semitone@@\n\nin semitones: @@221 222 1@@\n\non the circle of fifths: @@1-5@@. 1 note to the left of the selected note, 5 to the right",
+      zh: "@@全音 全音 半音 全音 全音 全音 半音@@\n\n半音数：@@221 222 1@@\n\n在五度圈上：@@1-5@@。所选音符左边 1 个音，右边 5 个"
+    },
+    tip_scale_natMin: {
+      ru: "@@тон полутон тон тон полутон тон тон@@\n\nв полутонах: @@212 212 2@@\n\nна кварто-квинтовом круге: @@4-2@@. 4 ноты слева от выбранной ноты, 2 справа",
+      en: "@@tone semitone tone tone semitone tone tone@@\n\nin semitones: @@212 212 2@@\n\non the circle of fifths: @@4-2@@. 4 notes to the left of the selected note, 2 to the right",
+      zh: "@@全音 半音 全音 全音 半音 全音 全音@@\n\n半音数：@@212 212 2@@\n\n在五度圈上：@@4-2@@。所选音符左边 4 个音，右边 2 个"
+    },
+    tip_scale_harMin: {
+      ru: "@@тон полутон тон тон полутон полтора тона полутон@@\n\nв полутонах: @@212 213 1@@\n\nна кварто-квинтовом круге: формула @@4-2@@ (4 слева от тоники-2 справа)",
+      en: "@@tone semitone tone tone semitone tone and a half semitone@@\n\nin semitones: @@212 213 1@@\n\non the circle of fifths: formula @@4-2@@ (4 to the left of the tonic, 2 to the right)",
+      zh: "@@全音 半音 全音 全音 半音 增二度 半音@@\n\n半音数：@@212 213 1@@\n\n在五度圈上：公式 @@4-2@@（主音左边4个，右边2个）"
+    },
+    tip_scale_melMin: {
+      ru: "@@тон полутон тон тон тон тон полутон@@\n\nв полутонах: @@212 222 1@@\n\nна кварто-квинтовом круге: формула @@4-2@@ (4 слева от тоники-2 справа)",
+      en: "@@tone semitone tone tone tone tone semitone@@\n\nin semitones: @@212 222 1@@\n\non the circle of fifths: formula @@4-2@@ (4 to the left of the tonic, 2 to the right)",
+      zh: "@@全音 半音 全音 全音 全音 全音 半音@@\n\n半音数：@@212 222 1@@\n\n在五度圈上：公式 @@4-2@@（主音左边4个，右边2个）"
+    },
+    tip_scale_dorian: {
+      ru: "@@тон полутон тон тон тон полутон тон@@\n\nв полутонах: @@212 221 2@@\n\nна кварто-квинтовом круге: @@3-3@@. 3 ноты слева от выбранной ноты, 3 справа",
+      en: "@@tone semitone tone tone tone semitone tone@@\n\nin semitones: @@212 221 2@@\n\non the circle of fifths: @@3-3@@. 3 notes to the left of the selected note, 3 to the right",
+      zh: "@@全音 半音 全音 全音 全音 半音 全音@@\n\n半音数：@@212 221 2@@\n\n在五度圈上：@@3-3@@。所选音符左边 3 个音，右边 3 个"
+    },
+    tip_scale_phrygian: {
+      ru: "@@полутон тон тон тон полутон тон тон@@\n\nв полутонах: @@122 212 2@@\n\nна кварто-квинтовом круге: @@5-1@@. 5 нот слева от выбранной ноты, 1 справа",
+      en: "@@semitone tone tone tone semitone tone tone@@\n\nin semitones: @@122 212 2@@\n\non the circle of fifths: @@5-1@@. 5 notes to the left of the selected note, 1 to the right",
+      zh: "@@半音 全音 全音 全音 半音 全音 全音@@\n\n半音数：@@122 212 2@@\n\n在五度圈上：@@5-1@@。所选音符左边 5 个音，右边 1 个"
+    },
+    tip_scale_lydian: {
+      ru: "@@тон тон тон полутон тон тон полутон@@\n\nв полутонах: @@222 122 1@@\n\nна кварто-квинтовом круге: @@0-6@@. 0 нот слева от выбранной ноты, 6 справа",
+      en: "@@tone tone tone semitone tone tone semitone@@\n\nin semitones: @@222 122 1@@\n\non the circle of fifths: @@0-6@@. 0 notes to the left of the selected note, 6 to the right",
+      zh: "@@全音 全音 全音 半音 全音 全音 半音@@\n\n半音数：@@222 122 1@@\n\n在五度圈上：@@0-6@@。所选音符左边 0 个音，右边 6 个"
+    },
+    tip_scale_mixo: {
+      ru: "@@тон тон полутон тон тон полутон тон@@\n\nв полутонах: @@221 221 2@@\n\nна кварто-квинтовом круге: @@2-4@@. 2 ноты слева от выбранной ноты, 4 справа",
+      en: "@@tone tone semitone tone tone semitone tone@@\n\nin semitones: @@221 221 2@@\n\non the circle of fifths: @@2-4@@. 2 notes to the left of the selected note, 4 to the right",
+      zh: "@@全音 全音 半音 全音 全音 半音 全音@@\n\n半音数：@@221 221 2@@\n\n在五度圈上：@@2-4@@。所选音符左边 2 个音，右边 4 个"
+    },
+    tip_scale_locrian: {
+      ru: "@@полутон тон тон полутон тон тон тон@@\n\nв полутонах: @@122 122 2@@\n\nна кварто-квинтовом круге: @@6-0@@. 6 нот слева от выбранной ноты, 0 справа",
+      en: "@@semitone tone tone semitone tone tone tone@@\n\nin semitones: @@122 122 2@@\n\non the circle of fifths: @@6-0@@. 6 notes to the left of the selected note, 0 to the right",
+      zh: "@@半音 全音 全音 半音 全音 全音 全音@@\n\n半音数：@@122 122 2@@\n\n在五度圈上：@@6-0@@。所选音符左边 6 个音，右边 0 个"
+    },
     info_chord_complexity: {
       ru: "<b>Простые:</b><br>maj (мажорное трезвучие)<br>min (минорное трезвучие)<br>sus2 (трезвучие с секундой вместо терции)<br>sus4 (трезвучие с квартой вместо терции)<br><br><b>Средние:</b><br>maj7 (большой мажорный септаккорд)<br>7 (доминантсептаккорд)<br>m7 (малый минорный септаккорд)<br>m(Maj7) (минорный септаккорд с большой септимой)<br>9 (доминантнонаккорд)<br>maj9 (большой мажорный нонаккорд)<br>m9 (минорный нонаккорд)<br>m(Maj9) (минорный нонаккорд с большой септимой)<br>add9 (трезвучие с добавленной ноной)<br><br><b>Сложные:</b><br>11 (доминантовый ундецимаккорд)<br>maj11 (большой мажорный ундецимаккорд)<br>m11 (минорный ундецимаккорд)<br>13 (доминантовый терцдецимаккорд)<br>maj13 (большой мажорный терцдецимаккорд)<br>m13 (минорный терцдецимаккорд)",
       en: "<b>Simple:</b><br>maj (major triad)<br>min (minor triad)<br>sus2 (suspended second)<br>sus4 (suspended fourth)<br><br><b>Medium:</b><br>maj7 (major seventh)<br>7 (dominant seventh)<br>m7 (minor seventh)<br>m(Maj7) (minor-major seventh)<br>9 (dominant ninth)<br>maj9 (major ninth)<br>m9 (minor ninth)<br>m(Maj9) (minor-major ninth)<br>add9 (added ninth triad)<br><br><b>Complex:</b><br>11 (dominant eleventh)<br>maj11 (major eleventh)<br>m11 (minor eleventh)<br>13 (dominant thirteenth)<br>maj13 (major thirteenth)<br>m13 (minor thirteenth)",
@@ -4115,12 +4353,14 @@
   }
 
   // Подсказка по клавише Z (KeyZ — по коду клавиши, работает и в русской раскладке на "Я"):
-  // справа от каждой линейки показывается название ноты, которая на ней стоит.
+  // сразу за правым концом линеек показывается название ноты, которая на линейке стоит
+  // (одинаковое место в "Нотах" и "Ладах").
+  const STAFF_HINT_X = STAFF_LINE_X2 + 6;
   function buildStaffHint(lines, xOverride){
     el.staffHint.innerHTML = "";
     lines.forEach(({ y, letter }) => {
       const t = ns("text");
-      t.setAttribute("x", xOverride != null ? xOverride : "294");
+      t.setAttribute("x", xOverride != null ? xOverride : STAFF_HINT_X);
       t.setAttribute("y", y + 4);
       t.textContent = letter;
       el.staffHint.appendChild(t);
@@ -4207,11 +4447,19 @@
     });
 
     // ---- подсказка (Z / Я) для нот на добавочных линейках: их нет в фиксированном списке ----
-    // Сдвинута правее (x=316), чтобы не пересекаться с подписями обычных линий/промежутков (x=294).
+    // Стоят в том же столбце, что и подписи линеек стана. Правее сдвигается только подпись,
+    // которая иначе налезла бы на соседнюю (нота в промежутке вплотную к подписанной линейке,
+    // например D4 под E4 или G5 над F5).
+    const hintColumnYs = Array.from(el.staffHint.children).map(t => parseFloat(t.getAttribute("y")));
     positions.forEach(p => {
       if(p.note.step < 0 || p.note.step > 8){
+        const ty = p.y + 4;
+        // на этой высоте уже есть подпись (например, C4 между станами в режиме "оба ключа") — не дублируем
+        if(hintColumnYs.some(y => Math.abs(y - ty) < 1)) return;
         const t = ns("text");
-        t.setAttribute("x", "316");
+        const collides = hintColumnYs.some(y => Math.abs(y - ty) < 12);
+        if(!collides) hintColumnYs.push(ty);
+        t.setAttribute("x", collides ? STAFF_HINT_X + 22 : STAFF_HINT_X);
         t.setAttribute("y", p.y + 4);
         t.textContent = p.note.letter + p.note.octave;
         el.staffHint.appendChild(t);
@@ -5059,14 +5307,23 @@
     if(!midiAccessObj) return;
     const inputs = Array.from(midiAccessObj.inputs.values());
     const outputs = Array.from(midiAccessObj.outputs.values());
-    const noneLabel = midiNoneLabel();
+    // Без пустого пункта «—»: если сохранённого устройства нет в списке,
+    // выбирается первое (как в Ear Trainer)
+    if(!inputs.some(i => i.id === midiSelectedInId)){
+      midiSelectedInId = inputs.length ? inputs[0].id : "";
+      localStorage.setItem("ntMidiInId", midiSelectedInId);
+    }
+    if(!outputs.some(o => o.id === midiSelectedOutId)){
+      midiSelectedOutId = outputs.length ? outputs[0].id : "";
+      localStorage.setItem("ntMidiOutId", midiSelectedOutId);
+    }
     midiUIGroups.forEach(g => {
       if(g.inSel){
-        g.inSel.innerHTML = `<option value="">${noneLabel}</option>` + inputs.map(i => `<option value="${i.id}">${i.name}</option>`).join("");
+        g.inSel.innerHTML = inputs.map(i => `<option value="${i.id}">${i.name}</option>`).join("");
         g.inSel.value = midiSelectedInId || "";
       }
       if(g.outSel){
-        g.outSel.innerHTML = `<option value="">${noneLabel}</option>` + outputs.map(o => `<option value="${o.id}">${o.name}</option>`).join("");
+        g.outSel.innerHTML = outputs.map(o => `<option value="${o.id}">${o.name}</option>`).join("");
         g.outSel.value = midiSelectedOutId || "";
       }
     });
@@ -5087,7 +5344,7 @@
         return;
       }
       const active = attachMidiInputListener();
-      setMidiStatusAll((window.__t ? window.__t("midi_connected_prefix") : "подключено: ") + active.map(i => i.name).join(", "), "ok");
+      setMidiStatusAll("", "");
     }).catch(() => {
       setMidiStatusAll(window.__t ? window.__t("midi_connect_failed") : "не удалось подключиться", "err");
     });
@@ -5101,7 +5358,7 @@
       midiUIGroups.forEach(o => { if(o.inSel) o.inSel.value = midiSelectedInId; });
       const active = attachMidiInputListener();
       if(midiAccessObj && active){
-        setMidiStatusAll((window.__t ? window.__t("midi_connected_prefix") : "подключено: ") + active.map(i => i.name).join(", "), "ok");
+        setMidiStatusAll("", "");
       }
     });
     if(g.outSel) g.outSel.addEventListener("change", () => {
@@ -5293,16 +5550,17 @@
     ];
 
     // 8 значений (0..7 ступень, 7-я = тоника октавой выше = 12 полутонов)
+    // порядок = порядок кнопок в настройках (как в circle of fifths): 3 ряда по 3
     const SCALE_TYPES = [
-      { key:"major",   labelKey:"lad_major",   semis:[0,2,4,5,7,9,11,12] },
-      { key:"natMin",  labelKey:"lad_natmin",  semis:[0,2,3,5,7,8,10,12] },
-      { key:"harMin",  labelKey:"lad_harmin",  semis:[0,2,3,5,7,8,11,12] },
-      { key:"melMin",  labelKey:"lad_melmin",  semis:[0,2,3,5,7,9,11,12] },
-      { key:"dorian",  labelKey:"lad_dorian",  semis:[0,2,3,5,7,9,10,12] },
-      { key:"phrygian",labelKey:"lad_phrygian",semis:[0,1,3,5,7,8,10,12] },
       { key:"lydian",  labelKey:"lad_lydian",  semis:[0,2,4,6,7,9,11,12] },
+      { key:"major",   labelKey:"lad_major",   semis:[0,2,4,5,7,9,11,12] },
       { key:"mixo",    labelKey:"lad_mixo",    semis:[0,2,4,5,7,9,10,12] },
-      { key:"locrian", labelKey:"lad_locrian", semis:[0,1,3,5,6,8,10,12] }
+      { key:"dorian",  labelKey:"lad_dorian",  semis:[0,2,3,5,7,9,10,12] },
+      { key:"natMin",  labelKey:"lad_natmin",  semis:[0,2,3,5,7,8,10,12] },
+      { key:"phrygian",labelKey:"lad_phrygian",semis:[0,1,3,5,7,8,10,12] },
+      { key:"locrian", labelKey:"lad_locrian", semis:[0,1,3,5,6,8,10,12] },
+      { key:"harMin",  labelKey:"lad_harmin",  semis:[0,2,3,5,7,8,11,12] },
+      { key:"melMin",  labelKey:"lad_melmin",  semis:[0,2,3,5,7,9,11,12] }
     ];
     SCALE_TYPES.forEach(t => Object.defineProperty(t, "label", { get(){ return window.__t ? window.__t(t.labelKey) : t.labelKey; } }));
 
@@ -5571,10 +5829,10 @@
       cell.appendChild(b);
       cell.appendChild(icon);
       icon.addEventListener("click", (e) => e.stopPropagation());
-      icon.addEventListener("mouseenter", (e) => { e.stopPropagation(); scPreviewShow(t.key); });
-      icon.addEventListener("mouseleave", (e) => { e.stopPropagation(); scPreviewHide(); });
-      icon.addEventListener("focus", (e) => { e.stopPropagation(); scPreviewShow(t.key); });
-      icon.addEventListener("blur", (e) => { e.stopPropagation(); scPreviewHide(); });
+      icon.addEventListener("mouseenter", (e) => { e.stopPropagation(); scPreviewShow(t.key); scModeTipShow(icon, t.key); });
+      icon.addEventListener("mouseleave", (e) => { e.stopPropagation(); scPreviewHide(); scModeTipHide(); });
+      icon.addEventListener("focus", (e) => { e.stopPropagation(); scPreviewShow(t.key); scModeTipShow(icon, t.key); });
+      icon.addEventListener("blur", (e) => { e.stopPropagation(); scPreviewHide(); scModeTipHide(); });
       b.classList.toggle("selected", !!scaleSettings.types[t.key]);
       b.addEventListener("click", (e) => {
         if(e.target.closest(".info-icon")) return;
@@ -5639,6 +5897,7 @@
 
     let scaleCurrent = null;   // { tonic, type, target:[8 notes], progress }
     let placedHistory = [];
+    let scLedgerSteps = new Set(); // добавочные линейки, нарисованные в scRenderStaff (эффективные ступени)
 
     // ---- предпросмотр лада при наведении на "i" рядом с кнопкой лада в настройках:
     // временно подменяем scaleCurrent/placedHistory нотами выбранного лада от C4 вверх
@@ -5665,6 +5924,84 @@
       if(scaleCurrent){ scRenderStaff(); }
       else { el.notesGroup.innerHTML = ""; el.ledgerLines.innerHTML = ""; }
     }
+
+    // ---- всплывающее окно с формулами лада при наведении на "i" у кнопки лада ----
+    // Текст — в I18N (tip_scale_<ключ лада>): @@...@@ красится красным,
+    // пустая строка ("\n\n") — разделительная черта (как в circle of fifths).
+    let scModeTipEl = null;
+    let scModeTipIcon = null;
+    function scModeTipRender(text){
+      scModeTipEl.textContent = "";
+      text.split("\n\n").forEach((block, bi) => {
+        if(bi > 0){
+          const divider = document.createElement("div");
+          divider.className = "tipDivider";
+          scModeTipEl.appendChild(divider);
+        }
+        block.split("@@").forEach((part, i) => {
+          if(part === "") return;
+          if(i % 2 === 1){
+            const span = document.createElement("span");
+            span.className = "tipFormulaHighlight";
+            span.textContent = part;
+            scModeTipEl.appendChild(span);
+          } else {
+            scModeTipEl.appendChild(document.createTextNode(part));
+          }
+        });
+      });
+    }
+    function scModeTipPosition(icon){
+      const margin = 8;
+      const viewportW = document.documentElement.clientWidth;
+      const viewportH = document.documentElement.clientHeight;
+      scModeTipEl.style.left = "0px";
+      scModeTipEl.style.top = "0px";
+      const tw = scModeTipEl.offsetWidth;
+      const th = scModeTipEl.offsetHeight;
+      const r = icon.getBoundingClientRect();
+      // По горизонтали держим окно в пределах панели настроек, чтобы оно
+      // не закрывало нотный стан, на котором показываются ноты лада.
+      const panel = icon.closest("#settingsPanel");
+      const pr = panel ? panel.getBoundingClientRect() : { left: 0, right: viewportW };
+      let left = r.left + r.width / 2 - tw / 2;
+      if(left + tw > pr.right - margin) left = pr.right - margin - tw;
+      if(left < pr.left + margin) left = pr.left + margin;
+      // Сначала над значком, если не влезает — под ним.
+      let top = r.top - th - margin;
+      if(top < margin) top = r.bottom + margin;
+      // не вылезать за края окна
+      if(left + tw > viewportW - margin) left = viewportW - margin - tw;
+      if(left < margin) left = margin;
+      if(top + th > viewportH - margin) top = viewportH - margin - th;
+      if(top < margin) top = margin;
+      scModeTipEl.style.left = left + "px";
+      scModeTipEl.style.top = top + "px";
+    }
+    function scModeTipShow(icon, typeKey){
+      const tr = window.__t;
+      const key = "tip_scale_" + typeKey;
+      const text = tr ? tr(key) : "";
+      if(!text || text === key) return;
+      if(!scModeTipEl){
+        scModeTipEl = document.createElement("div");
+        scModeTipEl.id = "scaleModeTooltip";
+        document.body.appendChild(scModeTipEl);
+      } else if(scModeTipEl.parentNode !== document.body || document.body.lastElementChild !== scModeTipEl){
+        document.body.appendChild(scModeTipEl); // всегда последним в body — поверх остальных окон
+      }
+      scModeTipIcon = icon;
+      scModeTipRender(text);
+      scModeTipEl.classList.add("tooltip-visible");
+      scModeTipPosition(icon);
+    }
+    function scModeTipHide(){
+      scModeTipIcon = null;
+      if(scModeTipEl) scModeTipEl.classList.remove("tooltip-visible");
+    }
+    // при прокрутке/изменении размера окна — скрываем, чтобы не висело не на месте
+    window.addEventListener("scroll", () => { if(scModeTipIcon) scModeTipHide(); }, true);
+    window.addEventListener("resize", () => { if(scModeTipIcon) scModeTipHide(); });
 
     // ---- отдельная подсказка-надпись для уровня "Лады" (R — держать, T — закрепить) ----
     // Не зависит от подсказки из режима "Нот" (lastResult/current там относятся к другому
@@ -5710,24 +6047,26 @@
       if(scRevealPinned) scShowReveal(); else scHideReveal();
     };
 
-    // ---- отдельная подсказка тоники (Z/Я) — линейка, с которой реально начинается
-    // текущий звукоряд. Показывается всегда (не только со случайной ступенью), чтобы
-    // клавиша работала так же надёжно, как в режиме "Нот".
+    // ---- подсказка (Z / Я) в "Ладах": подписи всех 5 линеек стана (в режиме "оба ключа" —
+    // обоих станов) + подписи добавочных линеек, которые нарисованы под нотами лада.
+    // Подписи стоят сразу за правым концом линеек — там же, где в "Нотах".
+    // эффективная ступень стана "Ладов" -> название линейки (E4, G4, ... без знаков)
+    function scStepLabel(effSt, clefMode){
+      const trebleStep = clefMode === "treble" ? effSt : effSt - 12; // 0 = E4 в скрипичной системе
+      const idx = trebleStep + 2; // 0 = C4
+      const letter = "CDEFGAB"[((idx % 7) + 7) % 7];
+      const octave = 4 + Math.floor(idx / 7);
+      return letter + octave;
+    }
+    function scBuildStaffHint(){
+      const clefMode = scaleSettings.clef || "treble";
+      const steps = clefMode === "both" ? [0, 2, 4, 6, 8, 12, 14, 16, 18, 20] : [0, 2, 4, 6, 8];
+      scLedgerSteps.forEach(s => { if(!steps.includes(s)) steps.push(s); });
+      buildStaffHint(steps.map(s => ({ y: STAFF_BASE_Y - s * STEP_PX, letter: scStepLabel(s, clefMode) })));
+    }
     function scShowStartHint(){
       if(!scaleCurrent) return;
-      const startNote = scaleCurrent.target[0];
-      const clefMode = scaleSettings.clef || "treble";
-      const effStep = clefMode === "treble" ? startNote.step : startNote.step + 12;
-      const y = STAFF_BASE_Y - effStep * STEP_PX;
-      const accSign = startNote.accidental === "sharp" ? "\u266F" : startNote.accidental === "flat" ? "\u266D" : "";
-      // x подписи должен следовать за реальным правым краем расширенного стана "Ладов"
-      // (staffHint по умолчанию рисуется на x=294, рассчитанном для НЕрасширенного стана
-      // режима "Нот" — здесь добавляем тот же сдвиг "shift", что и scRenderStaff())
-      const n = scaleCurrent.target.length;
-      const baseX0 = 50, baseX1 = 280;
-      const baseSpacing = (baseX1 - baseX0) / (n - 1);
-      const shift = baseSpacing * 3;
-      buildStaffHint([{ y, letter: startNote.letter + accSign + startNote.octave }], 294 + shift);
+      scBuildStaffHint();
       el.staffHint.style.display = "";
     }
     function scHideStartHint(){ el.staffHint.style.display = "none"; }
@@ -5836,6 +6175,7 @@
       // Во всех остальных случаях (нота реально лежит на одном из двух станов) линейки
       // не рисуются вовсе.
       const ledgerSeen = new Set();
+      scLedgerSteps = new Set();
       placedHistory.forEach((p, i) => {
         const x = x0 + spacing * i;
         const st = effStep(p.note.step);
@@ -5853,6 +6193,7 @@
           else if(st > 8){ for(let s = 10; s <= st + (st % 2); s += 2) steps.push(s); }
         }
         steps.forEach(s => {
+          scLedgerSteps.add(s);
           const key = s + "|" + x;
           if(ledgerSeen.has(key)) return;
           ledgerSeen.add(key);
@@ -5915,6 +6256,9 @@
 
         el.notesGroup.appendChild(g);
       });
+
+      // если подсказка (Z / Я) сейчас удерживается — обновляем подписи под новые ноты
+      if(window.__scaleLevelActive && el.staffHint.style.display !== "none") scBuildStaffHint();
     }
 
     window.__submitScaleNote = submitScaleNote;
@@ -6266,7 +6610,7 @@
     const RH_CALIB_MEASURE = 8; // клики замера
 
     function rhUpdateCalibrateUI(){
-      if(elD.rhCalibrateVal) elD.rhCalibrateVal.textContent = Math.round(durSettings.rhLatencyMs) + " " + t("unit_ms");
+      if(elD.rhCalibrateVal && document.activeElement !== elD.rhCalibrateVal) elD.rhCalibrateVal.value = Math.round(durSettings.rhLatencyMs);
     }
     window.__i18nRefresh.push(rhUpdateCalibrateUI);
 
@@ -6314,7 +6658,7 @@
         const avg = diffs.reduce((a, b) => a + b, 0) / diffs.length;
         durSettings.rhLatencyMs = Math.max(-300, Math.min(300, Math.round(avg * 1000)));
         saveDurSettings();
-        rhUpdateCalibrateUI();
+        if(elD.rhCalibrateVal) elD.rhCalibrateVal.value = Math.round(durSettings.rhLatencyMs);
         if(elD.rhCalibrateStatus) elD.rhCalibrateStatus.textContent =
           t("calib_done_prefix") + Math.round(durSettings.rhLatencyMs) + t("calib_done_mid") + diffs.length + t("calib_done_suffix");
       }, (t0 + total * beat - ctx.currentTime) * 1000 + 300);
@@ -6395,6 +6739,20 @@
     });
 
     if(elD.rhCalibrateBtn) elD.rhCalibrateBtn.addEventListener("click", () => { rhEnsureAudio(); rhRunCalibration(); });
+    // ручной ввод смещения: вписанное значение сохраняется так же, как результат калибровки
+    if(elD.rhCalibrateVal){
+      const rhApplyManualOffset = (final) => {
+        const v = parseInt(elD.rhCalibrateVal.value, 10);
+        if(isNaN(v)){ if(final) elD.rhCalibrateVal.value = Math.round(durSettings.rhLatencyMs); return; }
+        const clamped = Math.max(-300, Math.min(300, v));
+        durSettings.rhLatencyMs = clamped;
+        saveDurSettings();
+        if(final) elD.rhCalibrateVal.value = clamped;
+      };
+      elD.rhCalibrateVal.addEventListener("input", () => rhApplyManualOffset(false));
+      elD.rhCalibrateVal.addEventListener("change", () => rhApplyManualOffset(true));
+      elD.rhCalibrateVal.addEventListener("keydown", (e) => { if(e.key === "Enter") elD.rhCalibrateVal.blur(); });
+    }
     rhUpdateCalibrateUI();
 
     // положение окна ошибок для новых уровней (значения живут в settings, рядом с остальными)
@@ -6953,7 +7311,8 @@
       // весь нотный стан служит зоной тапа — отдельной кнопки TAP больше нет
       const pad = el.staffSvg;
       let flowPadEnabled = false;
-      const onFlowTap = ev => { if(flowPadEnabled){ ev.preventDefault(); nrFlowTap(); } };
+      // средняя кнопка мыши (колесо) — не тап: пропускаем её дальше, она открывает/закрывает настройки
+      const onFlowTap = ev => { if(ev.button === 1) return; if(flowPadEnabled){ ev.preventDefault(); nrFlowTap(); } };
       pad.addEventListener("pointerdown", onFlowTap);
 
       float.append(feed, warn, row);
