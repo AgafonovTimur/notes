@@ -412,6 +412,15 @@
     margin-top: var(--settings-block-gap);
   }
   .settings-position-title{ white-space: nowrap; font-size: 12.5px; color: var(--text-dim); }
+  /* "Все горячие клавиши" + значок (i); на мобильном скрыто (горячих клавиш там нет) */
+  .hotkeys-row{ display:flex; align-items:center; gap:6px; }
+  /* Подсказка "Все горячие клавиши": шрифт как у подсказок ладов (#scaleModeTooltip) —
+     font-size — размер шрифта, line-height — расстояние между строками, width — ширина окна */
+  /* Подсказка "Сложность" (вкладка "Ноты"): шрифт как у подсказок ладов —
+     font-size — размер шрифта, line-height — расстояние между строками, width — ширина окна */
+  #chordComplexityInfo{ width: 460px; max-width: 90vw; max-height: 90vh; font-size: 18px; line-height: 1.4; padding: 8px 10px; }
+  .info-tooltip.hotkeys-tooltip{ width: 640px; max-width: 90vw; max-height: 90vh; font-size: 18px; line-height: 1.4; padding: 8px 10px; }
+  body.mobile-mode .hotkeys-row{ display:none !important; }
   .settings-position-options{ display: flex; flex-wrap: wrap; gap: 8px 14px; margin-left: 24px; }
   .settings-position-option{ display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
   #settingsPanel input, #settingsPanel select, #settingsPanel textarea{ user-select: text; }
@@ -716,6 +725,7 @@
     position: relative;
   }
   svg#staff{ width: 100%; height: auto; display:block; }
+  .staff-wrap, .staff-wrap *{ -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 
   .chord-reveal{
     position:absolute;
@@ -1403,6 +1413,13 @@
 
   /* ---- Количество колонок в сетках (по реальным спискам файла) ---- */
   #settingsPanel #noteGrid{ grid-template-columns:repeat(7, 1fr); }
+  /* выбор вариантов (1 нота / 2 ноты / аккорды) — 3 в ряд, как в Ear Trainer; обращения — 4 в ряд */
+  #settingsPanel #modeGrid,
+  #settingsPanel #invGrid{ display:grid; gap:5px 4px; }
+  #settingsPanel #modeGrid{ grid-template-columns:repeat(3, 1fr); }
+  #settingsPanel #invGrid{ grid-template-columns:repeat(4, 1fr); }
+  #settingsPanel #modeGrid button.row-start{ grid-column-start:1; }
+  #settingsPanel #invGrid button:disabled{ opacity:0.35; cursor:default; }
   #settingsPanel #scaleTonicGrid{ grid-template-columns:repeat(6, 1fr); }
   #settingsPanel #durGrid{ grid-template-columns:repeat(6, 1fr); }
   #settingsPanel #nrTsGrid{ grid-template-columns:repeat(4, 1fr); }
@@ -1600,6 +1617,108 @@
   [data-theme="2"] #settingsPanel{ --set-btn-bg:#3a3a40; }
   [data-theme="3"] #settingsPanel{ --set-btn-bg:#1c2230; }
   [data-theme="5"] #settingsPanel{ --set-btn-bg:#c7c7c7; }
+
+  /* Плавная смена цвета кнопок настроек при переключении темы
+     (как в Circle of Fifths) */
+  #settingsPanel .level-tabs button,
+  #settingsPanel .segmented button,
+  #settingsPanel .note-grid button,
+  #settingsPanel .scale-type-cell > button,
+  #settingsPanel .small-btn{
+    transition:background-color .15s ease, color .15s ease;
+  }
+
+  /* Серо-жёлтая тема — как в Circle of Fifths (theme-t1):
+     светлый текст на кнопках, лёгкий градиент и тонкая рамка; у выбранной
+     кнопки — жёлтый градиент и жирный тёмный текст. Цвет фона задан
+     отдельно от градиента, чтобы при смене темы кнопки не мигали.
+     Рамка нарисована через inset-тень, чтобы размер кнопок не менялся. */
+  [data-theme="2"] #settingsPanel{
+    --set-btn-text:#e4e4e7;
+    --set-btn-active-bg:#c9a04a;
+    --set-btn-active-text:#221c0c;
+  }
+  [data-theme="2"] #settingsPanel .level-tabs button,
+  [data-theme="2"] #settingsPanel .segmented button,
+  [data-theme="2"] #settingsPanel .note-grid button,
+  [data-theme="2"] #settingsPanel .scale-type-cell > button,
+  [data-theme="2"] #settingsPanel .small-btn{
+    background-color:#3a3a40;
+    background-image:linear-gradient(#3a3a40, #232326);
+    box-shadow:inset 0 0 0 1px #3a3a40;
+  }
+  [data-theme="2"] #settingsPanel .level-tabs button:hover,
+  [data-theme="2"] #settingsPanel .segmented button:hover,
+  [data-theme="2"] #settingsPanel .note-grid button:hover,
+  [data-theme="2"] #settingsPanel .scale-type-cell > button:hover,
+  [data-theme="2"] #settingsPanel .small-btn:hover{
+    background-color:#4a4a52;
+    background-image:none;
+    color:#e4e4e7;
+  }
+  [data-theme="2"] #settingsPanel .level-tabs button.active,
+  [data-theme="2"] #settingsPanel .segmented button.active,
+  [data-theme="2"] #settingsPanel .note-grid button.active,
+  [data-theme="2"] #settingsPanel .note-grid button.selected,
+  [data-theme="2"] #settingsPanel .scale-type-cell > button.selected{
+    background-color:#c9a04a;
+    background-image:linear-gradient(#d8ad51, #a9853a);
+    color:#221c0c;
+    font-weight:700;
+    box-shadow:inset 0 0 0 1px #8d6f2f;
+  }
+  [data-theme="2"] #settingsPanel .level-tabs button.active:hover,
+  [data-theme="2"] #settingsPanel .segmented button.active:hover,
+  [data-theme="2"] #settingsPanel .note-grid button.active:hover,
+  [data-theme="2"] #settingsPanel .note-grid button.selected:hover,
+  [data-theme="2"] #settingsPanel .scale-type-cell > button.selected:hover{
+    background-color:#d8ad51;
+    background-image:none;
+  }
+
+  /* Тёмно-синяя тема — как в Circle of Fifths (theme-t2):
+     светлый текст, тонкая сине-серая рамка; у выбранной кнопки —
+     оранжевый текст и оранжевая рамка. */
+  [data-theme="3"] #settingsPanel{
+    --set-btn-text:#e2e8f0;
+    --set-btn-active-bg:#1b212f;
+    --set-btn-active-text:#f59e0b;
+  }
+  [data-theme="3"] #settingsPanel .level-tabs button,
+  [data-theme="3"] #settingsPanel .segmented button,
+  [data-theme="3"] #settingsPanel .note-grid button,
+  [data-theme="3"] #settingsPanel .scale-type-cell > button,
+  [data-theme="3"] #settingsPanel .small-btn{
+    font-weight:500;
+    box-shadow:inset 0 0 0 1px #273044;
+  }
+  [data-theme="3"] #settingsPanel .level-tabs button:hover,
+  [data-theme="3"] #settingsPanel .segmented button:hover,
+  [data-theme="3"] #settingsPanel .note-grid button:hover,
+  [data-theme="3"] #settingsPanel .scale-type-cell > button:hover,
+  [data-theme="3"] #settingsPanel .small-btn:hover{
+    background:#252d40;
+    color:#e2e8f0;
+  }
+  [data-theme="3"] #settingsPanel .level-tabs button.active,
+  [data-theme="3"] #settingsPanel .segmented button.active,
+  [data-theme="3"] #settingsPanel .note-grid button.active,
+  [data-theme="3"] #settingsPanel .note-grid button.selected,
+  [data-theme="3"] #settingsPanel .scale-type-cell > button.selected{
+    background:#1b212f;
+    color:#f59e0b;
+    font-weight:500;
+    box-shadow:inset 0 0 0 1px #e58e38;
+  }
+  [data-theme="3"] #settingsPanel .level-tabs button.active:hover,
+  [data-theme="3"] #settingsPanel .segmented button.active:hover,
+  [data-theme="3"] #settingsPanel .note-grid button.active:hover,
+  [data-theme="3"] #settingsPanel .note-grid button.selected:hover,
+  [data-theme="3"] #settingsPanel .scale-type-cell > button.selected:hover{
+    background:#232b3d;
+  }
+  [data-theme="3"] #settingsPanel input[type="range"]::-webkit-slider-thumb{ background:#718096; }
+  [data-theme="3"] #settingsPanel input[type="range"]::-moz-range-thumb{ background:#718096; }
   /* Строка статуса MIDI видна только при ошибке */
   #settingsPanel .midi-status:empty{ display:none; }
 
@@ -1655,45 +1774,46 @@
   <div id="noteSettingsBlocks">
 
   <div class="settings-block">
-    <h3 class="h3-with-info"><span data-i18n="h_complexity">Сложность</span>
-      <span class="info-icon" tabindex="0">i
-        <span class="info-tooltip" id="chordComplexityInfo" data-i18n-html="info_chord_complexity">
-          <b>Простые:</b><br>
-          maj (мажорное трезвучие)<br>
-          min (минорное трезвучие)<br>
-          sus2 (трезвучие с секундой вместо терции)<br>
-          sus4 (трезвучие с квартой вместо терции)<br><br>
-          <b>Средние:</b><br>
-          maj7 (большой мажорный септаккорд)<br>
-          7 (доминантсептаккорд)<br>
-          m7 (малый минорный септаккорд)<br>
-          m(Maj7) (минорный септаккорд с большой септимой)<br>
-          9 (доминантнонаккорд)<br>
-          maj9 (большой мажорный нонаккорд)<br>
-          m9 (минорный нонаккорд)<br>
-          m(Maj9) (минорный нонаккорд с большой септимой)<br>
-          add9 (трезвучие с добавленной ноной)<br><br>
-          <b>Сложные:</b><br>
-          11 (доминантовый ундецимаккорд)<br>
-          maj11 (большой мажорный ундецимаккорд)<br>
-          m11 (минорный ундецимаккорд)<br>
-          13 (доминантовый терцдецимаккорд)<br>
-          maj13 (большой мажорный терцдецимаккорд)<br>
-          m13 (минорный терцдецимаккорд)
-        </span>
-      </span>
-    </h3>
+    <h3 data-i18n="h_variants">Выберите 1 вариант или несколько</h3>
     <div class="settings-box">
-      <div class="segmented" data-group="mode">
-        <div class="seg-row">
-          <button data-value="single" class="active" data-i18n="mode_1note">1 нота</button>
+      <!-- Выбор как в Ear Trainer: можно отметить несколько кнопок (1 нота, 2 ноты, любые аккорды),
+           каждый вопрос берётся случайно из отмеченных; снять последнюю отмеченную нельзя.
+           Ряды — как в Circle of Fifths (3 в ряд, row-start начинает новый ряд). -->
+      <div class="segmented" data-multigroup="modes" id="modeGrid">
+          <button data-value="single" class="row-start" data-i18n="mode_1note">1 нота</button>
           <button data-value="double" data-i18n="mode_2notes">2 ноты</button>
-          <button data-value="simple" data-i18n="mode_simple">Простые аккорды</button>
-        </div>
-        <div class="seg-row">
-          <button data-value="medium" data-i18n="mode_medium">Средние аккорды</button>
-          <button data-value="complex" data-i18n="mode_complex">Сложные аккорды</button>
-        </div>
+          <button data-value="maj" class="row-start" data-i18n="chord_maj">Мажор</button>
+          <button data-value="min" data-i18n="chord_min">Минор</button>
+          <button data-value="dim">dim</button>
+          <button data-value="sus2" class="row-start">Sus2</button>
+          <button data-value="sus4">Sus4</button>
+          <button data-value="aug">aug</button>
+          <button data-value="7" class="row-start">7</button>
+          <button data-value="maj7">maj7</button>
+          <button data-value="m7">m7</button>
+          <button data-value="m(Maj7)" class="row-start">m(Maj7)</button>
+          <button data-value="7b5">7&#x266D;5</button>
+          <button data-value="7#5">7&#x266F;5</button>
+          <button data-value="7sus4" class="row-start">7sus4</button>
+          <button data-value="dim7">dim7</button>
+          <button data-value="m7b5">m7&#x266D;5</button>
+          <button data-value="add9" class="row-start">add9</button>
+          <button data-value="m(add9)">m(add9)</button>
+          <button data-value="9" class="row-start">9</button>
+          <button data-value="maj9">maj9</button>
+          <button data-value="m9">m9</button>
+          <button data-value="m(Maj9)" class="row-start">m(Maj9)</button>
+          <button data-value="6/9">6/9</button>
+          <button data-value="add11" class="row-start">add11</button>
+          <button data-value="m(add11)">m(add11)</button>
+          <button data-value="11" class="row-start">11</button>
+          <button data-value="maj11">maj11</button>
+          <button data-value="m11">m11</button>
+          <button data-value="m(Maj11)" class="row-start">m(Maj11)</button>
+          <button data-value="13" class="row-start">13</button>
+          <button data-value="maj13">maj13</button>
+          <button data-value="m13">m13</button>
+          <button data-value="m(Maj13)" class="row-start">m(Maj13)</button>
       </div>
     </div>
   </div>
@@ -1735,28 +1855,16 @@
   </div>
 
   <div class="settings-block">
-    <h3 data-i18n="h_note_names">Названия нот</h3>
-    <div class="settings-box">
-      <div class="segmented" data-group="naming">
-        <div class="seg-row">
-          <button data-value="letters" class="active">A B C</button>
-          <button data-value="solfege" data-i18n="naming_solfege">До Ре Ми</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="settings-block">
     <h3 data-i18n="h_inversions">Обращения аккордов (можно несколько)</h3>
     <div class="settings-box">
-      <div class="segmented" data-multigroup="inversions">
-        <div class="seg-row">
+      <div class="segmented" data-multigroup="inversions" id="invGrid">
           <button data-value="0" data-i18n="inv_0">основное</button>
-          <button data-value="1" data-i18n="inv_1">1-я</button>
-          <button data-value="2" data-i18n="inv_2">2-я</button>
-          <button data-value="3" data-i18n="inv_3">3-я</button>
-          <button data-value="4" data-i18n="inv_4">4-я</button>
-        </div>
+          <button data-value="1" data-i18n="inv_1">первое</button>
+          <button data-value="2" data-i18n="inv_2">второе</button>
+          <button data-value="3" data-i18n="inv_3">третье</button>
+          <button data-value="4" data-i18n="inv_4">четвёртое</button>
+          <button data-value="5" data-i18n="inv_5">пятое</button>
+          <button data-value="6" data-i18n="inv_6">шестое</button>
       </div>
     </div>
   </div>
@@ -1768,6 +1876,18 @@
         <div class="seg-row">
           <button data-value="show" class="active" data-i18n="btn_show">Показывать</button>
           <button data-value="hide" data-i18n="btn_hide">Скрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-block">
+    <h3 data-i18n="h_note_names">Названия нот</h3>
+    <div class="settings-box">
+      <div class="segmented" data-group="naming">
+        <div class="seg-row">
+          <button data-value="letters" class="active">A B C</button>
+          <button data-value="solfege" data-i18n="naming_solfege">До Ре Ми</button>
         </div>
       </div>
     </div>
@@ -1913,6 +2033,14 @@
     </div>
   </div>
 
+  <!-- "Все горячие клавиши" (i): список — в HOTKEYS_HELP_TEXT в начале скрипта; на мобильном скрыто -->
+  <div class="hotkeys-row">
+    <span class="settings-position-title" data-i18n="lbl_all_hotkeys">Все горячие клавиши</span>
+    <span class="info-icon" tabindex="0">i
+      <span class="info-tooltip hotkeys-tooltip" data-i18n-html="hotkeys_help"></span>
+    </span>
+  </div>
+
   <div class="settings-block">
     <button class="small-btn midi-connect-btn" id="resetDefaultsBtn" data-i18n="btn_reset_defaults">Восстановить настройки по умолчанию</button>
   </div>
@@ -1952,6 +2080,15 @@
         <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
           <input type="checkbox" id="scaleRandomStartToggle">
           <span data-i18n="chk_random_start">Начинать со случайной ступени (не только с тоники)</span>
+        </label>
+      </div>
+    </div>
+    <div class="settings-block">
+      <h3 data-i18n="h_accuracy">Точность ответа</h3>
+      <div class="settings-box">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <input type="checkbox" id="scaleShowPianoToggle">
+          <span data-i18n="chk_show_piano_scale">Отображать клавиатуру пианино</span>
         </label>
       </div>
     </div>
@@ -2021,6 +2158,26 @@
           <input type="checkbox" class="settings-position-checkbox" data-position="right">
           <span data-i18n="pos_right">справа</span>
         </label>
+      </div>
+    </div>
+
+    <!-- "Все горячие клавиши" (i): список — в HOTKEYS_HELP_TEXT в начале скрипта; на мобильном скрыто -->
+    <div class="hotkeys-row">
+      <span class="settings-position-title" data-i18n="lbl_all_hotkeys">Все горячие клавиши</span>
+      <span class="info-icon" tabindex="0">i
+        <span class="info-tooltip hotkeys-tooltip" data-i18n-html="hotkeys_help"></span>
+      </span>
+    </div>
+
+    <div class="settings-block">
+      <h3 data-i18n="h_note_names">Названия нот</h3>
+      <div class="settings-box">
+        <div class="segmented" data-group="naming">
+          <div class="seg-row">
+            <button data-value="letters" class="active">A B C</button>
+            <button data-value="solfege" data-i18n="naming_solfege">До Ре Ми</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2112,6 +2269,26 @@
           <input type="checkbox" class="settings-position-checkbox" data-position="right">
           <span data-i18n="pos_right">справа</span>
         </label>
+      </div>
+    </div>
+
+    <!-- "Все горячие клавиши" (i): список — в HOTKEYS_HELP_TEXT в начале скрипта; на мобильном скрыто -->
+    <div class="hotkeys-row">
+      <span class="settings-position-title" data-i18n="lbl_all_hotkeys">Все горячие клавиши</span>
+      <span class="info-icon" tabindex="0">i
+        <span class="info-tooltip hotkeys-tooltip" data-i18n-html="hotkeys_help"></span>
+      </span>
+    </div>
+
+    <div class="settings-block">
+      <h3 data-i18n="h_note_names">Названия нот</h3>
+      <div class="settings-box">
+        <div class="segmented" data-group="naming">
+          <div class="seg-row">
+            <button data-value="letters" class="active">A B C</button>
+            <button data-value="solfege" data-i18n="naming_solfege">До Ре Ми</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2230,6 +2407,26 @@
           <input type="checkbox" class="settings-position-checkbox" data-position="right">
           <span data-i18n="pos_right">справа</span>
         </label>
+      </div>
+    </div>
+
+    <!-- "Все горячие клавиши" (i): список — в HOTKEYS_HELP_TEXT в начале скрипта; на мобильном скрыто -->
+    <div class="hotkeys-row">
+      <span class="settings-position-title" data-i18n="lbl_all_hotkeys">Все горячие клавиши</span>
+      <span class="info-icon" tabindex="0">i
+        <span class="info-tooltip hotkeys-tooltip" data-i18n-html="hotkeys_help"></span>
+      </span>
+    </div>
+
+    <div class="settings-block">
+      <h3 data-i18n="h_note_names">Названия нот</h3>
+      <div class="settings-box">
+        <div class="segmented" data-group="naming">
+          <div class="seg-row">
+            <button data-value="letters" class="active">A B C</button>
+            <button data-value="solfege" data-i18n="naming_solfege">До Ре Ми</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2373,18 +2570,96 @@
   let selectedOctave = 4;
   "use strict";
 
+  // ================= ВСЕ ГОРЯЧИЕ КЛАВИШИ =================
+  // Текст подсказки (i) у надписи "Все горячие клавиши" (во всех вкладках настроек).
+  // Меняется только здесь — в одном месте для каждого языка.
+  const HOTKEYS_HELP_TEXT = {
+    ru:
+      "<b>Везде</b><br>" +
+      "Y / Н, W / Ц или средняя кнопка мыши — открыть / закрыть настройки<br>" +
+      "Q / Й — окно ошибок<br>" +
+      "+ / = — увеличить масштаб, − — уменьшить, Shift + − — вернуть 100%<br><br>" +
+      "<b>Ноты</b><br>" +
+      "A B C D E F G — ответ нотой (в русской раскладке — те же клавиши)<br>" +
+      "Shift + буква — диез<br>" +
+      "Буква, затем цифра 2–6 — нота с октавой (если включено «Указывать октаву в ответе»)<br>" +
+      "R / К (удерживать) — подсказка<br>" +
+      "T / Е — закрепить / открепить подсказку<br>" +
+      "Z / Я (удерживать) — названия линеек стана<br><br>" +
+      "<b>Лады</b><br>" +
+      "A B C D E F G, Shift + буква — ответ нотой<br>" +
+      "R / К, T / Е, Z / Я — как в «Нотах»<br><br>" +
+      "<b>Ритм → Одна нота</b><br>" +
+      "1 … 9, 0 — кнопка ответа по порядку слева направо<br><br>" +
+      "<b>Ритм → Бесконечно</b><br>" +
+      "Пробел или клик по нотному стану — тап<br>" +
+      "Пробел — тап во время калибровки<br><br>" +
+      "<b>MIDI-клавиатура</b><br>" +
+      "Ноты, Лады — ответ нотой<br>" +
+      "Одна нота — C D E F G A B (любая октава) = кнопки 1–7<br>" +
+      "Бесконечно — любая клавиша = тап",
+    en:
+      "<b>Everywhere</b><br>" +
+      "Y, W or middle mouse button — open / close settings<br>" +
+      "Q — errors window<br>" +
+      "+ / = — zoom in, − — zoom out, Shift + − — reset to 100%<br><br>" +
+      "<b>Notes</b><br>" +
+      "A B C D E F G — answer with a note<br>" +
+      "Shift + letter — sharp<br>" +
+      "Letter, then digit 2–6 — note with octave (if “Specify octave in answer” is on)<br>" +
+      "R (hold) — hint<br>" +
+      "T — pin / unpin hint<br>" +
+      "Z (hold) — staff line names<br><br>" +
+      "<b>Modes</b><br>" +
+      "A B C D E F G, Shift + letter — answer with a note<br>" +
+      "R, T, Z — same as in “Notes”<br><br>" +
+      "<b>Rhythm → One note</b><br>" +
+      "1 … 9, 0 — answer button by order from left to right<br><br>" +
+      "<b>Rhythm → Infinite</b><br>" +
+      "Space or click on the staff — tap<br>" +
+      "Space — tap during calibration<br><br>" +
+      "<b>MIDI keyboard</b><br>" +
+      "Notes, Modes — answer with a note<br>" +
+      "One note — C D E F G A B (any octave) = buttons 1–7<br>" +
+      "Infinite — any key = tap",
+    zh:
+      "<b>全局</b><br>" +
+      "Y、W 或鼠标中键 — 打开 / 关闭设置<br>" +
+      "Q — 错误窗口<br>" +
+      "+ / = — 放大，− — 缩小，Shift + − — 恢复 100%<br><br>" +
+      "<b>音符</b><br>" +
+      "A B C D E F G — 用音符作答<br>" +
+      "Shift + 字母 — 升号<br>" +
+      "字母，然后数字 2–6 — 带八度的音符（开启“答案中指定八度”时）<br>" +
+      "R（按住）— 提示<br>" +
+      "T — 固定 / 取消固定提示<br>" +
+      "Z（按住）— 谱线名称<br><br>" +
+      "<b>调式</b><br>" +
+      "A B C D E F G、Shift + 字母 — 用音符作答<br>" +
+      "R、T、Z — 与“音符”相同<br><br>" +
+      "<b>节奏 → 单个音符</b><br>" +
+      "1 … 9、0 — 按从左到右的顺序选择答案按钮<br><br>" +
+      "<b>节奏 → 无限</b><br>" +
+      "空格或点击五线谱 — 敲击<br>" +
+      "空格 — 校准时敲击<br><br>" +
+      "<b>MIDI 键盘</b><br>" +
+      "音符、调式 — 用音符作答<br>" +
+      "单个音符 — C D E F G A B（任意八度）= 按钮 1–7<br>" +
+      "无限 — 任意键 = 敲击"
+  };
+
   const LS_SETTINGS = "noteTrainer_settings_v3";
   const LS_ERRORS = "noteTrainer_errors_v4";
   const LS_STATS = "noteTrainer_stats_v1";
 
   let settings = {
-    mode: "single",
+    modes: ["single"], // выбранные варианты: "single", "double" и/или id аккордов (CHORD_LIST)
     clef: "treble",
     range: "0",
     naming: "letters",
     hideButtons: "show",
     allowedTokens: null, // заполняется ниже (см. TOKENS) значением "все включены"
-    allowedInversions: { 0:true, 1:false, 2:false, 3:false, 4:false },
+    allowedInversions: { 0:true, 1:false, 2:false, 3:false, 4:false, 5:false, 6:false },
     revealTop: 7,
     revealLeft: 23,
     revealSize: 42,
@@ -2434,6 +2709,20 @@
     }
     // 4-е обращение появилось позже — добавляем ключ, не трогая сохранённый выбор
     if(typeof settings.allowedInversions[4] !== "boolean") settings.allowedInversions[4] = false;
+    // 5-е и 6-е обращения появились позже (как в Ear Trainer) — добавляем, не трогая сохранённый выбор
+    if(typeof settings.allowedInversions[5] !== "boolean") settings.allowedInversions[5] = false;
+    if(typeof settings.allowedInversions[6] !== "boolean") settings.allowedInversions[6] = false;
+    // старый формат "Сложность" (одна кнопка settings.mode) → новый список settings.modes
+    if(!Array.isArray(settings.modes)){
+      const OLD_GROUPS = {
+        simple:  ["maj","min","sus2","sus4"],
+        medium:  ["maj7","7","m7","m(Maj7)","9","maj9","m9","m(Maj9)","add9"],
+        complex: ["11","maj11","m11","13","maj13","m13"]
+      };
+      const m = settings.mode;
+      settings.modes = OLD_GROUPS[m] ? OLD_GROUPS[m].slice() : (m === "double" ? ["double"] : ["single"]);
+    }
+    delete settings.mode;
     if(!settings.bgColor) settings.bgColor = "#161618";
     if(!settings.clefColor) settings.clefColor = "#d1bfae";
     if(!settings.lineColor) settings.lineColor = "#d1bfae";
@@ -2536,33 +2825,47 @@
   // не трогая уже сохранённый пользователем выбор остальных нот
   TOKENS.forEach(t => { if(typeof settings.allowedTokens[t.key] !== "boolean") settings.allowedTokens[t.key] = true; });
 
-  const CHORD_DEFS = {
-    simple: [
-      { name:"maj",  degrees:[0,2,4], semis:[0,4,7] },
-      { name:"min",  degrees:[0,2,4], semis:[0,3,7] },
-      { name:"sus2", degrees:[0,1,4], semis:[0,2,7] },
-      { name:"sus4", degrees:[0,3,4], semis:[0,5,7] }
-    ],
-    medium: [
-      { name:"maj7",    degrees:[0,2,4,6],   semis:[0,4,7,11] },
-      { name:"7",       degrees:[0,2,4,6],   semis:[0,4,7,10] },
-      { name:"m7",      degrees:[0,2,4,6],   semis:[0,3,7,10] },
-      { name:"m(Maj7)", degrees:[0,2,4,6],   semis:[0,3,7,11] },
-      { name:"9",       degrees:[0,2,4,6,8], semis:[0,4,7,10,14] },
-      { name:"maj9",    degrees:[0,2,4,6,8], semis:[0,4,7,11,14] },
-      { name:"m9",      degrees:[0,2,4,6,8], semis:[0,3,7,10,14] },
-      { name:"m(Maj9)", degrees:[0,2,4,6,8], semis:[0,3,7,11,14] },
-      { name:"add9",    degrees:[0,2,4,8],   semis:[0,4,7,14] }
-    ],
-    complex: [
-      { name:"11",    degrees:[0,2,4,6,8,10],    semis:[0,4,7,10,14,17] },
-      { name:"maj11", degrees:[0,2,4,6,8,10],    semis:[0,4,7,11,14,17] },
-      { name:"m11",   degrees:[0,2,4,6,8,10],    semis:[0,3,7,10,14,17] },
-      { name:"13",    degrees:[0,2,4,6,8,10,12], semis:[0,4,7,10,14,17,21] },
-      { name:"maj13", degrees:[0,2,4,6,8,10,12], semis:[0,4,7,11,14,17,21] },
-      { name:"m13",   degrees:[0,2,4,6,8,10,12], semis:[0,3,7,10,14,17,21] }
-    ]
-  };
+  // Все аккорды — тот же набор и порядок, что в Ear Trainer.
+  // degrees — ступени (шаги на стане от тоники), semis — полутоны от тоники.
+  const CHORD_LIST = [
+    { name:"maj",      degrees:[0,2,4],           semis:[0,4,7] },
+    { name:"min",      degrees:[0,2,4],           semis:[0,3,7] },
+    { name:"dim",      degrees:[0,2,4],           semis:[0,3,6] },
+    { name:"sus2",     degrees:[0,1,4],           semis:[0,2,7] },
+    { name:"sus4",     degrees:[0,3,4],           semis:[0,5,7] },
+    { name:"aug",      degrees:[0,2,4],           semis:[0,4,8] },
+    { name:"7",        degrees:[0,2,4,6],         semis:[0,4,7,10] },
+    { name:"maj7",     degrees:[0,2,4,6],         semis:[0,4,7,11] },
+    { name:"m7",       degrees:[0,2,4,6],         semis:[0,3,7,10] },
+    { name:"m(Maj7)",  degrees:[0,2,4,6],         semis:[0,3,7,11] },
+    { name:"7b5",      degrees:[0,2,4,6],         semis:[0,4,6,10] },
+    { name:"7#5",      degrees:[0,2,4,6],         semis:[0,4,8,10] },
+    { name:"7sus4",    degrees:[0,3,4,6],         semis:[0,5,7,10] },
+    { name:"dim7",     degrees:[0,2,4,6],         semis:[0,3,6,9] },
+    { name:"m7b5",     degrees:[0,2,4,6],         semis:[0,3,6,10] },
+    { name:"add9",     degrees:[0,2,4,8],         semis:[0,4,7,14] },
+    { name:"m(add9)",  degrees:[0,2,4,8],         semis:[0,3,7,14] },
+    { name:"9",        degrees:[0,2,4,6,8],       semis:[0,4,7,10,14] },
+    { name:"maj9",     degrees:[0,2,4,6,8],       semis:[0,4,7,11,14] },
+    { name:"m9",       degrees:[0,2,4,6,8],       semis:[0,3,7,10,14] },
+    { name:"m(Maj9)",  degrees:[0,2,4,6,8],       semis:[0,3,7,11,14] },
+    { name:"6/9",      degrees:[0,2,4,5,8],       semis:[0,4,7,9,14] },
+    { name:"add11",    degrees:[0,2,4,10],        semis:[0,4,7,17] },
+    { name:"m(add11)", degrees:[0,2,4,10],        semis:[0,3,7,17] },
+    { name:"11",       degrees:[0,2,4,6,8,10],    semis:[0,4,7,10,14,17] },
+    { name:"maj11",    degrees:[0,2,4,6,8,10],    semis:[0,4,7,11,14,17] },
+    { name:"m11",      degrees:[0,2,4,6,8,10],    semis:[0,3,7,10,14,17] },
+    { name:"m(Maj11)", degrees:[0,2,4,6,8,10],    semis:[0,3,7,11,14,17] },
+    { name:"13",       degrees:[0,2,4,6,8,10,12], semis:[0,4,7,10,14,17,21] },
+    { name:"maj13",    degrees:[0,2,4,6,8,10,12], semis:[0,4,7,11,14,17,21] },
+    { name:"m13",      degrees:[0,2,4,6,8,10,12], semis:[0,3,7,10,14,17,21] },
+    { name:"m(Maj13)", degrees:[0,2,4,6,8,10,12], semis:[0,3,7,11,14,17,21] }
+  ];
+  const CHORD_BY_NAME = Object.create(null);
+  CHORD_LIST.forEach(d => { CHORD_BY_NAME[d.name] = d; });
+  const MODE_IDS = ["single","double"].concat(CHORD_LIST.map(d => d.name));
+  settings.modes = settings.modes.filter((v, i, a) => MODE_IDS.includes(v) && a.indexOf(v) === i);
+  if(!settings.modes.length) settings.modes = ["single"];
 
   const el = {
     settingsPanel: document.getElementById("settingsPanel"),
@@ -2748,6 +3051,11 @@
         settings[key] = btn.dataset.value;
         applySegmentedUI();
         saveSettings();
+        // "Названия нот" продублированы в "Ладах" и "Ритме": там вопрос "Нот" не пересоздаём
+        if(key === "naming" && settings.activeLevel && settings.activeLevel !== "notes"){
+          if(settings.activeLevel === "scales" && window.__scaleRefreshNaming) window.__scaleRefreshNaming();
+          return;
+        }
         buildAnswerButtons();
         if(settings.showPiano) buildBigPiano();
         applyAnswersVisibility();
@@ -2757,14 +3065,61 @@
     });
   });
 
+  // ---- выбор вариантов (1 нота / 2 ноты / аккорды): несколько сразу, как в Ear Trainer ----
+  function selectedChordDefs(){
+    return settings.modes.filter(v => CHORD_BY_NAME[v]).map(v => CHORD_BY_NAME[v]);
+  }
+  // Максимальное обращение среди выбранных аккордов (0 — только основное)
+  function maxInversionAvailable(){
+    let max = 0;
+    selectedChordDefs().forEach(d => { max = Math.max(max, d.degrees.length - 1); });
+    return max;
+  }
+  // Недоступные обращения гаснут и снимаются (как в Ear Trainer); хотя бы одно остаётся выбранным
+  function updateInversionAvailability(){
+    const max = maxInversionAvailable();
+    for(let lvl = 0; lvl <= 6; lvl++){
+      if(lvl > max) settings.allowedInversions[lvl] = false;
+    }
+    if(!Object.values(settings.allowedInversions).some(Boolean)) settings.allowedInversions[0] = true;
+    document.querySelectorAll('.segmented[data-multigroup="inversions"] button').forEach(btn => {
+      btn.disabled = Number(btn.dataset.value) > max;
+    });
+  }
+  function applyModesUI(){
+    document.querySelectorAll('.segmented[data-multigroup="modes"] button').forEach(btn => {
+      btn.classList.toggle("active", settings.modes.includes(btn.dataset.value));
+    });
+  }
   function applyInversionUI(){
     document.querySelectorAll('.segmented[data-multigroup="inversions"] button').forEach(btn => {
       btn.classList.toggle("active", !!settings.allowedInversions[btn.dataset.value]);
     });
   }
+  updateInversionAvailability();
+  applyModesUI();
   applyInversionUI();
+  document.querySelectorAll('.segmented[data-multigroup="modes"] button').forEach(btn => {
+    btn.addEventListener("click", () => {
+      const v = btn.dataset.value;
+      const on = settings.modes.includes(v);
+      // последний оставшийся выбранный вариант снять нельзя
+      if(on && settings.modes.length <= 1) return;
+      settings.modes = on ? settings.modes.filter(x => x !== v) : settings.modes.concat([v]);
+      updateInversionAvailability();
+      applyModesUI();
+      applyInversionUI();
+      saveSettings();
+      buildAnswerButtons();
+      if(settings.showPiano) buildBigPiano();
+      applyAnswersVisibility();
+      updateViewBox();
+      nextQuestion();
+    });
+  });
   document.querySelectorAll('.segmented[data-multigroup="inversions"] button').forEach(btn => {
     btn.addEventListener("click", () => {
+      if(btn.disabled) return;
       const v = btn.dataset.value;
       const willBeOn = !settings.allowedInversions[v];
       const activeCount = Object.values(settings.allowedInversions).filter(Boolean).length;
@@ -2856,7 +3211,8 @@
     return list.length ? list : TOKENS; // на всякий случай, если вдруг всё выключено
   }
   // ================= АНТИ-ПОВТОР ВЫПАВШИХ НОТ =================
-  // Глубина запрета зависит от того, сколько нот включено пользователем:
+  // Глубина запрета зависит от того, сколько РАЗНЫХ вариантов вопроса дают настройки
+  // (см. variantCount: ноты × положения по добавочным линейкам, у аккордов ещё × обращения):
   //   меньше 4  -> 0 (запрета нет, иначе выбирать будет почти не из чего)
   //   4 и более -> 1 (не повторяется текущий вопрос)
   //   8 и более -> 2 (не повторяются текущий и предыдущий)
@@ -2864,10 +3220,10 @@
   // Пример для 12+ включённых нот в режиме одной ноты: были F и A, сейчас C ->
   // следующая нота выбирается случайно из всех включённых, кроме F, A и C.
   //
-  // Что именно запоминается от вопроса (см. questionTokenKey):
-  //   одна нота — сама нота;
+  // Что именно запоминается от вопроса (см. questionTokenKey) — всегда вместе с октавой:
+  //   одна нота — сама нота (C4 и C5 — разные варианты);
   //   две ноты  — НИЖНЯЯ нота пары;
-  //   аккорды   — ТОНИКА аккорда (не самый нижний звук: при обращении тоника уходит наверх).
+  //   аккорды   — ТОНИКА аккорда + её октава + обращение.
   //
   // У каждого режима ("single", "double" и каждая категория аккордов) своя
   // независимая история. Она живёт только в памяти вкладки и НЕ сохраняется
@@ -2880,8 +3236,17 @@
     if(!recentByMode[mode]) recentByMode[mode] = [];
     return recentByMode[mode];
   }
-  function noRepeatDepth(){
-    const n = activeTokens().length;
+  // Сколько РАЗНЫХ вариантов вопроса даёт текущий набор настроек:
+  //   каждая включённая нота (C, C♯, C♭ — разные) × положения по высоте (добавочные
+  //   линейки 0 / +1 / +2 / +3 -> 1 / 2 / 3 / 4 варианта), а у аккордов — ещё
+  //   × количество выбранных обращений. Пример: ноты C и D, линейки +1 -> 2 × 2 = 4.
+  function variantCount(mode){
+    let n = activeTokens().length * ((parseInt(settings.range, 10) || 0) + 1);
+    if(mode === "chords") n *= Math.max(1, Object.values(settings.allowedInversions || {}).filter(Boolean).length);
+    return n;
+  }
+  function noRepeatDepth(mode){
+    const n = variantCount(mode);
     if(n >= 12) return 3;
     if(n >= 8)  return 2;
     if(n >= 4)  return 1;
@@ -2889,7 +3254,7 @@
   }
   function blockedTokenKeys(mode){
     const list = historyFor(mode);
-    const depth = noRepeatDepth();
+    const depth = noRepeatDepth(mode);
     if(!list || depth <= 0) return new Set();
     return new Set(list.slice(-depth));
   }
@@ -2904,7 +3269,7 @@
   function withoutRecent(candidates, mode){
     const blocked = blockedTokenKeys(mode);
     if(!blocked.size) return candidates;
-    const left = candidates.filter(c => !blocked.has(c.token.key));
+    const left = candidates.filter(c => !blocked.has(c.token.key + "|" + c.octave));
     return left.length ? left : candidates;
   }
   // Ключ, который запоминается от готового вопроса. У аккорда берём тонику
@@ -2913,10 +3278,11 @@
   function questionTokenKey(mode, notes){
     if(!notes || !notes.length) return null;
     if(notes.chordRootLetter){
+      if(notes.chordVariantKey) return notes.chordVariantKey;
       return tokenKeyFor(notes.chordRootLetter, notes.chordRootAccidental || null);
     }
     const lowest = notes.reduce((a, b) => (b.step < a.step ? b : a));
-    return tokenKeyFor(lowest.letter, lowest.accidental || null);
+    return tokenKeyFor(lowest.letter, lowest.accidental || null) + "|" + lowest.octave;
   }
   function rememberQuestion(mode, notes){
     rememberTokenKey(mode, questionTokenKey(mode, notes));
@@ -3097,12 +3463,11 @@
     lvl_notes: { ru: "Ноты", en: "Notes", zh: "音符" },
     lvl_scales: { ru: "Лады", en: "Scales", zh: "调式" },
     lvl_rhythm: { ru: "Ритм", en: "Rhythm", zh: "节奏" },
-    h_complexity: { ru: "Сложность", en: "Difficulty", zh: "难度" },
+    h_variants: { ru: "Выберите 1 вариант или несколько", en: "Choose one option or several", zh: "选择一个或多个选项" },
+    chord_maj: { ru: "Мажор", en: "Major", zh: "大三和弦" },
+    chord_min: { ru: "Минор", en: "Minor", zh: "小三和弦" },
     mode_1note: { ru: "1 нота", en: "1 note", zh: "1个音" },
     mode_2notes: { ru: "2 ноты", en: "2 notes", zh: "2个音" },
-    mode_simple: { ru: "Простые аккорды", en: "Simple chords", zh: "简单和弦" },
-    mode_medium: { ru: "Средние аккорды", en: "Medium chords", zh: "中等和弦" },
-    mode_complex: { ru: "Сложные аккорды", en: "Complex chords", zh: "复杂和弦" },
     h_clef: { ru: "Ключ", en: "Clef", zh: "谱号" },
     clef_treble: { ru: "Скрипичный", en: "Treble", zh: "高音谱号" },
     clef_bass: { ru: "Басовый", en: "Bass", zh: "低音谱号" },
@@ -3116,6 +3481,8 @@
 	inv_2: { ru: "второе",   en: "2nd inversion", zh: "第二转位" },
 	inv_3: { ru: "третье",   en: "3rd inversion", zh: "第三转位" },
 	inv_4: { ru: "четвёртое", en: "4th inversion", zh: "第四转位" },
+	inv_5: { ru: "пятое",    en: "5th inversion", zh: "第五转位" },
+	inv_6: { ru: "шестое",   en: "6th inversion", zh: "第六转位" },
     h_answer_buttons: { ru: "Кнопки ответов", en: "Answer buttons", zh: "答案按钮" },
     btn_show: { ru: "Показывать", en: "Show", zh: "显示" },
     btn_hide: { ru: "Скрыть", en: "Hide", zh: "隐藏" },
@@ -3134,6 +3501,7 @@
     midi_connect_failed: { ru: "не удалось подключиться", en: "failed to connect", zh: "连接失败" },
     h_accuracy: { ru: "Точность ответа", en: "Answer accuracy", zh: "答案精确度" },
     chk_show_octave: { ru: "Указывать октаву в ответе (C2–C6)", en: "Require octave in the answer (C2–C6)", zh: "答案中指定八度（C2–C6）" },
+    chk_show_piano_scale: { ru: "Отображать клавиатуру пианино", en: "Show piano keyboard", zh: "显示钢琴键盘" },
     chk_show_piano: { ru: "Отображать клавиатуру пианино (C2–C6)", en: "Show piano keyboard (C2–C6)", zh: "显示钢琴键盘（C2–C6）" },
     h_durations_appearance: { ru: "Длительности (внешний вид ноты)", en: "Durations (note appearance)", zh: "时值（音符外观）" },
     chk_draw_durations: { ru: "Рисовать ноты разными длительностями", en: "Draw notes with different durations", zh: "以不同时值绘制音符" },
@@ -3164,6 +3532,8 @@
     lbl_updown: { ru: "Вверх-вниз", en: "Up-down", zh: "上下" },
     tt_updown: { ru: "Сдвиг окна ошибок по вертикали от центра экрана: минус — выше, плюс — ниже", en: "Vertical offset of the error window from the screen center: minus — up, plus — down", zh: "错误窗口相对屏幕中心的垂直偏移：负值向上，正值向下" },
     lbl_display_settings: { ru: "Отображать настройки:", en: "Show settings panel:", zh: "显示设置面板：" },
+    lbl_all_hotkeys: { ru: "Все горячие клавиши", en: "All hotkeys", zh: "所有快捷键" },
+    hotkeys_help: HOTKEYS_HELP_TEXT,
     pos_left: { ru: "слева", en: "on the left", zh: "在左侧" },
     pos_center: { ru: "по центру", en: "centered", zh: "居中" },
     pos_right: { ru: "справа", en: "on the right", zh: "在右侧" },
@@ -3318,11 +3688,6 @@
       en: "@@semitone tone tone semitone tone tone tone@@\n\nin semitones: @@122 122 2@@\n\non the circle of fifths: @@6-0@@. 6 notes to the left of the selected note, 0 to the right",
       zh: "@@半音 全音 全音 半音 全音 全音 全音@@\n\n半音数：@@122 122 2@@\n\n在五度圈上：@@6-0@@。所选音符左边 6 个音，右边 0 个"
     },
-    info_chord_complexity: {
-      ru: "<b>Простые:</b><br>maj (мажорное трезвучие)<br>min (минорное трезвучие)<br>sus2 (трезвучие с секундой вместо терции)<br>sus4 (трезвучие с квартой вместо терции)<br><br><b>Средние:</b><br>maj7 (большой мажорный септаккорд)<br>7 (доминантсептаккорд)<br>m7 (малый минорный септаккорд)<br>m(Maj7) (минорный септаккорд с большой септимой)<br>9 (доминантнонаккорд)<br>maj9 (большой мажорный нонаккорд)<br>m9 (минорный нонаккорд)<br>m(Maj9) (минорный нонаккорд с большой септимой)<br>add9 (трезвучие с добавленной ноной)<br><br><b>Сложные:</b><br>11 (доминантовый ундецимаккорд)<br>maj11 (большой мажорный ундецимаккорд)<br>m11 (минорный ундецимаккорд)<br>13 (доминантовый терцдецимаккорд)<br>maj13 (большой мажорный терцдецимаккорд)<br>m13 (минорный терцдецимаккорд)",
-      en: "<b>Simple:</b><br>maj (major triad)<br>min (minor triad)<br>sus2 (suspended second)<br>sus4 (suspended fourth)<br><br><b>Medium:</b><br>maj7 (major seventh)<br>7 (dominant seventh)<br>m7 (minor seventh)<br>m(Maj7) (minor-major seventh)<br>9 (dominant ninth)<br>maj9 (major ninth)<br>m9 (minor ninth)<br>m(Maj9) (minor-major ninth)<br>add9 (added ninth triad)<br><br><b>Complex:</b><br>11 (dominant eleventh)<br>maj11 (major eleventh)<br>m11 (minor eleventh)<br>13 (dominant thirteenth)<br>maj13 (major thirteenth)<br>m13 (minor thirteenth)",
-      zh: "<b>简单：</b><br>maj（大三和弦）<br>min（小三和弦）<br>sus2（挂二和弦）<br>sus4（挂四和弦）<br><br><b>中等：</b><br>maj7（大七和弦）<br>7（属七和弦）<br>m7（小七和弦）<br>m(Maj7)（小大七和弦）<br>9（属九和弦）<br>maj9（大九和弦）<br>m9（小九和弦）<br>m(Maj9)（小大九和弦）<br>add9（加九和弦）<br><br><b>复杂：</b><br>11（属十一和弦）<br>maj11（大十一和弦）<br>m11（小十一和弦）<br>13（属十三和弦）<br>maj13（大十三和弦）<br>m13（小十三和弦）"
-    }
   };
 
   function t(key){
@@ -3845,6 +4210,7 @@
   let current = null;
   let lastResult = null;
   let selectedLetters = new Map(); // key -> accidental нажатой клавиши (нужно, чтобы диез/бемоль подсвечивался, а не терялся)
+  let selectedInfo = new Map(); // key -> { letter, octave } нажатой клавиши (для подсветки именно той клавиши, которую нажали)
   let awaitingAnswer = true;
   let revealPinned = false;
 
@@ -3871,11 +4237,11 @@
     for(const token of tokens){
       const steps = stepsForLetter(token.letter, range, clef);
       for(const step of steps){
+        const { octave } = noteFromStep(step, clef);
         if(token.accidental){
-          const { octave } = noteFromStep(step, clef);
           if(!isAllowed(token.letter, token.accidental, octave)) continue;
         }
-        list.push({ step, token });
+        list.push({ step, token, octave });
       }
     }
     return list;
@@ -3915,11 +4281,15 @@
     const blocked = blockedTokenKeys("double");
     for(let attempt = 0; attempt < 40; attempt++){
       const pick1 = candidates[Math.floor(Math.random() * candidates.length)];
-      const candidates2 = candidates.filter(c => c.token.letter !== pick1.token.letter && c.step !== pick1.step);
+      // вторая нота не должна звучать так же, как первая: исключаем и ту же букву,
+      // и энгармонически равные ноты (E♭ и D♯, B♯ и C, E♯ и F и т.п.) в любой октаве
+      const pc1 = pitchClassIndex(pick1.token.letter, pick1.token.accidental);
+      const candidates2 = candidates.filter(c => c.token.letter !== pick1.token.letter && c.step !== pick1.step
+        && pitchClassIndex(c.token.letter, c.token.accidental) !== pc1);
       if(!candidates2.length) continue;
       const pick2 = candidates2[Math.floor(Math.random() * candidates2.length)];
       const lower = pick1.step <= pick2.step ? pick1 : pick2;
-      if(blocked.has(lower.token.key) && attempt < 30) continue;
+      if(blocked.has(lower.token.key + "|" + lower.octave) && attempt < 30) continue;
       const o1 = noteFromStep(pick1.step, clef).octave;
       const o2 = noteFromStep(pick2.step, clef).octave;
       return [
@@ -3949,35 +4319,47 @@
     return notes;
   }
 
-  // ---- инверсии аккордов ----
-  function pickInversion(noteCount){
-    const maxLevel = noteCount - 1;
+  // ---- обращения аккордов (как в Ear Trainer) ----
+  // Нижней становится level-я нота аккорда; все ноты ниже неё переносятся на октаву(ы)
+  // вверх — над ней (Cm11, 4-е обращение → D Eb F G Bb C).
+  function allowedInversionLevels(noteCount){
     const options = [];
-    for(let lvl = 0; lvl <= Math.min(4, maxLevel); lvl++){
+    for(let lvl = 0; lvl <= Math.min(6, noteCount - 1); lvl++){
       if(settings.allowedInversions[lvl]) options.push(lvl);
     }
-    if(options.length === 0) options.push(0);
-    return options[Math.floor(Math.random() * options.length)];
+    return options;
   }
   function applyInversion(notes, level){
-    if(level <= 0) return notes;
     const sorted = notes.slice().sort((a,b) => a.step - b.step);
-    return sorted.map((n, idx) => idx < level ? { step: n.step + 7, letter: n.letter, octave: n.octave + 1, accidental: n.accidental } : n);
+    if(level <= 0 || level >= sorted.length) return sorted;
+    const bassStep = sorted[level].step;
+    return sorted.map((n, idx) => {
+      if(idx >= level) return n;
+      let step = n.step, octave = n.octave;
+      while(step <= bassStep){ step += 7; octave += 1; }
+      return { step, letter: n.letter, octave, accidental: n.accidental };
+    }).sort((a,b) => a.step - b.step);
   }
-  // ---- инверсия, но с проверкой, что итоговые ноты не выходят за верхний/нижний
-  // диапазон из настроек (иначе аккорд после обращения "вылезает" на добавочные
-  // линейки сильнее, чем задано уровнем диапазона) ----
+  // Сдвиг всего аккорда на octaves октав (ноты и знаки те же, меняется только высота)
+  function shiftOctaves(notes, octaves){
+    if(!octaves) return notes;
+    return notes.map(n => ({ step: n.step + 7 * octaves, letter: n.letter, octave: n.octave + octaves, accidental: n.accidental }));
+  }
+  // Обращение с проверкой, что ноты не выходят за диапазон добавочных линеек из настроек.
+  // Если обращение "вылезло" вверх — пробуем тот же аккорд октавой ниже (и наоборот).
   function pickInversionInRange(notes, range){
-    const maxLevel = notes.length - 1;
-    const options = [];
-    for(let lvl = 0; lvl <= Math.min(4, maxLevel); lvl++){
-      if(settings.allowedInversions[lvl]) options.push(lvl);
-    }
-    if(options.length === 0) options.push(0);
+    const options = allowedInversionLevels(notes.length);
+    if(options.length === 0) return null;
     const shuffled = options.slice().sort(() => Math.random() - 0.5);
     for(const lvl of shuffled){
       const applied = applyInversion(notes, lvl);
-      if(applied.every(n => n.step >= range.min && n.step <= range.max)) return applied;
+      for(const sh of [0, -1, 1, -2]){
+        const moved = shiftOctaves(applied, sh);
+        if(moved.every(n => n.step >= range.min && n.step <= range.max && (!n.accidental || isAllowed(n.letter, n.accidental, n.octave)))){
+          moved.inversionLevel = lvl;
+          return moved;
+        }
+      }
     }
     return null;
   }
@@ -3996,8 +4378,7 @@
 
   // Поиск аккорда. blockedRoots — множество ключей токенов-тоник, которые сейчас
   // запрещены (недавно выпадали). Возвращает null, если ничего не нашлось.
-  function searchChord(category, range, clef, blockedRoots){
-    const defsList = CHORD_DEFS[category];
+  function searchChord(defsList, range, clef, blockedRoots){
     for(let attempt = 0; attempt < 150; attempt++){
       const def = defsList[Math.floor(Math.random() * defsList.length)];
       const maxDegree = Math.max.apply(null, def.degrees);
@@ -4007,12 +4388,16 @@
       const rootStep = minRoot + Math.floor(Math.random() * (maxRoot - minRoot + 1));
       const { letter: rootLetter } = noteFromStep(rootStep, clef);
       if(!isAllowed(rootLetter, null)) continue;
-      if(blockedRoots.has(tokenKeyFor(rootLetter, null))) continue;
       const notes = tryBuildChord(def, rootStep, clef);
       if(notes){
         const inverted = pickInversionInRange(notes, defRange);
         if(!inverted) continue;
         const rootNote = notes[0];
+        // вариант аккорда для анти-повтора: тоника + её октава + обращение
+        const rootNow = inverted.find(n => n.letter === rootNote.letter) || rootNote;
+        const variantKey = tokenKeyFor(rootNote.letter, rootNote.accidental || null) + "|" + rootNow.octave + "|inv" + (inverted.inversionLevel || 0);
+        if(blockedRoots.has(variantKey)) continue;
+        inverted.chordVariantKey = variantKey;
         inverted.chordName = def.name;
         inverted.chordRootLetter = rootNote.letter;
         inverted.chordRootAccidental = rootNote.accidental;
@@ -4028,13 +4413,16 @@
       const wideMin = Math.min(-8, defRange.min), wideMax = Math.max(16, defRange.max) - maxDegree;
       if(wideMax < wideMin) continue;
       const rootStep = wideMin + Math.floor(Math.random() * (wideMax - wideMin + 1));
-      const { letter: rootLetter } = noteFromStep(rootStep, clef);
-      if(blockedRoots.has(tokenKeyFor(rootLetter, null))) continue;
       const notes = tryBuildChord(def, rootStep, clef);
       if(notes){
         const inverted = pickInversionInRange(notes, defRange);
         if(!inverted) continue;
         const rootNote = notes[0];
+        // вариант аккорда для анти-повтора: тоника + её октава + обращение
+        const rootNow = inverted.find(n => n.letter === rootNote.letter) || rootNote;
+        const variantKey = tokenKeyFor(rootNote.letter, rootNote.accidental || null) + "|" + rootNow.octave + "|inv" + (inverted.inversionLevel || 0);
+        if(blockedRoots.has(variantKey)) continue;
+        inverted.chordVariantKey = variantKey;
         inverted.chordName = def.name;
         inverted.chordRootLetter = rootNote.letter;
         inverted.chordRootAccidental = rootNote.accidental;
@@ -4044,29 +4432,41 @@
     return null;
   }
 
-  function generateChord(category, range, clef){
-    // Запрет по ТОНИКЕ аккорда. Тоник всего 7 (тоника всегда натуральная),
+  function generateChord(defsList, range, clef, noFallback){
+    // Запрет по варианту аккорда (тоника + октава + обращение). Тоник всего 7 (тоника всегда натуральная),
     // поэтому при глубине 3 выбор может стать совсем узким — если с запретом
     // ничего не нашлось, повторяем поиск без него.
-    const blockedRoots = blockedTokenKeys(settings.mode);
-    let notes = blockedRoots.size ? searchChord(category, range, clef, blockedRoots) : null;
-    if(!notes) notes = searchChord(category, range, clef, new Set());
-    if(!notes) return generateSingle({min:0,max:8}, clef);
+    const blockedRoots = blockedTokenKeys("chords");
+    let notes = blockedRoots.size ? searchChord(defsList, range, clef, blockedRoots) : null;
+    if(!notes) notes = searchChord(defsList, range, clef, new Set());
+    if(!notes) return noFallback ? null : generateSingle({min:0,max:8}, clef);
     return notes;
   }
 
   function generateQuestion(){
     const clef = pickClef();
     const range = stepRange();
-    const mode = settings.mode;
+    // Вариант вопроса — случайно из отмеченных в настройках. Аккорд попадает в выбор,
+    // только если у него есть хотя бы одно из выбранных обращений (как в Ear Trainer).
+    const pool = settings.modes.filter(v => v === "single" || v === "double"
+      || (CHORD_BY_NAME[v] && allowedInversionLevels(CHORD_BY_NAME[v].degrees.length).length));
+    const picked = pool.length ? pool[Math.floor(Math.random() * pool.length)] : "single";
+    const mode = (picked === "single" || picked === "double") ? picked : "chords";
     let notes;
     if(mode === "single") notes = generateSingle(range, clef, mode);
     else if(mode === "double") notes = generateDouble(range, clef);
-    else notes = generateChord(mode, range, clef);
+    else{
+      // сначала выпавший аккорд, если он не строится — любой из отмеченных подходящих
+      notes = generateChord([CHORD_BY_NAME[picked]], range, clef, true);
+      if(!notes){
+        const all = pool.filter(v => CHORD_BY_NAME[v]).map(v => CHORD_BY_NAME[v]);
+        notes = generateChord(all, range, clef);
+      }
+    }
     // Единственное место, где вопрос попадает в историю запрета — так у каждого
     // режима ровно одна запись на вопрос, независимо от запасных веток генераторов.
     rememberQuestion(mode, notes);
-    current = { clef, notes, chordName: notes.chordName, chordRootLetter: notes.chordRootLetter, chordRootAccidental: notes.chordRootAccidental,
+    current = { clef, notes, mode, chordName: notes.chordName, chordRootLetter: notes.chordRootLetter, chordRootAccidental: notes.chordRootAccidental,
                 durVis: settings.showDurations ? pickVisualDuration() : "1/4" };
   }
 
@@ -4679,6 +5079,29 @@
     }
     return btn;
   }
+  // Нажатая клавиша (pitch) — это ожидаемая нота со знаком (напр. C♭ на клавише B)?
+  // Возвращает октаву, в которой ожидаемая нота совпадает с клавишей, иначе null.
+  // Если "Указывать октаву" выключена — подходит та же нота в любой октаве.
+  function pianoEnharmonicOctave(expected, pitch){
+    const acc = expected.accidental || null;
+    const exact = absolutePitch(expected.letter, acc, expected.octave);
+    if(exact === pitch) return expected.octave;
+    if(!settings.showOctave && ((pitch - exact) % 12 + 12) % 12 === 0) return expected.octave + (pitch - exact) / 12;
+    return null;
+  }
+  // Ищет среди нот текущего вопроса (одна нота, две ноты или аккорд) ноту со знаком,
+  // которая звучит так же, как нажатая клавиша: чёрная клавиша засчитывается и как
+  // диез, и как бемоль (A♯ = B♭), белая — как B♯/C♭/E♯/F♭, если такая нота в вопросе.
+  // Возвращает { note, octave } или null (тогда засчитывается сама нажатая клавиша).
+  function pianoMatchNote(pitch){
+    if(!current || !current.notes) return null;
+    for(const n of current.notes){
+      if(!n.accidental) continue;
+      const oct = pianoEnharmonicOctave(n, pitch);
+      if(oct !== null) return { note: n, octave: oct };
+    }
+    return null;
+  }
   function buildBigPiano(){
     el.bigPiano.innerHTML = "";
     const whites = [];
@@ -4715,11 +5138,10 @@
         // клавиша "натуральная" может соответствовать энгармонической ноте с диезом/бемолем
         // у соседней буквы (B♯/C♭/E♯/F♭) — если ожидается именно такая нота, засчитываем её,
         // а не просто нажатую букву.
-        const expected = current.notes[0];
-        const expectedAcc = expected.accidental || null;
         const pitch = Number(btn.dataset.pitch);
-        if(expectedAcc && absolutePitch(expected.letter, expectedAcc, expected.octave) === pitch){
-          answerLetter(expected.letter, expectedAcc, expected.octave);
+        const match = pianoMatchNote(pitch);
+        if(match){
+          answerLetter(match.note.letter, match.note.accidental, match.octave);
         } else {
           answerLetter(w.letter, null, w.oct);
         }
@@ -4738,10 +5160,9 @@
         bbtn.dataset.letter = w.letter; bbtn.dataset.acc = "sharp"; bbtn.dataset.octave = w.oct; bbtn.dataset.pitch = pitch;
         bbtn.addEventListener("click", () => {
           if(!awaitingAnswer) return;
-          const expected = current.notes[0];
-          const expectedAcc = expected.accidental || null;
-          if(expectedAcc && absolutePitch(expected.letter, expectedAcc, expected.octave) === pitch){
-            answerLetter(expected.letter, expectedAcc, expected.octave);
+          const match = pianoMatchNote(pitch);
+          if(match){
+            answerLetter(match.note.letter, match.note.accidental, match.octave);
           } else {
             answerLetter(w.letter, "sharp", w.oct);
           }
@@ -4768,7 +5189,7 @@
   // ================= ОТВЕТ =================
   function answerLetter(letter, accidental, octave){
     if(!awaitingAnswer) return;
-    if(settings.mode === "single") submitSingle(letter, accidental, octave);
+    if(current && current.mode === "single") submitSingle(letter, accidental, octave);
     else toggleMulti(letter, accidental, octave);
   }
 
@@ -4777,8 +5198,13 @@
     const expected = current.notes[0];
     const expectedAcc = expected.accidental || null;
     const acc = accidental || null;
-    const octaveOK = (!settings.showOctave && !settings.showPiano) || octave === undefined || octave === null || octave === expected.octave;
-    const isCorrect = letter === expected.letter && acc === expectedAcc && octaveOK;
+    // октава проверяется только при включённой галке "Указывать октаву в ответе"
+    // (в т.ч. на клавиатуре-пианино): без неё C3, C4, C5 — одинаково верный ответ
+    const octaveOK = !settings.showOctave || octave === undefined || octave === null
+      || absolutePitch(letter, acc, octave) === absolutePitch(expected.letter, expectedAcc, expected.octave);
+    // сверка по звучанию: D♯ = E♭, B = C♭ и т.п. — одна и та же клавиша засчитывается верно
+    // с любого ввода (кнопки, клавиатура компьютера, MIDI)
+    const isCorrect = pitchClassIndex(letter, acc) === pitchClassIndex(expected.letter, expectedAcc) && octaveOK;
     if(settings.showPiano){
       // если ответ дан с клавиатуры (без выбора конкретной клавиши), октава неизвестна —
       // подсвечиваем нажатую ноту на той же октаве, что и правильный ответ, иначе клавиша не находится вообще
@@ -4805,11 +5231,13 @@
 
   // Ключ ноты для аккордового (multi) ответа: если "Указывать октаву" включена,
   // буква и октава должны совпасть по отдельности (напр. C2 != C4); иначе — только буква, как раньше.
-  function noteKey(letter, octave){
-    // Октава учитывается в ключе, если включено "Указывать октаву" ИЛИ используется большая
-    // клавиатура-пианино (там клик всегда даёт конкретную октаву, поэтому подсветку и сверку
-    // нужно вести по конкретной клавише, иначе разные октавы одной буквы будут перепутаны).
-    return (settings.showOctave || settings.showPiano) ? (letter + "|" + octave) : letter;
+  // Ключ ноты для ответа из нескольких нот (две ноты / аккорд) — по ЗВУЧАНИЮ, а не по букве:
+  // C и C♯ — разные ответы (обе клавиши можно выбрать одновременно), а E♭ и D♯ — один и тот же.
+  // Если включено "Указывать октаву" — учитывается конкретная высота (C4 ≠ C5),
+  // иначе — только название звука в любой октаве.
+  function noteKey(letter, octave, accidental){
+    const acc = accidental || null;
+    return settings.showOctave ? String(absolutePitch(letter, acc, octave)) : String(pitchClassIndex(letter, acc));
   }
 
   // Возвращает кнопку-ответ для подсветки: на большой клавиатуре-пианино ищем клавишу по
@@ -4817,46 +5245,63 @@
   function findAnswerButton(letter, accidental, octave){
     return settings.showPiano ? findBigPianoKey(letter, accidental, octave) : findButton(letter, accidental);
   }
-  function keyParts(key){
-    const idx = key.indexOf("|");
-    if(idx === -1) return { letter: key, octave: undefined };
-    return { letter: key.slice(0, idx), octave: Number(key.slice(idx + 1)) };
-  }
 
   function toggleMulti(letter, accidental, octave){
-    const key = noteKey(letter, octave);
-    const requiredCount = new Set(current.notes.map(n => noteKey(n.letter, n.octave))).size;
-    const btn = findAnswerButton(letter, accidental, octave);
+    const acc = accidental || null;
+    // ответ без октавы (с клавиатуры компьютера) на клавиатуре-пианино: подсвечиваем клавишу
+    // в октаве подходящей ноты вопроса, иначе клавиша не найдётся
+    if(settings.showPiano && (octave === undefined || octave === null)){
+      const same = current.notes.find(n => pitchClassIndex(n.letter, n.accidental || null) === pitchClassIndex(letter, acc));
+      if(same){
+        const diff = absolutePitch(same.letter, same.accidental || null, same.octave) - absolutePitch(letter, acc, same.octave);
+        octave = same.octave + Math.round(diff / 12);
+      } else {
+        octave = current.notes[0].octave;
+      }
+    }
+    const key = noteKey(letter, octave, acc);
+    const requiredCount = new Set(current.notes.map(n => noteKey(n.letter, n.octave, n.accidental))).size;
+    const btn = findAnswerButton(letter, acc, octave);
     if(selectedLetters.has(key)){
+      const prev = selectedInfo.get(key) || { letter, octave };
+      const prevBtn = findAnswerButton(prev.letter, selectedLetters.get(key), prev.octave);
+      if(prevBtn) prevBtn.classList.remove("selected");
+      // та же нота, но другая клавиша (другая октава) — переносим выбор на неё
+      if(settings.showPiano && octave !== undefined && octave !== null && prev.octave !== octave){
+        selectedLetters.set(key, acc);
+        selectedInfo.set(key, { letter, octave });
+        if(btn) btn.classList.add("selected");
+        return;
+      }
       selectedLetters.delete(key);
-      if(btn) btn.classList.remove("selected");
+      selectedInfo.delete(key);
       return;
     }
-    selectedLetters.set(key, accidental || null);
+    selectedLetters.set(key, acc);
+    selectedInfo.set(key, { letter, octave });
     if(btn) btn.classList.add("selected");
     if(selectedLetters.size >= requiredCount) gradeMulti();
   }
 
   function gradeMulti(){
     awaitingAnswer = false;
-    const correctKeys = new Map(current.notes.map(n => [noteKey(n.letter, n.octave), n.accidental || null]));
+    const correctNotes = new Map(current.notes.map(n => [noteKey(n.letter, n.octave, n.accidental), n]));
 
     selectedLetters.forEach((acc, key) => {
-      const { letter, octave } = keyParts(key);
-      const btn = findAnswerButton(letter, acc, octave);
+      const info = selectedInfo.get(key) || {};
+      const btn = findAnswerButton(info.letter, acc, info.octave);
       if(settings.showPiano && btn) btn.classList.remove("selected");
-      colorButton(btn, correctKeys.has(key));
+      colorButton(btn, correctNotes.has(key));
     });
-    correctKeys.forEach((acc, key) => {
+    correctNotes.forEach((n, key) => {
       if(!selectedLetters.has(key)){
-        const { letter, octave } = keyParts(key);
-        colorButton(findAnswerButton(letter, acc, octave), true);
+        colorButton(findAnswerButton(n.letter, n.accidental || null, n.octave), true);
       }
     });
 
     let allCorrect = true;
     current._positions.forEach(p => {
-      const gotIt = selectedLetters.has(noteKey(p.note.letter, p.note.octave));
+      const gotIt = selectedLetters.has(noteKey(p.note.letter, p.note.octave, p.note.accidental));
       if(!gotIt){ allCorrect = false; logError(current.clef, p.note.letter, p.note.accidental, p.note.octave); }
       colorNoteHead(p, gotIt);
       colorStem(p.stemEl, gotIt);
@@ -4865,7 +5310,7 @@
 
     lastResult = {
       clef: current.clef,
-      notes: current.notes.map(n => ({ letter: n.letter, accidental: n.accidental, octave: n.octave, step: n.step, correct: selectedLetters.has(noteKey(n.letter, n.octave)) })),
+      notes: current.notes.map(n => ({ letter: n.letter, accidental: n.accidental, octave: n.octave, step: n.step, correct: selectedLetters.has(noteKey(n.letter, n.octave, n.accidental)) })),
       chordName: current.chordName, chordRootLetter: current.chordRootLetter, chordRootAccidental: current.chordRootAccidental
     };
     if(revealPinned) renderReveal();
@@ -4901,6 +5346,7 @@
         b.classList.remove("correct-flash", "incorrect-flash", "selected");
       });
       selectedLetters = new Map();
+      selectedInfo = new Map();
       nextQuestion();
     }, 750);
   }
@@ -5265,16 +5711,9 @@
     const { name: pitch, octave } = midiNoteToPitch(note);
     const letter = pitch[0];
     const sharp = pitch.length > 1;
-    if(settings.mode === "single"){
-      if(sharp){
-        answerLetter(letter, "sharp", octave);
-      } else {
-        answerLetter(letter, null, octave);
-      }
-    } else {
-      if(sharp) return;
-      answerLetter(letter, null, octave);
-    }
+    // чёрные клавиши работают во всех режимах (одна нота, две ноты, аккорды);
+    // D♯ засчитывается и как E♭ — сверка идёт по звучанию
+    answerLetter(letter, sharp ? "sharp" : null, octave);
   }
   // ===== MIDI: единое подключение, отображается в 4 копиях (Ноты / Лады / Ритм-Одна нота / Ритм-Бесконечно) =====
   const midiUIGroups = [
@@ -5631,6 +6070,7 @@
       tonics: {},
       types: { major:true, natMin:false },
       randomStart: false,
+      showPiano: false, // "Отображать клавиатуру пианино" в Ладах (своя, не зависит от Нот)
       clef: "treble",
       labelTop: 90,
       labelLeft: 50,
@@ -5664,6 +6104,7 @@
       scaleTonicGrid: document.getElementById("scaleTonicGrid"),
       scaleTypeGrid: document.getElementById("scaleTypeGrid"),
       scaleRandomStartToggle: document.getElementById("scaleRandomStartToggle"),
+      scaleShowPianoToggle: document.getElementById("scaleShowPianoToggle"),
       scaleClefGroup: document.querySelector('.segmented[data-sgroup="clef"]'),
       scaleNameLabel: document.getElementById("scaleNameLabel"),
       scaleChordReveal: document.getElementById("scaleChordReveal"),
@@ -5856,6 +6297,14 @@
       });
     });
 
+    // "Отображать клавиатуру пианино" в Ладах: 2 октавы, октава в ответе не проверяется
+    elS.scaleShowPianoToggle.checked = !!scaleSettings.showPiano;
+    elS.scaleShowPianoToggle.addEventListener("change", () => {
+      scaleSettings.showPiano = elS.scaleShowPianoToggle.checked;
+      saveScaleSettings();
+      if(window.__scaleLevelActive) scBuildInputButtons();
+    });
+
     elS.scaleRandomStartToggle.checked = !!scaleSettings.randomStart;
     elS.scaleRandomStartToggle.addEventListener("change", () => {
       scaleSettings.randomStart = elS.scaleRandomStartToggle.checked;
@@ -5896,6 +6345,7 @@
     }
 
     let scaleCurrent = null;   // { tonic, type, target:[8 notes], progress }
+    const scPianoMarks = new Map(); // пианино Ладов: индекс клавиши -> "correct" | "wrong"
     let placedHistory = [];
     let scLedgerSteps = new Set(); // добавочные линейки, нарисованные в scRenderStaff (эффективные ступени)
 
@@ -6073,9 +6523,30 @@
     window.__scaleShowStartHint = scShowStartHint;
     window.__scaleHideStartHint = scHideStartHint;
 
+    // Анти-повтор в "Ладах": вариант вопроса = тоника × лад. Если вариантов 4 и больше,
+    // текущий не выпадает следующим (8+ — и предыдущий, 12+ — и ещё один) — как в "Нотах".
+    // История живёт только в памяти вкладки, в localStorage не сохраняется.
+    const scRecent = [];
+    function scPickTonicAndType(){
+      const tonics = SCALE_TONICS.filter(x => scaleSettings.tonics[x.key]);
+      const types = SCALE_TYPES.filter(x => scaleSettings.types[x.key]);
+      const useTonics = tonics.length ? tonics : SCALE_TONICS;
+      const useTypes = types.length ? types : SCALE_TYPES;
+      const n = useTonics.length * useTypes.length;
+      const depth = n >= 12 ? 3 : n >= 8 ? 2 : n >= 4 ? 1 : 0;
+      const blocked = new Set(depth ? scRecent.slice(-depth) : []);
+      const combos = [];
+      useTonics.forEach(tonic => useTypes.forEach(type => combos.push({ tonic, type, key: tonic.key + "|" + type.key })));
+      const left = combos.filter(c => !blocked.has(c.key));
+      const pool = left.length ? left : combos;
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      scRecent.push(pick.key);
+      if(scRecent.length > 3) scRecent.splice(0, scRecent.length - 3);
+      return pick;
+    }
+
     function scGenerateQuestion(){
-      const tonic = pickWeighted(SCALE_TONICS, scaleSettings.tonics);
-      const type = pickWeighted(SCALE_TYPES, scaleSettings.types);
+      const { tonic, type } = scPickTonicAndType();
       // База (стартовая октава) звукоряда зависит от выбранного ключа, чтобы ноты
       // реально попадали в характерный для этого ключа регистр, а не просто рисовались
       // теми же (скрипичными) высотами со сдвигом на басовый стан:
@@ -6090,6 +6561,9 @@
       const target = full.slice(startDegree, startDegree + 8);
       scaleCurrent = { tonic, type, target, progress: 0, startDegree };
       placedHistory = [{ note: target[0], state: "given" }];
+      scPianoMarks.clear();
+      if(scaleSettings.showPiano && window.__scaleLevelActive && scPianoOct !== target[0].octave) scBuildBigPiano();
+      else scApplyPianoMarks();
       scRenderStaff();
       updateScaleNameLabel();
       if(scRevealPinned) scRenderReveal();
@@ -6262,7 +6736,9 @@
     }
 
     window.__submitScaleNote = submitScaleNote;
-    function submitScaleNote(pressedPc){
+    // Сколько мс мигает красным неверно нажатая клавиша (как в круге квинт — 300 мс)
+    const SC_WRONG_FLASH_MS = 300;
+    function submitScaleNote(pressedPc, pressedKeyIdx){
       if(!scaleCurrent) return;
       if(scaleCurrent.progress >= scaleCurrent.target.length){
         scGenerateQuestion();
@@ -6270,29 +6746,142 @@
       }
       const expected = scaleCurrent.target[scaleCurrent.progress];
       const correct = pressedPc === expected.pc;
+
+      if(!correct){
+        // Неверно: клавиша мигает красным, дальше не пускаем. Ошибка на этой ноте
+        // считается в статистике один раз (повторные неверные нажатия не добавляются).
+        scFlashWrong(pressedPc, pressedKeyIdx, expected);
+        if(!scaleCurrent.missed){
+          scaleCurrent.missed = true;
+          scRecordAnswerStat(false);
+          const degree = ((scaleCurrent.startDegree + scaleCurrent.progress) % 7) + 1;
+          scLogError(scaleCurrent.type.key, degree);
+        }
+        return;
+      }
+
+      // Верно: нота ставится зелёной (даже если перед этим была ошибка — тогда в
+      // статистике уже записана ошибка, верный ответ не засчитывается)
+      if(!scaleCurrent.missed) scRecordAnswerStat(true);
+      scaleCurrent.missed = false;
+      if(scaleSettings.showPiano){
+        // зелёная подсветка на пианино копится до нового вопроса
+        scPianoMarks.set(scPianoPitchOf(scaleCurrent.progress), "correct");
+        scApplyPianoMarks();
+      }
       if(scaleCurrent.progress === 0){
         // первая нота уже нарисована как "given" (жёлтая) — перекрашиваем её же в результат ответа
-        placedHistory[0] = { note: expected, state: correct ? "correct" : "wrong" };
+        placedHistory[0] = { note: expected, state: "correct" };
       } else {
-        placedHistory.push({ note: expected, state: correct ? "correct" : "wrong" });
-      }
-      // отдельная от "Нот" история/статистика уровня "Лады" — своя ступень (1..8) внутри
-      // текущего лада (startDegree учитывает случайное начало не с тоники)
-      scRecordAnswerStat(correct);
-      if(!correct){
-        const degree = ((scaleCurrent.startDegree + scaleCurrent.progress) % 7) + 1;
-        scLogError(scaleCurrent.type.key, degree);
+        placedHistory.push({ note: expected, state: "correct" });
       }
       scaleCurrent.progress++;
       scRenderStaff();
       if(scRevealPinned) scRenderReveal();
     }
 
+    // красная вспышка неверной клавиши: на пианино — нажатая клавиша (с клавиатуры ПК / MIDI —
+    // клавиша этой ноты рядом с нужной), без пианино — маленькая кнопка этой ноты
+    function scFlashWrong(pressedPc, pressedKeyIdx, expected){
+      let btn = null;
+      if(scaleSettings.showPiano){
+        let keyPitch = (typeof pressedKeyIdx === "number") ? pressedKeyIdx : null;
+        if(keyPitch === null){
+          const d = ((pressedPc - expected.pc) % 12 + 18) % 12 - 6;
+          keyPitch = absolutePitch(expected.letter, expected.accidental, expected.octave) + d;
+        }
+        btn = el.bigPiano.querySelector(`.key[data-sc-pitch="${keyPitch}"]`);
+      } else {
+        btn = document.querySelector(`#pianoAnswers [data-sc-pc="${pressedPc}"]`);
+      }
+      if(!btn) return;
+      btn.classList.remove("correct-flash");
+      btn.classList.add("incorrect-flash");
+      clearTimeout(btn.__scFlashTimer);
+      btn.__scFlashTimer = setTimeout(() => {
+        btn.classList.remove("incorrect-flash");
+        if(scaleSettings.showPiano) scApplyPianoMarks(); // вернуть зелёный, если клавиша уже была отвечена
+      }, SC_WRONG_FLASH_MS);
+    }
+
     // ---- клавиатура ввода: та же самая разметка (белые + чёрные), что и в режиме нот ----
+    // Пианино Ладов — та же клавиатура, что в "Нотах" (тот же размер клавиш, подписи C с номером
+    // октавы, крайние клавиши B слева и D справа), только 2 октавы: от C октавы первой ноты
+    // звукоряда до C двумя октавами выше. Октава в ответе не проверяется.
+    let scPianoOct = null; // октава первой ноты, под которую сейчас построено пианино
+    function scPianoPitchOf(i){
+      const n = scaleCurrent.target[i];
+      return absolutePitch(n.letter, n.accidental, n.octave);
+    }
+    function scApplyPianoMarks(){
+      if(!scaleSettings.showPiano || !window.__scaleLevelActive) return;
+      el.bigPiano.querySelectorAll(".key[data-sc-pitch]").forEach(k => {
+        const m = scPianoMarks.get(Number(k.dataset.scPitch));
+        k.classList.toggle("correct-flash", m === "correct");
+      });
+    }
+    function scBuildBigPiano(){
+      el.bigPiano.innerHTML = "";
+      const o = (scaleCurrent && scaleCurrent.target[0]) ? scaleCurrent.target[0].octave : 4;
+      scPianoOct = o;
+      const whites = [];
+      for(let oct = o; oct <= o + 2; oct++){
+        NATURAL_LETTERS.forEach(letter => {
+          if(oct === o + 2 && letter !== "C") return;
+          whites.push({ letter, oct });
+        });
+      }
+      // размер клавиш — как у пианино "Нот" (там 29 основных белых клавиш на ширину стана)
+      const NOTES_PIANO_CORE_COUNT = 29;
+      whites.unshift({ letter: "B", oct: o - 1 });
+      whites.push({ letter: "D", oct: o + 2 });
+      const n = whites.length;
+      const wPct = 100 / n;
+      const scale = n / NOTES_PIANO_CORE_COUNT;
+      el.bigPiano.style.width = (scale * 100) + "%";
+      el.bigPiano.style.maxWidth = `calc(var(--staff-width, 640px) * ${scale})`;
+      // Пианино центрируется по середине, а белых клавиш слева от второй C на одну меньше,
+      // чем справа (B + 7 | 7 + C + D), поэтому сдвигаем его вправо на полклавиши
+      // (отступ слева в центрированном ряду = 1 клавиша): левая октава — слева от центра,
+      // правая — справа.
+      el.bigPiano.style.marginLeft = `calc((min(${scale * 100}%, var(--staff-width, 640px) * ${scale}) - 2px) / ${n})`;
+      whites.forEach((w, i) => {
+        const pitch = absolutePitch(w.letter, null, w.oct);
+        const btn = document.createElement("button");
+        btn.className = "white-key key";
+        btn.style.left = (i * wPct) + "%";
+        btn.style.width = wPct + "%";
+        btn.textContent = w.letter === "C" ? (displayNameFor(w.letter, null) + w.oct) : displayNameFor(w.letter, null);
+        btn.dataset.scPitch = pitch;
+        btn.addEventListener("click", () => submitScaleNote(pitchClassIndex(w.letter, null), pitch));
+        el.bigPiano.appendChild(btn);
+        const hasSharp = ["C","D","F","G","A"].includes(w.letter) && (i + 1 < n);
+        if(hasSharp){
+          const bPitch = absolutePitch(w.letter, "sharp", w.oct);
+          const bx = (i + 1) * wPct;
+          const bw = wPct * 0.6;
+          const bbtn = document.createElement("button");
+          bbtn.className = "black-key key";
+          bbtn.style.left = (bx - bw / 2) + "%";
+          bbtn.style.width = bw + "%";
+          bbtn.dataset.scPitch = bPitch;
+          bbtn.addEventListener("click", () => submitScaleNote(pitchClassIndex(w.letter, "sharp"), bPitch));
+          el.bigPiano.appendChild(bbtn);
+        }
+      });
+      el.bigPiano.style.display = "";
+      scApplyPianoMarks();
+    }
+
     function scBuildInputButtons(){
       el.answersGrid.style.display = "none";
-      el.pianoAnswers.style.display = "";
       el.octaveSelector.style.display = "none";
+      if(scaleSettings.showPiano){
+        el.pianoAnswers.style.display = "none";
+        scBuildBigPiano();
+        return;
+      }
+      el.pianoAnswers.style.display = "";
       el.bigPiano.style.display = "none";
 
       el.pianoNaturals.innerHTML = "";
@@ -6302,6 +6891,7 @@
         const btn = document.createElement("button");
         btn.className = "note-btn";
         btn.textContent = displayNameFor(letter, null);
+        btn.dataset.scPc = pitchClassIndex(letter, null);
         btn.addEventListener("click", () => submitScaleNote(pitchClassIndex(letter, null)));
         el.pianoNaturals.appendChild(btn);
       });
@@ -6315,6 +6905,7 @@
         btn.style.left = (center - width / 2) + "%";
         btn.style.width = width + "%";
         btn.textContent = displayNameFor(slot.sharpLetter, "sharp") + "/" + displayNameFor(slot.flatLetter, "flat");
+        btn.dataset.scPc = pitch;
         btn.addEventListener("click", () => submitScaleNote(pitch));
         el.pianoAnswers.appendChild(btn);
       });
@@ -6821,6 +7412,12 @@
       updateViewBox();
       render();
     }
+
+    // смена "Названий нот" прямо на вкладке "Лады": обновить подписи клавиш ответа и подсказку R/T
+    window.__scaleRefreshNaming = () => {
+      scBuildInputButtons();
+      scRenderReveal();
+    };
 
     function activateScalesLevel(){
       window.__scaleLevelActive = true;
